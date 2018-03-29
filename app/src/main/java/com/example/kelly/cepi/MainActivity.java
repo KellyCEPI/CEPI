@@ -12,7 +12,7 @@ import android.text.TextWatcher;
 
 public class MainActivity extends AppCompatActivity {
 
-//tt§zeyfgezuybsdkjnl
+//tt
     EditText email = null;
     EditText mdp = null;
 
