@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.kelly.cepi">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Page_Principale"
+            android:label="@string/title_activity_page_entree"/>
+        <activity
+            android:name=".Page_Inscription"
+            android:label="@string/title_activity_page_inscription"/>
+        <activity android:name=".Ajout_Evenement"
+            android:label="@string/title_activity_ajout_evenement"/>
+        <activity android:name=".Ajout_Tache"
+            android:label="@string/title_activity_ajout_tache"/>
+        <activity android:name=".Ajout_Liste"
+            android:label="Ajout_Liste"/>
+        <activity android:name=".Affichage_Dossier"
+            android:label="Affichage_Dossier"/>
+
+
+    </application>
+
+</manifest>

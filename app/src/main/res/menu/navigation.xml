@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:orderInCategory="0"
+        android:id="@+id/item_deconnexion"
+        android:title="Deconnexion"/>
+    <item
+        android:orderInCategory="0"
+        android:id="@+id/item_Ajout_Tache"
+        android:title="Ajouter une tâche"/>
+    <item
+        android:orderInCategory="0"
+        android:id="@+id/item_Ajout_Evenement"
+        android:title="Ajouter un évènement"/>
+    <item
+        android:orderInCategory="0"
+        android:id="@+id/item_Ajout_Liste"
+        android:title="Ajouter une liste"/>
+    <item
+        android:orderInCategory="0"
+        android:id="@+id/item_Nouveau_Dossier"
+        android:title="Nouveau Dossier"/>
+</menu>

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">CEPI</string>
+    <string name ="title_activity_page_entree">Page_Entree</string>
+    <string name="bienvenue">Bienvenue sur PlanDay</string>
+    <string name ="title_activity_page_inscription">Page_Inscription</string>
+    <string name="title_activity_ajout_tache">Ajout_Tache</string>
+    <string name = "title_activity_ajout_evenement">Ajout_evenement</string>
+    <color name="white">#FFFFFF</color>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+</resources>
