@@ -12,7 +12,7 @@ import android.text.TextWatcher;
 
 public class MainActivity extends AppCompatActivity {
 
-//https://github.com/KellyCEPI/CEPI/
+//test2
     EditText email = null;
     EditText mdp = null;
 
