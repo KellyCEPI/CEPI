@@ -6,8 +6,10 @@ import android.os.Parcelable;
 import android.support.annotation.RequiresApi;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 /**
  * Created by Kelly on 27/03/2018.
@@ -136,6 +138,7 @@ public class Utilisateur {
      * @param d2
      * @return
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public int diffmin(LocalDateTime d, LocalDateTime d2) {
         int annee = d.getYear() - d2.getYear();
         int jour = d.getDayOfYear() - d2.getDayOfYear();

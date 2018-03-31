@@ -43,6 +43,9 @@ public class Ajout_Tache extends Activity{
     SeekBar bar_urgent;
     int importance;
     int urgence;
+    Spinner liste_dossier;
+    List<Integer> liste_choix_idd;
+    int idd_ajout;
     Intent i_tache = getIntent();
     Utilisateur U1 = (Utilisateur) i_tache.getSerializableExtra("utilisateur");
 
@@ -87,6 +90,20 @@ public class Ajout_Tache extends Activity{
         liste_repetition.setAdapter(adapter);
         liste_repetition.setOnItemSelectedListener(ChoixRepetitionListener);
 
+        liste_dossier = (Spinner) findViewById(R.id.SpinnerChoixDossier);
+        List<String> choix_dossier = new ArrayList<String>();
+        liste_choix_idd = new ArrayList<Integer>();
+        ArrayList<Dossier> dossier_utilisateur = U1.get_dossiers();
+        for(int i = 0; i< dossier_utilisateur.size(); i++){
+            Dossier D = dossier_utilisateur.get(i);
+            choix_dossier.add(D.get_nom_dos());
+            liste_choix_idd.add(D.get_idd());
+        }
+        ArrayAdapter<String> dossier_adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, choix_dossier);
+        liste_dossier.setAdapter(dossier_adapter);
+        liste_dossier.setOnItemSelectedListener(ChoixDossierListener);
+
+
         if(i_tache.getIntExtra("consultation",0) == 1){
             affichage_consultation();
         }
@@ -129,6 +146,18 @@ public class Ajout_Tache extends Activity{
         }
     };
 
+
+    public AdapterView.OnItemSelectedListener ChoixDossierListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            idd_ajout = liste_choix_idd.get(i);
+        };
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+
+        }
+    };
 
     public SeekBar.OnSeekBarChangeListener ImportantListener = new SeekBar.OnSeekBarChangeListener() {
         @Override

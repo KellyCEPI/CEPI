@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,6 +35,9 @@ public class Ajout_Liste extends Activity {
     EditText nouvel_element = null;
     ArrayAdapter<String> adapter = null;
     Button valider = null;
+    Spinner liste_dossier;
+    List<Integer> liste_choix_idd;
+    int idd_ajout;
     Intent i_liste = getIntent();
     Utilisateur U1 = (Utilisateur) i_liste.getSerializableExtra("utilisateur");
 
@@ -57,6 +61,19 @@ public class Ajout_Liste extends Activity {
 
         registerForContextMenu(liste);
         liste.setOnLongClickListener(OuvrirMenu);
+
+        liste_dossier = (Spinner) findViewById(R.id.SpinnerChoixDossier);
+        List<String> choix_dossier = new ArrayList<String>();
+        liste_choix_idd = new ArrayList<Integer>();
+        ArrayList<Dossier> dossier_utilisateur = U1.get_dossiers();
+        for(int i = 0; i< dossier_utilisateur.size(); i++){
+            Dossier D = dossier_utilisateur.get(i);
+            choix_dossier.add(D.get_nom_dos());
+            liste_choix_idd.add(D.get_idd());
+        }
+        ArrayAdapter<String> dossier_adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, choix_dossier);
+        liste_dossier.setAdapter(dossier_adapter);
+        liste_dossier.setOnItemSelectedListener(ChoixDossierListener);
 
         if(i_liste.getIntExtra("consultation",0) == 1){
             affichage_consultation();
@@ -145,4 +162,16 @@ public View.OnLongClickListener OuvrirMenu = new View.OnLongClickListener() {
         return false;
     }
 };
+
+    public AdapterView.OnItemSelectedListener ChoixDossierListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            idd_ajout = liste_choix_idd.get(i);
+        };
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+
+        }
+    };
 }

@@ -139,7 +139,6 @@ public class Page_Principale extends AppCompatActivity{
             else{
                 Intent i_dossier = new Intent(Page_Principale.this, Affichage_Dossier.class);
                 i_dossier.putExtra("idd",id);
-                i_dossier.putExtra("utilisateur", U1);
                 startActivity(i_dossier);
             }
 
