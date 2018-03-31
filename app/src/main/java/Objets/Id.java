@@ -5,6 +5,7 @@ package Objets;
  */
 
 public class Id {
+
     private static int idu_max;
     private static int ide_max;
     private static int idt_max;
@@ -37,15 +38,16 @@ public class Id {
     public static void set_idl_max(int idl_max) {
         Id.idl_max = idl_max;
     }
+
     public static void set_idligne_max(int idligne_max) {
         Id.idligne_max = idligne_max;
     }
+
     public static void set_idd_max(int idd_max) {
         Id.idd_max = idd_max;
     }
 
     //GETTER
-
     public static int get_idu_max() {
         return idu_max;
     }
@@ -65,10 +67,9 @@ public class Id {
     public static int get_idligne_max() {
         return idligne_max;
     }
+
     public static int get_idd_max() {
         return idd_max;
     }
 
 }
-
-

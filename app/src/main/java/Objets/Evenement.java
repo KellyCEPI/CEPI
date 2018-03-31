@@ -7,17 +7,18 @@ import java.util.Calendar;
  */
 
 public class Evenement {
+
     private int ide;
     private int idu;
     private String nom_ev;
-    private int idd;
+    private int idd; //id dossier
     private Calendar date_heure;
     private int repeat_inter;
 
     // incrementer le ide
-    public Evenement(int idu, String nom_ev, int idd,Calendar date_heure, int repeat_inter) {
-        this.ide=Id.get_ide_max()+1;
-        Id.set_ide_max(Id.get_ide_max()+1);
+    public Evenement(int idu, String nom_ev, int idd, Calendar date_heure, int repeat_inter) {
+        this.ide = Id.get_ide_max() + 1;
+        Id.set_ide_max(Id.get_ide_max() + 1);
         this.idu = idu;
         this.nom_ev = nom_ev;
         this.idd = idd;
@@ -76,4 +77,3 @@ public class Evenement {
     }
 
 }
-
