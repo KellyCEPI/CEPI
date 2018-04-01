@@ -41,7 +41,7 @@ public class Affichage_Dossier extends AppCompatActivity {
 
     Intent i1 = getIntent();
     int idd;
-    Utilisateur U1;
+    Utilisateur U1 = new Utilisateur("@","@");
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,6 @@ public class Affichage_Dossier extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.affichage_dossier);
-        U1 = (Utilisateur) i1.getSerializableExtra("utilisateur");
 
 
         idd = i1.getIntExtra("idd", 0);

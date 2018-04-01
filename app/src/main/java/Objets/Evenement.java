@@ -1,12 +1,17 @@
 package Objets;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Kelly on 22/03/2018.
  */
 
-public class Evenement {
+public class Evenement implements Parcelable{
 
     private int ide;
     private int idu;
@@ -24,6 +29,26 @@ public class Evenement {
         this.idd = idd;
         this.date_heure = date_heure;
         this.repeat_inter = repeat_inter;
+    }
+
+    //intToCalendar
+
+    public Calendar intToCalendar(int year, int month, int day, int hour, int minute) {
+        Calendar c = Calendar.getInstance();
+        c.set(year, month, day, hour, minute);
+        return c;
+    }
+
+    //CalendarToInt
+
+    public List<Integer> CalendarToInt(Calendar c) {
+        List<Integer> l = new ArrayList<>();
+        l.add(c.get(Calendar.YEAR));
+        l.add(c.get(Calendar.MONTH));
+        l.add(c.get(Calendar.DAY_OF_MONTH));
+        l.add(c.get(Calendar.HOUR));
+        l.add(c.get(Calendar.MINUTE));
+        return l;
     }
 
     //GETTER
@@ -74,6 +99,64 @@ public class Evenement {
 
     public void set_repeat_inter(int repeat_inter) {
         this.repeat_inter = repeat_inter;
+    }
+
+    @Override
+    public int describeContents() {
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel event, int flags) {
+        int year = date_heure.get(Calendar.YEAR);
+        int month = date_heure.get(Calendar.MONTH);
+        int day = date_heure.get(Calendar.DAY_OF_MONTH);
+        int hour = date_heure.get(Calendar.HOUR);
+        int minute = date_heure.get(Calendar.MINUTE);
+        //Attention au sens!!!
+        event.writeString(nom_ev);
+        event.writeInt(ide);
+        event.writeInt(idu);
+        event.writeInt(idd);
+        event.writeInt(repeat_inter);
+        event.writeInt(year);
+        event.writeInt(month);
+        event.writeInt(day);
+        event.writeInt(hour);
+        event.writeInt(minute);
+        System.out.println("        Write to parcel: ");
+        System.out.println(year+"  "+month+"  "+day+"  ");
+    }
+
+    public final static Parcelable.Creator<Evenement> CREATOR = new Parcelable.Creator<Evenement>() {
+        @Override
+        public Evenement createFromParcel(Parcel source) {
+            return new Evenement(source);
+        }
+
+        @Override
+        public Evenement[] newArray(int size) {
+            return new Evenement[0];
+        }
+    };
+
+    private Evenement(Parcel in) {
+        this.nom_ev = in.readString();
+        this.ide = in.readInt();
+        this.idu = in.readInt();
+        this.idd = in.readInt();
+        this.repeat_inter = in.readInt();
+        int year = in.readInt();
+        int month = in.readInt();
+        int day = in.readInt();
+        int hour = in.readInt();
+        int minute = in.readInt();
+        System.out.println("        Parcel in: ");
+        System.out.println(year+"  "+month+"  "+day+"  ");
+
+        Calendar c = Calendar.getInstance();
+        c.set(year, month, day, hour, minute);
+        this.date_heure = c;
     }
 
 }

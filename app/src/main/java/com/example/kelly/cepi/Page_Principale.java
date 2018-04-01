@@ -44,6 +44,7 @@ public class Page_Principale extends AppCompatActivity{
     private ActionBarDrawerToggle mToggle;
     SubMenu subMenu_dossier;
 
+    static final int EVENT_REQUEST_CODE = 1;
 
     public ListView liste_generale;
     ArrayAdapter<Evenement> adapter = null;
@@ -81,6 +82,20 @@ public class Page_Principale extends AppCompatActivity{
     private void setupDrawer() {
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == EVENT_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Evenement e = data.getParcelableExtra("event");
+                String eventName = e.get_nom_ev();
+                int year = e.get_date_heure().get(Calendar.YEAR);
+                int month = e.get_date_heure().get(Calendar.MONTH)+1;
+                int day = e.get_date_heure().get(Calendar.DAY_OF_MONTH);
+                System.out.println("        Résultat: ");
+                System.out.println("Nom de l'envènement: "+eventName);
+                System.out.println("Date choisie: "+day+"/"+month+"/"+year);
+            }
+        }
+    }
 
 
    public DialogInterface.OnClickListener AjoutDossierListener = new DialogInterface.OnClickListener() {
@@ -124,7 +139,7 @@ public class Page_Principale extends AppCompatActivity{
             }
             if (id == R.id.item_Ajout_Evenement){
                 Intent i2 = new Intent (Page_Principale.this, Ajout_Evenement.class);
-                startActivity(i2);
+                startActivityForResult(i2,EVENT_REQUEST_CODE);
             }
             if(id == R.id.item_Ajout_Liste){
                 Intent i4 = new Intent(Page_Principale.this, Ajout_Liste.class);
@@ -136,7 +151,8 @@ public class Page_Principale extends AppCompatActivity{
                         .setNegativeButton("Annuler", AnnulerListener)
                         .show();
             }
-            else{
+            else if (id != R.id.item_Ajout_Evenement && id != R.id.item_Ajout_Liste && id != R.id.item_Ajout_Tache
+                    && id != R.id.item_deconnexion && id != R.id.item_Nouveau_Dossier){
                 Intent i_dossier = new Intent(Page_Principale.this, Affichage_Dossier.class);
                 i_dossier.putExtra("idd",id);
                 startActivity(i_dossier);
