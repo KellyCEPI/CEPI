@@ -128,13 +128,20 @@ public class Ajout_Tache extends Activity{
         }
         Tache T1 = D1.get_taches().get(i);
         nom_de_la_tache.setText(T1.get_nom_tache());
-        //dossier
-        //duree
+        int k = 0;
+        while(k< liste_choix_idd.size() & liste_choix_idd.get(k) != idd){
+            k++;
+        }
+        liste_dossier.setSelection(k);
+        int duree = T1.get_duree();
+        int H = duree/60;
+        nb_heures.setValue(H);
+        nb_minutes.setValue(duree-H*60);
         nb_repetition.setText(T1.get_repeat_nb());
         repetition = Integer.parseInt(nb_repetition.getText().toString());
-        //rappel
-        //Importance: celle mise à l'enregistrement ou actuelle ?
-        //Urgence
+        liste_repetition.setSelection(T1.get_repeat_inter());
+        bar_important.setProgress(T1.get_imp());
+        bar_urgent.setProgress(T1.get_urgent());
     }
 
     public View.OnClickListener ModifierTacheListener = new View.OnClickListener() {

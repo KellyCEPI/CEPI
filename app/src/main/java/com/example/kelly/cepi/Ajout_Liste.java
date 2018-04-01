@@ -53,8 +53,10 @@ public class Ajout_Liste extends Activity {
         //mliste.add("Oeufs");
 
         liste = (ListView) findViewById(R.id.ListView);
+        liste.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         adapter = new ArrayAdapter<String>(Ajout_Liste.this,android.R.layout.simple_list_item_multiple_choice,mliste);
         liste.setAdapter(adapter);
+        liste.setOnItemClickListener(ItemListeListener);
 
         nouvel_element = (EditText) findViewById(R.id.EditTextNouvelElement);
         nouvel_element.setOnKeyListener(Appuye_entree);
@@ -98,10 +100,27 @@ public class Ajout_Liste extends Activity {
         }
         Liste L1 = D1.get_listes().get(i);
         nom_liste.setText(L1.get_nom_liste());
+        int k = 0;
+        while(k< liste_choix_idd.size() & liste_choix_idd.get(k) != idd){
+            k++;
+        }
+        liste_dossier.setSelection(k);
         //la liste
         //cochés/décochés
 
     }
+
+    public AdapterView.OnItemClickListener ItemListeListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            if (liste.isItemChecked(i)) {
+                liste.setItemChecked(i, false);
+            } else {
+                liste.setItemChecked(i, true);
+            }
+        }
+    };
+
 
     public View.OnClickListener ModifierListeListener = new View.OnClickListener() {
         @Override

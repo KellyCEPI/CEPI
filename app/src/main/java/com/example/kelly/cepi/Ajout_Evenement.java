@@ -122,8 +122,12 @@ public class Ajout_Evenement extends Activity {
         int heure = E1.get_date_heure().get(Calendar.HOUR_OF_DAY);
         int minute = E1.get_date_heure().get(Calendar.MINUTE);
         horaire.setText(String.valueOf(heure) + " : " + String.valueOf(minute));
-        //rappel
-        //dossier
+        int k = 0;
+        while(k< liste_choix_idd.size() & liste_choix_idd.get(k) != idd){
+            k++;
+        }
+        liste_dossier.setSelection(k);
+        liste_rappels.setSelection(E1.get_repeat_inter());
     }
 
 
