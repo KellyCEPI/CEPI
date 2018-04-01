@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Objets.Dossier;
+import Objets.Ligne;
 import Objets.Liste;
 import Objets.Utilisateur;
 
@@ -32,6 +33,7 @@ public class Ajout_Liste extends Activity {
     EditText nom_liste =null;
     List<String> mliste = new ArrayList<String>();
     ListView liste = null;
+    List<Integer> liste_coche = new ArrayList<Integer>();
     EditText nouvel_element = null;
     ArrayAdapter<String> adapter = null;
     Button valider = null;
@@ -105,7 +107,13 @@ public class Ajout_Liste extends Activity {
             k++;
         }
         liste_dossier.setSelection(k);
-        //la liste
+        ArrayList <Ligne> liste_ligne = L1.get_liste();
+        for(int ligne = 0; ligne< liste_ligne.size();ligne ++) {
+            mliste.add(liste_ligne.get(ligne).get_ligne());
+            if (liste_ligne.get(ligne).get_cocher() == 1) {
+                liste.setItemChecked(ligne,true);
+            }
+        }
         //cochés/décochés
 
     }
@@ -115,8 +123,10 @@ public class Ajout_Liste extends Activity {
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             if (liste.isItemChecked(i)) {
                 liste.setItemChecked(i, false);
+                liste_coche.set(i,0);
             } else {
                 liste.setItemChecked(i, true);
+                liste_coche.set(i,1);
             }
         }
     };
@@ -136,6 +146,7 @@ public class Ajout_Liste extends Activity {
         public boolean onKey(View view, int i, KeyEvent keyEvent) {
             if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER) {
                 mliste.add(nouvel_element.getText().toString());
+                liste_coche.add(0);
                 nouvel_element.setText("");
                 return true;
             }
