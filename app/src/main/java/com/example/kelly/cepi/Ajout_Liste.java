@@ -41,14 +41,15 @@ public class Ajout_Liste extends Activity {
     List<Integer> liste_choix_idd;
     int idd_ajout;
     Intent i_liste = getIntent();
-    Utilisateur U1 = new Utilisateur("@","@");
-
+    //Utilisateur U1 = (Utilisateur) i_liste.getSerializableExtra("utilisateur");
+    int idl;
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ajout_liste);
 
         valider = findViewById(R.id.ButtonAjouterListe);
+        valider.setOnClickListener(ValiderListeListener);
 
         nom_liste = findViewById(R.id.EditTextNomListe);
         //mliste.add("Lait");
@@ -69,7 +70,7 @@ public class Ajout_Liste extends Activity {
         liste_dossier = (Spinner) findViewById(R.id.SpinnerChoixDossier);
         List<String> choix_dossier = new ArrayList<String>();
         liste_choix_idd = new ArrayList<Integer>();
-        ArrayList<Dossier> dossier_utilisateur = U1.get_dossiers();
+        /*ArrayList<Dossier> dossier_utilisateur = U1.get_dossiers();
         for(int i = 0; i< dossier_utilisateur.size(); i++){
             Dossier D = dossier_utilisateur.get(i);
             choix_dossier.add(D.get_nom_dos());
@@ -88,8 +89,6 @@ public class Ajout_Liste extends Activity {
     }
 
     public void affichage_consultation(){
-        int idd = i_liste.getIntExtra("idd",0);
-        int idl = i_liste.getIntExtra("idl",0);
         valider.setOnClickListener(ModifierListeListener);
         int i = 0;
         while(i<U1.get_dossiers().size() & U1.get_dossiers().get(i).get_idd() != idd){
@@ -107,15 +106,14 @@ public class Ajout_Liste extends Activity {
             k++;
         }
         liste_dossier.setSelection(k);
-        ArrayList <Ligne> liste_ligne = L1.get_liste();
+        ArrayList<Ligne> liste_ligne = (ArrayList<Ligne>) L1.get_liste();
         for(int ligne = 0; ligne< liste_ligne.size();ligne ++) {
             mliste.add(liste_ligne.get(ligne).get_ligne());
             if (liste_ligne.get(ligne).get_cocher() == 1) {
                 liste.setItemChecked(ligne,true);
             }
         }
-        //cochés/décochés
-
+        idl = L1.get_idl();*/
     }
 
     public AdapterView.OnItemClickListener ItemListeListener = new AdapterView.OnItemClickListener() {
@@ -138,8 +136,17 @@ public class Ajout_Liste extends Activity {
             Toast.makeText(Ajout_Liste.this,"Modification",Toast.LENGTH_SHORT).show();
             Intent i1 = new Intent(Ajout_Liste.this, Page_Principale.class);
             startActivity(i1);
+            int i = liste_dossier.getSelectedItemPosition();
+            ArrayList<Ligne> al = new ArrayList<Ligne>();
+            for (int k=0; k<mliste.size();k++){
+                Ligne L = new Ligne(idl,liste_coche.get(k),mliste.get(k));
+                al.add(L);
+            }
+
+            //u.modifier_liste(idl, nom_liste.getText().toString(), liste_choix_idd.get(i), al);
         }
     };
+
 
     public View.OnKeyListener Appuye_entree = new View.OnKeyListener() {
         @Override
@@ -154,44 +161,52 @@ public class Ajout_Liste extends Activity {
         }
     };
 
+
     View.OnClickListener ValiderListeListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Intent ivalider = new Intent(Ajout_Liste.this, Page_Principale.class);
-            startActivity(ivalider);
+            int i = liste_dossier.getSelectedItemPosition();
+
+            Ligne lign = new Ligne(0,0,"test/1");
+            ArrayList lzeg = new ArrayList<Ligne>();
+            lzeg.add(lign);
+            Liste test = new Liste(0,"zegffef",0,lzeg);
+
+            Intent returnIntent = getIntent();
+            returnIntent.putExtra("List",test);
+            setResult(Activity.RESULT_OK,returnIntent);
+            finish();
         }
     };
 
-public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
-    super.onCreateContextMenu(menu, v, menuInfo);
-    getMenuInflater().inflate(R.menu.contextmenu, menu);
-    menu.setHeaderTitle("Choose an option");
-}
-
-public boolean onContextItemSelected(MenuItem item){
-    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-    // On récupère la position de l'item concerné
-    int item_liste_pos = info.position;
-    switch(item.getItemId()){
-        case R.id.Modifier:
-            Toast.makeText(this,"CA FAIT RIEN POUR L'INSTANT", Toast.LENGTH_SHORT).show();
-            return true;
-        case R.id.Supprimer:
-            mliste.remove(item_liste_pos);
-            adapter.notifyDataSetChanged();
-            Toast.makeText(this,"Item supprimé", Toast.LENGTH_SHORT).show();
-            return true;
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.contextmenu, menu);
+        menu.setHeaderTitle("Choose an option");
     }
-    return super.onContextItemSelected(item);
-}
 
-public View.OnLongClickListener OuvrirMenu = new View.OnLongClickListener() {
-    @Override
-    public boolean onLongClick(View view) {
-        openContextMenu(view);
-        return false;
+    public boolean onContextItemSelected(MenuItem item){
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        // On récupère la position de l'item concerné
+        int item_liste_pos = info.position;
+        switch(item.getItemId()){
+            case R.id.Supprimer:
+                mliste.remove(item_liste_pos);
+                liste_coche.remove(item_liste_pos);
+                adapter.notifyDataSetChanged();
+                Toast.makeText(this,"Item supprimé", Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return super.onContextItemSelected(item);
     }
-};
+
+    public View.OnLongClickListener OuvrirMenu = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View view) {
+            openContextMenu(view);
+            return false;
+        }
+    };
 
     public AdapterView.OnItemSelectedListener ChoixDossierListener = new AdapterView.OnItemSelectedListener() {
         @Override
