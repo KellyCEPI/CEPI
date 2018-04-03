@@ -194,7 +194,7 @@ public class Ajout_Evenement extends Activity {
         public void onClick(View view) {
             nomS = nom_evenement.getText().toString();
 
-            //à modifier
+            //à changer
             String dateS = String.valueOf(date.getText());
             String[] parties = dateS.split("/");
             //System.out.println("  @@@@@&é@&é"+dateS);

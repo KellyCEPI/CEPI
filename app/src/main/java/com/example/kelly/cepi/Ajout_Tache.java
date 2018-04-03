@@ -47,7 +47,7 @@ public class Ajout_Tache extends Activity{
     List<Integer> liste_choix_idd;
     int idd_ajout;
     Intent i_tache = getIntent();
-    Utilisateur U1 = (Utilisateur) i_tache.getSerializableExtra("utilisateur");
+    Utilisateur U1 = new Utilisateur("@","@");
 
     protected void onCreate(Bundle savedInstanceState) {
 

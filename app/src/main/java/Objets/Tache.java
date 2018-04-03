@@ -1,27 +1,30 @@
 package Objets;
 
 import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.RequiresApi;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Created by Kelly on 27/03/2018.
  */
 
-public class Tache {
+public class Tache implements Parcelable{
 
+    private String nom_tache;
     private int idt;
     private int idu;
-    private String nom_tache;
     private int idd;
     private int repeat_nb;
     private int repeat_inter;
     private int duree;
     private int imp;
     private int urgent;
-    private LocalDateTime d;
     private int score;
+    private LocalDateTime d;
 
     // incrementer idt suivant base de donnee
     public Tache(int idu, String nom_tache, int idd, int repeat_nb, int repeat_inter, int duree, int imp, int urgent) {
@@ -128,4 +131,69 @@ public class Tache {
         d = LocalDateTime.now();
     }
 
+    @Override
+    public int describeContents() {
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel task, int flags) {
+        /*private int idt;
+        private int idu;
+        private String nom_tache;
+        private int idd;
+        private int repeat_nb;
+        private int repeat_inter;
+        private int duree;
+        private int imp;
+        private int urgent;
+        private LocalDateTime d;
+        private int score;*/
+        String time = d.toString();
+
+        task.writeString(nom_tache);
+        task.writeInt(idt);
+        task.writeInt(idu);
+        task.writeInt(idd);
+        task.writeInt(repeat_nb);
+        task.writeInt(repeat_inter);
+        task.writeInt(duree);
+        task.writeInt(imp);
+        task.writeInt(urgent);
+        task.writeInt(score);
+        task.writeString(time);
+    }
+
+    public final static Parcelable.Creator<Tache> CREATOR = new Parcelable.Creator<Tache>() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        public Tache createFromParcel(Parcel source) {
+            return new Tache(source);
+        }
+
+        @Override
+        public Tache[] newArray(int size) {
+            return new Tache[0];
+        }
+    };
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private Tache(Parcel in) {
+
+        this.nom_tache = in.readString();
+        this.idt = in.readInt();
+        this.idu = in.readInt();
+        this.idd = in.readInt();
+        this.repeat_nb = in.readInt();
+        this.repeat_inter = in.readInt();
+        this.duree = in.readInt();
+        this.imp = in.readInt();
+        this.urgent = in.readInt();
+        this.score = in.readInt();
+        String time = in.readString();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime = LocalDateTime.parse(time, formatter);
+        this.d = dateTime;
+    }
 }
