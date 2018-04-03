@@ -167,13 +167,13 @@ public class Ajout_Liste extends Activity {
         public void onClick(View view) {
             int i = liste_dossier.getSelectedItemPosition();
 
-            Ligne lign = new Ligne(0,0,"test/1");
-            ArrayList lzeg = new ArrayList<Ligne>();
-            lzeg.add(lign);
-            Liste test = new Liste(0,"zegffef",0,lzeg);
+            Ligne ligne = new Ligne(0,0,"ceci est le nom de la ligne");
+            ArrayList<Ligne> listOfLigne = new ArrayList<>();
+            listOfLigne.add(ligne);
+            Liste liste = new Liste(0,"ceci est le nom de la liste",0,listOfLigne);
 
             Intent returnIntent = getIntent();
-            returnIntent.putExtra("List",test);
+            returnIntent.putExtra("list",liste);
             setResult(Activity.RESULT_OK,returnIntent);
             finish();
         }

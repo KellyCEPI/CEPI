@@ -1,5 +1,8 @@
 package Objets;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -7,7 +10,7 @@ import java.util.Calendar;
  * Created by Kelly on 27/03/2018.
  */
 
-public class Dossier {
+public class Dossier implements Parcelable{
 
     private int idd;
     private int idu;
@@ -168,4 +171,37 @@ public class Dossier {
         }
     }
 
+    @Override
+    public int describeContents() {
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel folder, int flags) {
+        folder.writeInt(idu);
+        folder.writeString(nom_dos);
+        folder.writeTypedList(taches);
+        folder.writeTypedList(listes);
+        folder.writeTypedList(evenements);
+    }
+
+    public final static Parcelable.Creator<Dossier> CREATOR = new Parcelable.Creator<Dossier>() {
+        @Override
+        public Dossier createFromParcel(Parcel source) {
+            return new Dossier(source);
+        }
+
+        @Override
+        public Dossier[] newArray(int size) {
+            return new Dossier[0];
+        }
+    };
+
+    private Dossier(Parcel in) {
+        idu = in.readInt();
+        nom_dos = in.readString();
+        in.readTypedList(taches, Tache.CREATOR);
+        in.readTypedList(listes, Liste.CREATOR);
+        in.readTypedList(evenements, Evenement.CREATOR);
+    }
 }

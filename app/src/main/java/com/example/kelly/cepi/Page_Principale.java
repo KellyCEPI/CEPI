@@ -104,10 +104,11 @@ public class Page_Principale extends AppCompatActivity{
             }
         } else if (requestCode == LIST_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Liste l = data.getParcelableExtra("Liste");
+                Liste l = data.getParcelableExtra("list");
                 String lName = l.get_nom_liste();
+                String ligneName = l.get_liste().get(0).get_ligne();
                 System.out.println("        Résultat: ");
-                System.out.println(lName);
+                System.out.println(lName+"  "+ligneName);
             }
         }
     }
