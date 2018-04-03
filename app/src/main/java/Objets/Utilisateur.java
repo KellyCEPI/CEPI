@@ -1,5 +1,8 @@
 package Objets;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -256,6 +259,7 @@ public class Utilisateur {
         int minute = date_heure.get(Calendar.MINUTE);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void ajouter_tache(String nom_tache, int idd, int repeat_nb, int repeat_inter, int duree, int imp, int urgent) {
         Tache t = new Tache(idu, nom_tache, idd, repeat_nb, repeat_inter, duree, imp, urgent);
         taches.add(t);
