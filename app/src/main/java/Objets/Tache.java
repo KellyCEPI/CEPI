@@ -5,8 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.RequiresApi;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 
 /**
  * Created by Kelly on 27/03/2018.
@@ -24,9 +23,10 @@ public class Tache implements Parcelable{
     private int imp;
     private int urgent;
     private int score;
-    private LocalDateTime d;
+    private Calendar c;
 
     // incrementer idt suivant base de donnee
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public Tache(int idu, String nom_tache, int idd, int repeat_nb, int repeat_inter, int duree, int imp, int urgent) {
         this.idu = idu;
         this.idt = Id.get_idt_max() + 1;
@@ -38,15 +38,15 @@ public class Tache implements Parcelable{
         this.duree = duree;
         this.imp = imp;
         this.urgent = urgent;
-        d = LocalDateTime.now();
+        c = Calendar.getInstance();
     }
 
     //GETTER
     public int get_score(){
         return score;
     }
-    public LocalDateTime get_d(){
-        return d;
+    public Calendar get_c(){
+        return c;
     }
     public int get_idt() {
         return idt;
@@ -127,8 +127,8 @@ public class Tache implements Parcelable{
     public void set_urgent(int urgent) {
         this.urgent = urgent;
     }
-    public void set_d(){
-        d = LocalDateTime.now();
+    public void set_c(){
+        c = Calendar.getInstance();
     }
 
     @Override
@@ -138,18 +138,11 @@ public class Tache implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel task, int flags) {
-        /*private int idt;
-        private int idu;
-        private String nom_tache;
-        private int idd;
-        private int repeat_nb;
-        private int repeat_inter;
-        private int duree;
-        private int imp;
-        private int urgent;
-        private LocalDateTime d;
-        private int score;*/
-        String time = d.toString();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        int hour = c.get(Calendar.HOUR);
+        int minute = c.get(Calendar.MINUTE);
 
         task.writeString(nom_tache);
         task.writeInt(idt);
@@ -161,7 +154,11 @@ public class Tache implements Parcelable{
         task.writeInt(imp);
         task.writeInt(urgent);
         task.writeInt(score);
-        task.writeString(time);
+        task.writeInt(year);
+        task.writeInt(month);
+        task.writeInt(day);
+        task.writeInt(hour);
+        task.writeInt(minute);
     }
 
     public final static Parcelable.Creator<Tache> CREATOR = new Parcelable.Creator<Tache>() {
@@ -190,10 +187,14 @@ public class Tache implements Parcelable{
         this.imp = in.readInt();
         this.urgent = in.readInt();
         this.score = in.readInt();
-        String time = in.readString();
+        int year = in.readInt();
+        int month = in.readInt();
+        int day = in.readInt();
+        int hour = in.readInt();
+        int minute = in.readInt();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime dateTime = LocalDateTime.parse(time, formatter);
-        this.d = dateTime;
+        Calendar c = Calendar.getInstance();
+        c.set(year, month, day, hour, minute);
+        this.c = c;
     }
 }

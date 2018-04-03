@@ -1,10 +1,13 @@
 package Objets;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Kelly on 27/03/2018.
  */
 
-public class Ligne {
+public class Ligne implements Parcelable {
 
     private int idl;
     private int idligne;
@@ -44,5 +47,37 @@ public class Ligne {
 
     public String get_ligne() {
         return ligne;
+    }
+
+    @Override
+    public int describeContents() {
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcelLigne, int flags) {
+        parcelLigne.writeInt(idl);
+        parcelLigne.writeInt(idligne);
+        parcelLigne.writeInt(cocher);
+        parcelLigne.writeString(ligne);
+    }
+
+    public final static Parcelable.Creator<Ligne> CREATOR = new Parcelable.Creator<Ligne>() {
+        @Override
+        public Ligne createFromParcel(Parcel source) {
+            return new Ligne(source);
+        }
+
+        @Override
+        public Ligne[] newArray(int size) {
+            return new Ligne[0];
+        }
+    };
+
+    private Ligne(Parcel in) {
+        this.idl = in.readInt();
+        this.idligne = in.readInt();
+        this.cocher = in.readInt();
+        this.ligne = in.readString();
     }
 }
