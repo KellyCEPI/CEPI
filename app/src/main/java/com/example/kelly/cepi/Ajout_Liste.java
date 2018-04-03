@@ -42,7 +42,7 @@ public class Ajout_Liste extends Activity {
     int idd_ajout;
     Intent i_liste = getIntent();
     Utilisateur U1 = (Utilisateur) i_liste.getSerializableExtra("utilisateur");
-
+    int idl;
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -88,8 +88,6 @@ public class Ajout_Liste extends Activity {
     }
 
     public void affichage_consultation(){
-        int idd = i_liste.getIntExtra("idd",0);
-        int idl = i_liste.getIntExtra("idl",0);
         valider.setOnClickListener(ModifierListeListener);
         int i = 0;
         while(i<U1.get_dossiers().size() & U1.get_dossiers().get(i).get_idd() != idd){
@@ -114,8 +112,7 @@ public class Ajout_Liste extends Activity {
                 liste.setItemChecked(ligne,true);
             }
         }
-        //cochés/décochés
-
+        idl = L1.get_idl();
     }
 
     public AdapterView.OnItemClickListener ItemListeListener = new AdapterView.OnItemClickListener() {
@@ -138,8 +135,17 @@ public class Ajout_Liste extends Activity {
             Toast.makeText(Ajout_Liste.this,"Modification",Toast.LENGTH_SHORT).show();
             Intent i1 = new Intent(Ajout_Liste.this, Page_Principale.class);
             startActivity(i1);
+            int i = liste_dossier.getSelectedItemPosition();
+            ArrayList<Ligne> al = new ArrayList<Ligne>();
+            for (int k=0; k<mliste.size();k++){
+                Ligne L = new Ligne(idl,liste_coche.get(k),mliste.get(k));
+                al.add(L);
+            }
+
+            u.modifier_liste(idl, nom_liste.getText().toString(), liste_choix_idd.get(i), al);
         }
     };
+
 
     public View.OnKeyListener Appuye_entree = new View.OnKeyListener() {
         @Override
@@ -157,8 +163,10 @@ public class Ajout_Liste extends Activity {
     View.OnClickListener ValiderListeListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            int i = liste_dossier.getSelectedItemPosition();
             Intent ivalider = new Intent(Ajout_Liste.this, Page_Principale.class);
             startActivity(ivalider);
+            u.ajouter_liste(nom_liste.getText().toString(),liste_choix_idd.get(i), mliste);
         }
     };
 
@@ -173,11 +181,9 @@ public boolean onContextItemSelected(MenuItem item){
     // On récupère la position de l'item concerné
     int item_liste_pos = info.position;
     switch(item.getItemId()){
-        case R.id.Modifier:
-            Toast.makeText(this,"CA FAIT RIEN POUR L'INSTANT", Toast.LENGTH_SHORT).show();
-            return true;
         case R.id.Supprimer:
             mliste.remove(item_liste_pos);
+            liste_coche.remove(item_liste_pos);
             adapter.notifyDataSetChanged();
             Toast.makeText(this,"Item supprimé", Toast.LENGTH_SHORT).show();
             return true;
