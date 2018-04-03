@@ -1,7 +1,5 @@
 package com.example.kelly.cepi;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,19 +14,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import Objets.Evenement;
 import java.util.Calendar;
+
+import Objets.Liste;
+import Objets.Tache;
 import Objets.Utilisateur;
 /**
  * Created by Kelly on 13/03/2018.
@@ -45,6 +43,8 @@ public class Page_Principale extends AppCompatActivity{
     SubMenu subMenu_dossier;
 
     static final int EVENT_REQUEST_CODE = 1;
+    static final int TASK_REQUEST_CODE = 2;
+    static final int LIST_REQUEST_CODE = 3;
 
     public ListView liste_generale;
     ArrayAdapter<Evenement> adapter = null;
@@ -94,11 +94,26 @@ public class Page_Principale extends AppCompatActivity{
                 System.out.println("Nom de l'envènement: "+eventName);
                 System.out.println("Date choisie: "+day+"/"+month+"/"+year);
             }
+        } else if (requestCode == TASK_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Tache t = data.getParcelableExtra("tache");
+                String taskName = t.get_nom_tache();
+                int duree = t.get_duree();
+                System.out.println("        Résultat: ");
+                System.out.println(taskName+" "+duree);
+            }
+        } else if (requestCode == LIST_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Liste l = data.getParcelableExtra("Liste");
+                String lName = l.get_nom_liste();
+                System.out.println("        Résultat: ");
+                System.out.println(lName);
+            }
         }
     }
 
 
-   public DialogInterface.OnClickListener AjoutDossierListener = new DialogInterface.OnClickListener() {
+    public DialogInterface.OnClickListener AjoutDossierListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
             EditText nom_dossier = (EditText) ((AlertDialog) dialogInterface).findViewById(R.id.NomDossier);
@@ -114,7 +129,7 @@ public class Page_Principale extends AppCompatActivity{
         }
     };
 
-   public boolean onOptionsItemSelected(MenuItem menuitem){
+    public boolean onOptionsItemSelected(MenuItem menuitem){
         if(mToggle.onOptionsItemSelected(menuitem)){
             return true;
         }
@@ -130,7 +145,7 @@ public class Page_Principale extends AppCompatActivity{
 
             if(id== R.id.item_Ajout_Tache){
                 Intent i1 = new Intent(Page_Principale.this,Ajout_Tache.class);
-                startActivity(i1);
+                startActivityForResult(i1,TASK_REQUEST_CODE);
             }
             if(id == R.id.item_deconnexion){
                 Toast.makeText(Page_Principale.this,"toto",Toast.LENGTH_SHORT).show();
@@ -143,7 +158,7 @@ public class Page_Principale extends AppCompatActivity{
             }
             if(id == R.id.item_Ajout_Liste){
                 Intent i4 = new Intent(Page_Principale.this, Ajout_Liste.class);
-                startActivity(i4);
+                startActivityForResult(i4,LIST_REQUEST_CODE);
             }
             if(id == R.id.item_Nouveau_Dossier){
                 new AlertDialog.Builder(Page_Principale.this)

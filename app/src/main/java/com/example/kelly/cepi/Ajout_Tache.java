@@ -2,7 +2,9 @@ package com.example.kelly.cepi;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -47,7 +49,7 @@ public class Ajout_Tache extends Activity{
     List<Integer> liste_choix_idd;
     int idd_ajout;
     Intent i_tache = getIntent();
-    Utilisateur U1 = (Utilisateur) i_tache.getSerializableExtra("utilisateur");
+    Utilisateur U1 = new Utilisateur("@","@");
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -55,6 +57,8 @@ public class Ajout_Tache extends Activity{
         setContentView(R.layout.ajout_tache);
 
         bouton_valider = (Button) findViewById(R.id.ButtonValiderTache);
+
+        bouton_valider.setOnClickListener(BoutonValiderListener);
 
 
         nom_de_la_tache = (EditText) findViewById(R.id.EditTextTache);
@@ -94,22 +98,22 @@ public class Ajout_Tache extends Activity{
         List<String> choix_dossier = new ArrayList<String>();
         liste_choix_idd = new ArrayList<Integer>();
         ArrayList<Dossier> dossier_utilisateur = U1.get_dossiers();
-        for(int i = 0; i< dossier_utilisateur.size(); i++){
+        /*for(int i = 0; i< dossier_utilisateur.size(); i++){
             Dossier D = dossier_utilisateur.get(i);
             choix_dossier.add(D.get_nom_dos());
             liste_choix_idd.add(D.get_idd());
-        }
+        }*/
         ArrayAdapter<String> dossier_adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, choix_dossier);
         liste_dossier.setAdapter(dossier_adapter);
         liste_dossier.setOnItemSelectedListener(ChoixDossierListener);
 
 
-        if(i_tache.getIntExtra("consultation",0) == 1){
+        /*if(i_tache.getIntExtra("consultation",0) == 1){
             affichage_consultation();
         }
         else{
             bouton_valider.setOnClickListener(BoutonValiderListener);
-        }
+        }*/
     }
 
 
@@ -212,6 +216,7 @@ public class Ajout_Tache extends Activity{
     };
 
     public View.OnClickListener BoutonValiderListener = new View.OnClickListener() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onClick(View view) {
             nomS = nom_de_la_tache.getText().toString();
@@ -219,8 +224,11 @@ public class Ajout_Tache extends Activity{
             minutes = nb_minutes.getValue();
             //Enregistrer la tache
 
-            Intent i1 = new Intent(Ajout_Tache.this, Page_Principale.class);
-            startActivity(i1);
+            Tache task = new Tache(0, nomS, 0, 0, 0, heures*60+minutes, 0, 0);
+            Intent returnIntent = getIntent();
+            returnIntent.putExtra("tache",task);
+            setResult(Activity.RESULT_OK,returnIntent);
+            finish();
         }
     };
 

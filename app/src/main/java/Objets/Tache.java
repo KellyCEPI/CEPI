@@ -1,29 +1,32 @@
 package Objets;
 
 import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.RequiresApi;
 
-import java.time.LocalDateTime;
+import java.util.Calendar;
 
 /**
  * Created by Kelly on 27/03/2018.
  */
 
-public class Tache {
+public class Tache implements Parcelable{
 
+    private String nom_tache;
     private int idt;
     private int idu;
-    private String nom_tache;
     private int idd;
     private int repeat_nb;
     private int repeat_inter;
     private int duree;
     private int imp;
     private int urgent;
-    private LocalDateTime d;
     private int score;
+    private Calendar c;
 
     // incrementer idt suivant base de donnee
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public Tache(int idu, String nom_tache, int idd, int repeat_nb, int repeat_inter, int duree, int imp, int urgent) {
         this.idu = idu;
         this.idt = Id.get_idt_max() + 1;
@@ -35,15 +38,15 @@ public class Tache {
         this.duree = duree;
         this.imp = imp;
         this.urgent = urgent;
-        d = LocalDateTime.now();
+        c = Calendar.getInstance();
     }
 
     //GETTER
     public int get_score(){
         return score;
     }
-    public LocalDateTime get_d(){
-        return d;
+    public Calendar get_d(){
+        return c;
     }
     public int get_idt() {
         return idt;
@@ -125,7 +128,73 @@ public class Tache {
         this.urgent = urgent;
     }
     public void set_d(){
-        d = LocalDateTime.now();
+        c = Calendar.getInstance();
     }
 
+    @Override
+    public int describeContents() {
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel task, int flags) {
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        int hour = c.get(Calendar.HOUR);
+        int minute = c.get(Calendar.MINUTE);
+
+        task.writeString(nom_tache);
+        task.writeInt(idt);
+        task.writeInt(idu);
+        task.writeInt(idd);
+        task.writeInt(repeat_nb);
+        task.writeInt(repeat_inter);
+        task.writeInt(duree);
+        task.writeInt(imp);
+        task.writeInt(urgent);
+        task.writeInt(score);
+        task.writeInt(year);
+        task.writeInt(month);
+        task.writeInt(day);
+        task.writeInt(hour);
+        task.writeInt(minute);
+    }
+
+    public final static Parcelable.Creator<Tache> CREATOR = new Parcelable.Creator<Tache>() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        public Tache createFromParcel(Parcel source) {
+            return new Tache(source);
+        }
+
+        @Override
+        public Tache[] newArray(int size) {
+            return new Tache[0];
+        }
+    };
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private Tache(Parcel in) {
+
+        this.nom_tache = in.readString();
+        this.idt = in.readInt();
+        this.idu = in.readInt();
+        this.idd = in.readInt();
+        this.repeat_nb = in.readInt();
+        this.repeat_inter = in.readInt();
+        this.duree = in.readInt();
+        this.imp = in.readInt();
+        this.urgent = in.readInt();
+        this.score = in.readInt();
+        int year = in.readInt();
+        int month = in.readInt();
+        int day = in.readInt();
+        int hour = in.readInt();
+        int minute = in.readInt();
+
+        Calendar c = Calendar.getInstance();
+        c.set(year, month, day, hour, minute);
+        this.c = c;
+    }
 }

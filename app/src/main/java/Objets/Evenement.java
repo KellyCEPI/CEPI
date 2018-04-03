@@ -31,7 +31,7 @@ public class Evenement implements Parcelable{
         this.repeat_inter = repeat_inter;
     }
 
-    //intToCalendar
+    /*//intToCalendar
 
     public Calendar intToCalendar(int year, int month, int day, int hour, int minute) {
         Calendar c = Calendar.getInstance();
@@ -49,7 +49,7 @@ public class Evenement implements Parcelable{
         l.add(c.get(Calendar.HOUR));
         l.add(c.get(Calendar.MINUTE));
         return l;
-    }
+    }*/
 
     //GETTER
     public int get_ide() {
