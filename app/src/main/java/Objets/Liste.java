@@ -1,12 +1,16 @@
 package Objets;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Kelly on 27/03/2018.
  */
 
-public class Liste {
+public class Liste implements Parcelable{
 
     private int idl;
     private int idu;
@@ -14,7 +18,7 @@ public class Liste {
     private int idd;
     // pas présente dans la base de données
 
-    private ArrayList<Ligne> liste;
+    private List<Ligne> liste;
     //incrementer le idl
 
     public Liste(int idu, String nom_liste, int idd, ArrayList liste) {
@@ -49,7 +53,7 @@ public class Liste {
         return idd;
     }
 
-    public ArrayList<Ligne> get_liste() {
+    public List<Ligne> get_liste() {
         return liste;
     }
 
@@ -72,5 +76,41 @@ public class Liste {
 
     public void set_liste(ArrayList<Ligne> l) {
         this.liste = l;
+    }
+
+    @Override
+    public int describeContents() {
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel list, int flags) {
+        list.writeInt(idl);
+        list.writeInt(idu);
+        list.writeInt(idd);
+        list.writeString(nom_liste);
+        list.writeList(liste);
+    }
+
+    public final static Parcelable.Creator<Liste> CREATOR = new Parcelable.Creator<Liste>() {
+        @Override
+        public Liste createFromParcel(Parcel source) {
+            return new Liste(source);
+        }
+
+        @Override
+        public Liste[] newArray(int size) {
+            return new Liste[0];
+        }
+    };
+
+    private Liste(Parcel in) {
+        idl = in.readInt();
+        idu = in.readInt();
+        idd = in.readInt();
+        nom_liste = in.readString();
+
+        liste = new ArrayList<Ligne>();
+        in.readList(liste, getClass().getClassLoader());
     }
 }

@@ -1,12 +1,5 @@
 package Objets;
 
-import android.os.Build;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.support.annotation.RequiresApi;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -97,7 +90,8 @@ public class Utilisateur {
         int a, b;
         a = t.get_imp();
         b = t.get_urgent();
-        LocalDateTime datej = LocalDateTime.now();
+        Calendar datej = Calendar.getInstance();
+
         int temps = diffmin(datej, t.get_d());
 
         switch (b) {
@@ -138,12 +132,11 @@ public class Utilisateur {
      * @param d2
      * @return
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public int diffmin(LocalDateTime d, LocalDateTime d2) {
-        int annee = d.getYear() - d2.getYear();
-        int jour = d.getDayOfYear() - d2.getDayOfYear();
-        int heure = d.getHour() - d2.getHour();
-        int min = d.getMinute() - d2.getMinute();
+    public int diffmin(Calendar d, Calendar d2) {
+        int annee = d.get(Calendar.YEAR) - d2.get(Calendar.YEAR);
+        int jour = d.get(Calendar.DAY_OF_YEAR) - d2.get(Calendar.DAY_OF_YEAR);
+        int heure = d.get(Calendar.HOUR_OF_DAY) - d2.get(Calendar.HOUR_OF_DAY);
+        int min = d.get(Calendar.MINUTE) - d2.get(Calendar.MINUTE);
 
         return (min + heure * 60 + jour * 24 * 60 + annee * 365 * 24 * 60);
     }
@@ -279,11 +272,11 @@ public class Utilisateur {
         //données préparées pour la base de données : prendre t.idt, idu, t.nom_tache, t.idd, t.repeat_nb,
         //t.repeat_inter, t.duree, t.imp, t.urgent
         //variables suivantes
-        int annee = t.get_d().getYear();
-        int mois = t.get_d().getMonthValue(); // Jan = 1, dec = 12
-        int jour = t.get_d().getDayOfMonth();
-        int heure = t.get_d().getHour(); // 24 hour clock
-        int minute = t.get_d().getMinute();
+        int annee = t.get_d().get(Calendar.YEAR);
+        int mois = t.get_d().get(Calendar.MONTH) + 1; // Jan = 1, dec = 12
+        int jour = t.get_d().get(Calendar.DAY_OF_MONTH);
+        int heure = t.get_d().get(Calendar.HOUR_OF_DAY); // 24 hour clock
+        int minute = t.get_d().get(Calendar.MINUTE);
     }
 
     public void modifier_tache(int idt, String nom_tache, int idd, int repeat_nb, int repeat_inter, int duree, int imp, int urgent) {
@@ -336,11 +329,11 @@ public class Utilisateur {
         //taches.get(k).get_repeat_nb(),taches.get(k).get_repeat_inter(), taches.get(k).get_duree(), taches.get(k).get_imp(),
         //taches.get(k).get_urgent()
         //variables suivantes
-        int annee = taches.get(k).get_d().getYear();
-        int mois = taches.get(k).get_d().getMonthValue(); // Jan = 1, dec = 12
-        int jour = taches.get(k).get_d().getDayOfMonth();
-        int heure = taches.get(k).get_d().getHour(); // 24 hour clock
-        int minute = taches.get(k).get_d().getMinute();
+        int annee = taches.get(k).get_d().get(Calendar.YEAR);
+        int mois = taches.get(k).get_d().get(Calendar.MONTH); // Jan = 0, dec = 11
+        int jour = taches.get(k).get_d().get(Calendar.DAY_OF_MONTH);
+        int heure = taches.get(k).get_d().get(Calendar.HOUR_OF_DAY); // 24 hour clock
+        int minute = taches.get(k).get_d().get(Calendar.MINUTE);
     }
 
     //Action à effectuer sur le bouton valider de "ajouter une nouvelle liste"

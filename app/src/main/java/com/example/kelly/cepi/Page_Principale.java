@@ -25,6 +25,7 @@ import java.util.List;
 import Objets.Evenement;
 import java.util.Calendar;
 
+import Objets.Liste;
 import Objets.Tache;
 import Objets.Utilisateur;
 /**
@@ -43,6 +44,7 @@ public class Page_Principale extends AppCompatActivity{
 
     static final int EVENT_REQUEST_CODE = 1;
     static final int TASK_REQUEST_CODE = 2;
+    static final int LIST_REQUEST_CODE = 3;
 
     public ListView liste_generale;
     ArrayAdapter<Evenement> adapter = null;
@@ -97,8 +99,15 @@ public class Page_Principale extends AppCompatActivity{
                 Tache t = data.getParcelableExtra("tache");
                 String taskName = t.get_nom_tache();
                 int duree = t.get_duree();
-                System.out.println("        Résultat");
+                System.out.println("        Résultat: ");
                 System.out.println(taskName+" "+duree);
+            }
+        } else if (requestCode == LIST_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Liste l = data.getParcelableExtra("Liste");
+                String lName = l.get_nom_liste();
+                System.out.println("        Résultat: ");
+                System.out.println(lName);
             }
         }
     }
@@ -149,7 +158,7 @@ public class Page_Principale extends AppCompatActivity{
             }
             if(id == R.id.item_Ajout_Liste){
                 Intent i4 = new Intent(Page_Principale.this, Ajout_Liste.class);
-                startActivity(i4);
+                startActivityForResult(i4,LIST_REQUEST_CODE);
             }
             if(id == R.id.item_Nouveau_Dossier){
                 new AlertDialog.Builder(Page_Principale.this)

@@ -45,7 +45,7 @@ public class Tache implements Parcelable{
     public int get_score(){
         return score;
     }
-    public Calendar get_c(){
+    public Calendar get_d(){
         return c;
     }
     public int get_idt() {
@@ -127,7 +127,7 @@ public class Tache implements Parcelable{
     public void set_urgent(int urgent) {
         this.urgent = urgent;
     }
-    public void set_c(){
+    public void set_d(){
         c = Calendar.getInstance();
     }
 
