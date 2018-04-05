@@ -13,9 +13,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -50,14 +47,19 @@ public class Ajout_Evenement extends Activity {
     Spinner liste_dossier;
     List<Integer> liste_choix_idd;
     int idd_ajout;
-    Intent i_evenement = getIntent();
-    Utilisateur U1 = new Utilisateur("@","@");
+    Intent intent;
+    Utilisateur U1;
     Date d;
     int ide;
     int idd;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        intent = getIntent();
+        U1 = intent.getParcelableExtra("user");
+        System.out.println("        Intent reçu");
+        System.out.println(U1.getEmail());
+
         setContentView(R.layout.ajout_evenement);
 
         definir_date = findViewById(R.id.ButtonDefinirDate);
@@ -101,7 +103,7 @@ public class Ajout_Evenement extends Activity {
         liste_dossier.setAdapter(dossier_adapter);
         liste_dossier.setOnItemSelectedListener(ChoixDossierListener);
 
-        if(i_evenement.getIntExtra("consultation",0) == 1){
+        if(intent.getIntExtra("consultation",0) == 1){
             affichage_consultation();
         }
         else{

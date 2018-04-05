@@ -41,7 +41,7 @@ public class Affichage_Dossier extends AppCompatActivity {
 
     Intent i1 = getIntent();
     int idd;
-    Utilisateur U1 = new Utilisateur("@","@");
+    Utilisateur U1;
 
 
     protected void onCreate(Bundle savedInstanceState) {

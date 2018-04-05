@@ -65,8 +65,8 @@ public class Page_Principale extends AppCompatActivity{
 
         super.onCreate(savedInstanceState);
 
-        Intent i = getIntent();
-        u = i.getParcelableExtra("user");
+        Intent intent = getIntent();
+        u = intent.getParcelableExtra("user");
 
         setContentView(R.layout.page_principale);
 
@@ -80,10 +80,8 @@ public class Page_Principale extends AppCompatActivity{
         subMenu_dossier = menu.addSubMenu("Dossiers");
         navigationView.setNavigationItemSelectedListener(NavigationListener);
 
-        registerForContextMenu((View) subMenu_dossier);
-        ((View) subMenu_dossier).setOnLongClickListener(OuvrirMenu);
-
-
+        /*registerForContextMenu((View) subMenu_dossier);
+        ((View) subMenu_dossier).setOnLongClickListener(OuvrirMenu);*/
 
 
         liste_generale = (ListView) findViewById(R.id.ListeGenerale);
@@ -226,7 +224,9 @@ public class Page_Principale extends AppCompatActivity{
             if (id == R.id.item_Ajout_Evenement){
                 Intent i2 = new Intent (Page_Principale.this, Ajout_Evenement.class);
                 i2.putExtra("user",u);
-                startActivityForResult(i2,EVENT_REQUEST_CODE);
+                System.out.println("        Intent envoyé:");
+                System.out.println(u.getEmail());
+                startActivity(i2);
             }
             if(id == R.id.item_Ajout_Liste){
                 Intent i4 = new Intent(Page_Principale.this, Ajout_Liste.class);

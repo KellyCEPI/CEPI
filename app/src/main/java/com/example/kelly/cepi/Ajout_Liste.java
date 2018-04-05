@@ -1,7 +1,6 @@
 package com.example.kelly.cepi;
 
 import android.app.Activity;
-import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -40,7 +39,7 @@ public class Ajout_Liste extends Activity {
     Spinner liste_dossier;
     ArrayList<Integer> liste_choix_idd;
     int idd_ajout;
-    Intent i_liste = getIntent();
+    Intent intent;
     int idl;
     int idd;
     Utilisateur U1;
@@ -49,7 +48,7 @@ public class Ajout_Liste extends Activity {
 
         super.onCreate(savedInstanceState);
 
-        Intent intent = getIntent();
+        intent = getIntent();
         U1 = intent.getParcelableExtra("user");
         setContentView(R.layout.ajout_liste);
 
@@ -85,7 +84,7 @@ public class Ajout_Liste extends Activity {
         liste_dossier.setAdapter(dossier_adapter);
         liste_dossier.setOnItemSelectedListener(ChoixDossierListener);
 
-        if(i_liste.getIntExtra("consultation",0) == 1){
+        if(this.intent.getIntExtra("consultation",0) == 1){
             affichage_consultation();
         }
         else{

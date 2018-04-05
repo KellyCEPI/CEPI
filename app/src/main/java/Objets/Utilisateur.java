@@ -29,6 +29,10 @@ public class Utilisateur implements Parcelable{
         Id.set_idu_max(Id.get_idu_max() + 1);
         this.email = email;
         this.mdp = mdp;
+        this.taches = new ArrayList<>();
+        this.listes = new ArrayList<>();
+        this.evenements = new ArrayList<>();
+        this.dossiers = new ArrayList<>();
     }
 
     //GETTER
@@ -550,10 +554,26 @@ public class Utilisateur implements Parcelable{
         setIdu(in.readInt());
         setEmail(in.readString());
         setMdp(in.readString());
-        in.readTypedList(taches, Tache.CREATOR);
-        in.readTypedList(listes, Liste.CREATOR);
-        in.readTypedList(evenements, Evenement.CREATOR);
-        in.readTypedList(dossiers, Dossier.CREATOR);
+        try {
+            in.readTypedList(taches, Tache.CREATOR);
+        } catch (Exception e) {
+            taches = new ArrayList<>();
+        }
+        try {
+            in.readTypedList(listes, Liste.CREATOR);
+        } catch (Exception e) {
+            listes = new ArrayList<>();
+        }
+        try {
+            in.readTypedList(evenements, Evenement.CREATOR);
+        } catch (Exception e) {
+            evenements = new ArrayList<>();
+        }
+        try {
+            in.readTypedList(dossiers, Dossier.CREATOR);
+        } catch (Exception e) {
+            dossiers = new ArrayList<>();
+        }
     }
 
 }
