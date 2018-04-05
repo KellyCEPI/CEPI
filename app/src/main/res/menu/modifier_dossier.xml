@@ -4,7 +4,4 @@
         android:id="@+id/Modifier"
         android:title="Modifier"/>
 
-    <item
-        android:id="@+id/Supprimer_Dossier"
-        android:title="Supprimer"/>
 </menu>

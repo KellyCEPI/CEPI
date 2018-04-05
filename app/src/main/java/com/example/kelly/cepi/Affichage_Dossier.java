@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class Affichage_Dossier extends AppCompatActivity {
     ArrayAdapter<String> adapter_listes = null;
 
     Button bouton_supprimer;
+    TextView nom_du_dossier;
 
     Intent i1 = getIntent();
     int idd;
@@ -72,6 +74,11 @@ public class Affichage_Dossier extends AppCompatActivity {
             i += 1;
         }
         Dossier D1 = U1.get_dossiers().get(i);
+
+        nom_du_dossier.setText(D1.get_nom_dos());
+        registerForContextMenu(nom_du_dossier);
+        nom_du_dossier.setOnLongClickListener(ModifNomDosListener);
+
 
         liste_evenements_view = findViewById(R.id.ListViewEvenements);
         liste_taches_view = findViewById(R.id.ListViewTaches);
@@ -152,12 +159,19 @@ public class Affichage_Dossier extends AppCompatActivity {
         }
     };
 
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        getMenuInflater().inflate(R.menu.contextmenu, menu);
-        menu.setHeaderTitle("Choose an option");
-            }
+        switch (v.getId()) {
+            case R.id.TextViewNomDossier:
+                getMenuInflater().inflate(R.menu.modifier_dossier, menu);
+                menu.setHeaderTitle("Modifier");
+            default:
+                getMenuInflater().inflate(R.menu.contextmenu, menu);
+                menu.setHeaderTitle("Choose an option");
+        }
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public boolean onContextItemSelected(MenuItem item){
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         // On récupère la position de l'item concerné
@@ -184,11 +198,24 @@ public class Affichage_Dossier extends AppCompatActivity {
                 adapter_listes.notifyDataSetChanged();
                 Toast.makeText(this,"Liste supprimée", Toast.LENGTH_SHORT).show();
                 return true;
+            case R.id.TextViewNomDossier:
+                new AlertDialog.Builder(Affichage_Dossier.this)
+                        .setView(R.layout.nouveau_dossier).setPositiveButton("Modifier", ModifierDossierListenerDialog)
+                        .setNegativeButton("Annuler", AnnulerListener)
+                        .show();
         }
         return super.onContextItemSelected(item);
     }
 
     public View.OnLongClickListener MenuSuppressionListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View view) {
+            openContextMenu(view);
+            return false;
+        }
+    };
+
+    public View.OnLongClickListener ModifNomDosListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View view) {
             openContextMenu(view);
@@ -220,6 +247,15 @@ public class Affichage_Dossier extends AppCompatActivity {
 
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
+        }
+    };
+
+    public DialogInterface.OnClickListener ModifierDossierListenerDialog = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            EditText nouveau_nom = findViewById(R.id.NomDossier);
+            U1.modifier_dossier(idd,nouveau_nom.getText().toString());
+            nom_du_dossier.setText(nouveau_nom.getText().toString());
         }
     };
 }
