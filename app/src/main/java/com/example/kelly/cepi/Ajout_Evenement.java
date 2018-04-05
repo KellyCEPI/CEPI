@@ -210,18 +210,20 @@ public class Ajout_Evenement extends Activity {
 
             System.out.println("        int parse: ");
             System.out.println(jour+"/"+mois+"/"+annee);
-            /*
+
             String horaire_s = String.valueOf(horaire);
             String[] parts = horaire_s.split(":");
             heure = Integer.parseInt(parts[0]);
             minute = Integer.parseInt(parties[1]);
 
+
+            /*
             Penser à récupérer le choix de rappel qui est dans l'entier "rappel"
              */
 
 
             Calendar c = Calendar.getInstance();
-            c.set(annee,mois,jour,0,0);
+            c.set(annee,mois,jour, heure, minute);
             System.out.println(" zefzef: "+c.get(Calendar.YEAR));
             //Enregistrer l'évènement*/
             Toast.makeText(Ajout_Evenement.this,"Enregistré",Toast.LENGTH_SHORT).show();
