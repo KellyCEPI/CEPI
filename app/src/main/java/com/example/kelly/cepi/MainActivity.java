@@ -10,6 +10,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.text.TextWatcher;
 
+import Objets.Utilisateur;
+
 public class MainActivity extends AppCompatActivity {
 
 //https://github.com/KellyCEPI/CEPI/
@@ -51,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
             // Vérifier le mdp et l'identifiant
             // If c'est tout bon, établir la connexion au serveur et passage à la page d'après :
             Intent i1 = new Intent(MainActivity.this, Page_Principale.class);
+            Utilisateur u = new Utilisateur("@","@");
+            i1.putExtra("user",u);
             startActivity(i1);
 
         }

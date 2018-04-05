@@ -85,6 +85,62 @@ public class Utilisateur implements Parcelable{
         this.dossiers = dossiers;
     }
 
+    public int getIdu() {
+        return idu;
+    }
+
+    public void setIdu(int idu) {
+        this.idu = idu;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getMdp() {
+        return mdp;
+    }
+
+    public void setMdp(String mdp) {
+        this.mdp = mdp;
+    }
+
+    public ArrayList<Tache> getTaches() {
+        return taches;
+    }
+
+    public void setTaches(ArrayList<Tache> taches) {
+        this.taches = taches;
+    }
+
+    public ArrayList<Liste> getListes() {
+        return listes;
+    }
+
+    public void setListes(ArrayList<Liste> listes) {
+        this.listes = listes;
+    }
+
+    public ArrayList<Evenement> getEvenements() {
+        return evenements;
+    }
+
+    public void setEvenements(ArrayList<Evenement> evenements) {
+        this.evenements = evenements;
+    }
+
+    public ArrayList<Dossier> getDossiers() {
+        return dossiers;
+    }
+
+    public void setDossiers(ArrayList<Dossier> dossiers) {
+        this.dossiers = dossiers;
+    }
+
     /**
      * Défini le score d'une tache t
      *
@@ -432,6 +488,36 @@ public class Utilisateur implements Parcelable{
         }
     }
 
+    public void supprimer_dossier(int idd) {
+        Boolean t = false;
+        for (int i = 0; i < dossiers.size(); i++) {
+            if (dossiers.get(i).get_idd() == idd) {
+                dossiers.remove(i);
+                t = true;
+            }
+        }
+        if (t == false) {
+            System.out.println("ERREUR DOSSIER INTROUVABLE");
+        }
+
+        for (int j = 0; j < evenements.size(); j--) {
+            if (evenements.get(j).get_idd() == idd) {
+                evenements.remove(j);
+            }
+        }
+        for (int j = 0; j < taches.size(); j--) {
+            if (taches.get(j).get_idd() == idd) {
+                taches.remove(j);
+            }
+        }
+        for (int j = 0; j < listes.size(); j--) {
+            if (listes.get(j).get_idd() == idd) {
+                listes.remove(j);
+            }
+        }
+
+    }
+
     @Override
     public int describeContents() {
         return hashCode();
@@ -461,9 +547,9 @@ public class Utilisateur implements Parcelable{
     };
 
     private Utilisateur(Parcel in) {
-        idu = in.readInt();
-        email = in.readString();
-        mdp = in.readString();
+        setIdu(in.readInt());
+        setEmail(in.readString());
+        setMdp(in.readString());
         in.readTypedList(taches, Tache.CREATOR);
         in.readTypedList(listes, Liste.CREATOR);
         in.readTypedList(evenements, Evenement.CREATOR);

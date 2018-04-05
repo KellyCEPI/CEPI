@@ -13,20 +13,19 @@ import java.util.Calendar;
 
 public class Tache implements Parcelable{
 
-    private String nom_tache;
     private int idt;
     private int idu;
+    private String nom_tache;
     private int idd;
     private int repeat_nb;
     private int repeat_inter;
     private int duree;
     private int imp;
     private int urgent;
+    private Calendar d;
     private int score;
-    private Calendar c;
 
     // incrementer idt suivant base de donnee
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public Tache(int idu, String nom_tache, int idd, int repeat_nb, int repeat_inter, int duree, int imp, int urgent) {
         this.idu = idu;
         this.idt = Id.get_idt_max() + 1;
@@ -38,7 +37,7 @@ public class Tache implements Parcelable{
         this.duree = duree;
         this.imp = imp;
         this.urgent = urgent;
-        c = Calendar.getInstance();
+        d = Calendar.getInstance();
     }
 
     //GETTER
@@ -46,7 +45,7 @@ public class Tache implements Parcelable{
         return score;
     }
     public Calendar get_d(){
-        return c;
+        return d;
     }
     public int get_idt() {
         return idt;
@@ -128,7 +127,7 @@ public class Tache implements Parcelable{
         this.urgent = urgent;
     }
     public void set_d(){
-        c = Calendar.getInstance();
+        d = Calendar.getInstance();
     }
 
     @Override
@@ -138,11 +137,11 @@ public class Tache implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel task, int flags) {
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        int hour = c.get(Calendar.HOUR);
-        int minute = c.get(Calendar.MINUTE);
+        int year = d.get(Calendar.YEAR);
+        int month = d.get(Calendar.MONTH);
+        int day = d.get(Calendar.DAY_OF_MONTH);
+        int hour = d.get(Calendar.HOUR);
+        int minute = d.get(Calendar.MINUTE);
 
         task.writeString(nom_tache);
         task.writeInt(idt);
@@ -193,8 +192,8 @@ public class Tache implements Parcelable{
         int hour = in.readInt();
         int minute = in.readInt();
 
-        Calendar c = Calendar.getInstance();
-        c.set(year, month, day, hour, minute);
-        this.c = c;
+        Calendar d = Calendar.getInstance();
+        d.set(year, month, day, hour, minute);
+        this.d = d;
     }
 }

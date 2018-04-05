@@ -48,12 +48,16 @@ public class Ajout_Tache extends Activity{
     Spinner liste_dossier;
     List<Integer> liste_choix_idd;
     int idd_ajout;
+    int idt;
     Intent i_tache = getIntent();
-    Utilisateur U1 = new Utilisateur("@","@");
+    int idd;
+    Utilisateur U1;
 
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        Intent i = getIntent();
+        U1 = i.getParcelableExtra("user");
         setContentView(R.layout.ajout_tache);
 
         bouton_valider = (Button) findViewById(R.id.ButtonValiderTache);
@@ -118,8 +122,6 @@ public class Ajout_Tache extends Activity{
 
 
     public void affichage_consultation(){
-        int idd = i_tache.getIntExtra("idd",0);
-        int idt = i_tache.getIntExtra("idt",0);
         bouton_valider.setOnClickListener(ModifierTacheListener);
         int i = 0;
         while(i<U1.get_dossiers().size() & U1.get_dossiers().get(i).get_idd() != idd){
@@ -146,6 +148,9 @@ public class Ajout_Tache extends Activity{
         liste_repetition.setSelection(T1.get_repeat_inter());
         bar_important.setProgress(T1.get_imp());
         bar_urgent.setProgress(T1.get_urgent());
+        importance = T1.get_imp();
+        urgence = T1.get_urgent();
+        idt = T1.get_idt();
     }
 
     public View.OnClickListener ModifierTacheListener = new View.OnClickListener() {
@@ -154,6 +159,10 @@ public class Ajout_Tache extends Activity{
             Toast.makeText(Ajout_Tache.this,"Modification",Toast.LENGTH_SHORT).show();
             Intent i1 = new Intent(Ajout_Tache.this, Page_Principale.class);
             startActivity(i1);
+            int i = liste_dossier.getSelectedItemPosition();
+            heures = nb_heures.getValue();
+            minutes = nb_minutes.getValue();
+            U1.modifier_tache(idt, nom_de_la_tache.getText().toString(),liste_choix_idd.get(i),  Integer.parseInt(nb_repetition.getText().toString()), repetition, heures*60+minutes, importance, urgence);
         }
     };
 
@@ -219,10 +228,11 @@ public class Ajout_Tache extends Activity{
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onClick(View view) {
-            nomS = nom_de_la_tache.getText().toString();
+            int i = liste_dossier.getSelectedItemPosition();
             heures = nb_heures.getValue();
             minutes = nb_minutes.getValue();
             //Enregistrer la tache
+            U1.ajouter_tache(nom_de_la_tache.getText().toString(),liste_choix_idd.get(i), Integer.parseInt(nb_repetition.getText().toString()), repetition, heures*60+minutes, importance, urgence);
 
             Tache task = new Tache(0, nomS, 0, 0, 0, heures*60+minutes, 0, 0);
             Intent returnIntent = getIntent();

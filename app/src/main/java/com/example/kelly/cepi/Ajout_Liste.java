@@ -31,21 +31,26 @@ import Objets.Utilisateur;
 public class Ajout_Liste extends Activity {
 
     EditText nom_liste =null;
-    List<String> mliste = new ArrayList<String>();
+    ArrayList<String> mliste = new ArrayList<String>();
     ListView liste = null;
-    List<Integer> liste_coche = new ArrayList<Integer>();
+    ArrayList<Integer> liste_coche = new ArrayList<Integer>();
     EditText nouvel_element = null;
     ArrayAdapter<String> adapter = null;
     Button valider = null;
     Spinner liste_dossier;
-    List<Integer> liste_choix_idd;
+    ArrayList<Integer> liste_choix_idd;
     int idd_ajout;
     Intent i_liste = getIntent();
-    //Utilisateur U1 = (Utilisateur) i_liste.getSerializableExtra("utilisateur");
     int idl;
+    int idd;
+    Utilisateur U1;
+
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        U1 = intent.getParcelableExtra("user");
         setContentView(R.layout.ajout_liste);
 
         valider = findViewById(R.id.ButtonAjouterListe);
@@ -70,7 +75,7 @@ public class Ajout_Liste extends Activity {
         liste_dossier = (Spinner) findViewById(R.id.SpinnerChoixDossier);
         List<String> choix_dossier = new ArrayList<String>();
         liste_choix_idd = new ArrayList<Integer>();
-        /*ArrayList<Dossier> dossier_utilisateur = U1.get_dossiers();
+        ArrayList<Dossier> dossier_utilisateur = U1.get_dossiers();
         for(int i = 0; i< dossier_utilisateur.size(); i++){
             Dossier D = dossier_utilisateur.get(i);
             choix_dossier.add(D.get_nom_dos());
@@ -113,7 +118,7 @@ public class Ajout_Liste extends Activity {
                 liste.setItemChecked(ligne,true);
             }
         }
-        idl = L1.get_idl();*/
+        idl = L1.get_idl();
     }
 
     public AdapterView.OnItemClickListener ItemListeListener = new AdapterView.OnItemClickListener() {
@@ -168,7 +173,7 @@ public class Ajout_Liste extends Activity {
             int i = liste_dossier.getSelectedItemPosition();
             Intent ivalider = new Intent(Ajout_Liste.this, Page_Principale.class);
             startActivity(ivalider);
-            u.ajouter_liste(nom_liste.getText().toString(),liste_choix_idd.get(i), mliste);
+            U1.ajouter_liste(nom_liste.getText().toString(),liste_choix_idd.get(i), mliste);
         }
     };
 

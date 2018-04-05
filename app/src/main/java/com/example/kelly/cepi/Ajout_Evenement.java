@@ -53,6 +53,8 @@ public class Ajout_Evenement extends Activity {
     Intent i_evenement = getIntent();
     Utilisateur U1 = new Utilisateur("@","@");
     Date d;
+    int ide;
+    int idd;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,26 +92,24 @@ public class Ajout_Evenement extends Activity {
         List<String> choix_dossier = new ArrayList<String>();
         liste_choix_idd = new ArrayList<Integer>();
         ArrayList<Dossier> dossier_utilisateur = U1.get_dossiers();
-        /*for(int i = 0; i< dossier_utilisateur.size(); i++){
+        for(int i = 0; i< dossier_utilisateur.size(); i++){
             Dossier D = dossier_utilisateur.get(i);
             choix_dossier.add(D.get_nom_dos());
             liste_choix_idd.add(D.get_idd());
-        }*/
+        }
         ArrayAdapter<String> dossier_adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, choix_dossier);
         liste_dossier.setAdapter(dossier_adapter);
         liste_dossier.setOnItemSelectedListener(ChoixDossierListener);
 
-        /*if(i_evenement.getIntExtra("consultation",0) == 1){
+        if(i_evenement.getIntExtra("consultation",0) == 1){
             affichage_consultation();
         }
         else{
             valider.setOnClickListener(ValiderEvenementListener);
-        }*/
+        }
     }
 
     public void affichage_consultation(){
-        int idd = i_evenement.getIntExtra("idd",0);
-        int ide = i_evenement.getIntExtra("ide",0);
         valider.setOnClickListener(ModifierEvenementListener);
         int i = 0;
         while(i<U1.get_dossiers().size() & U1.get_dossiers().get(i).get_idd() != idd){
@@ -135,6 +135,7 @@ public class Ajout_Evenement extends Activity {
         }
         liste_dossier.setSelection(k);
         liste_rappels.setSelection(E1.get_repeat_inter());
+        ide = E1.get_ide();
     }
 
 
@@ -144,6 +145,41 @@ public class Ajout_Evenement extends Activity {
             Toast.makeText(Ajout_Evenement.this,"Modification",Toast.LENGTH_SHORT).show();
             Intent i1 = new Intent(Ajout_Evenement.this, Page_Principale.class);
             startActivity(i1);
+            int i = liste_dossier.getSelectedItemPosition();
+
+            //à changer
+            String dateS = String.valueOf(date.getText());
+            String[] parties = dateS.split("/");
+            //System.out.println("  @@@@@&é@&é"+dateS);
+            if (dateS != "Aucune date définie") {
+                jour = Integer.parseInt(parties[0]);
+                //penser à enelver 1 pour correspondre au calendrier
+                mois = Integer.parseInt(parties[1])-1;
+                annee = Integer.parseInt(parties[2]);
+            } else {
+                //ici afficher message erreur car date non choisie
+                // OU empêcher le click sur valider
+            }
+
+            System.out.println("        int parse: ");
+            System.out.println(jour+"/"+mois+"/"+annee);
+
+            String horaire_s = String.valueOf(horaire.getText());
+            String[] parts = horaire_s.split(":");
+            heure = Integer.parseInt(parts[0]);
+            minute = Integer.parseInt(parts[1]);
+
+
+            /*
+            Penser à récupérer le choix de rappel qui est dans l'entier "rappel"
+             */
+
+
+            Calendar date_heure = Calendar.getInstance();
+            date_heure.set(annee,mois,jour, heure, minute);
+
+            // CALENDAR SANS LE PICKER ALEXIS
+            U1.modifier_ev(ide, nom_evenement.getText().toString(),liste_choix_idd.get(i), date_heure, rappel);
         }
     };
 
@@ -192,8 +228,8 @@ public class Ajout_Evenement extends Activity {
     public View.OnClickListener ValiderEvenementListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            nomS = nom_evenement.getText().toString();
-
+            int i = liste_dossier.getSelectedItemPosition();
+            //recuperer le calendar date_heure sans les DatePicker ALEXIS
             //à changer
             String dateS = String.valueOf(date.getText());
             String[] parties = dateS.split("/");
@@ -211,28 +247,22 @@ public class Ajout_Evenement extends Activity {
             System.out.println("        int parse: ");
             System.out.println(jour+"/"+mois+"/"+annee);
 
-            String horaire_s = String.valueOf(horaire);
+            String horaire_s = String.valueOf(horaire.getText());
             String[] parts = horaire_s.split(":");
             heure = Integer.parseInt(parts[0]);
-            minute = Integer.parseInt(parties[1]);
+            minute = Integer.parseInt(parts[1]);
+
+            Calendar date_heure = Calendar.getInstance();
+            date_heure.set(annee,mois,jour, heure, minute);
+
+            //Enregistrer l'évènement
+            U1.ajouter_ev(nom_evenement.getText().toString(),liste_choix_idd.get(i), date_heure, rappel);
 
 
-            /*
-            Penser à récupérer le choix de rappel qui est dans l'entier "rappel"
-             */
-
-
-            Calendar c = Calendar.getInstance();
-            c.set(annee,mois,jour, heure, minute);
-            System.out.println(" zefzef: "+c.get(Calendar.YEAR));
-            //Enregistrer l'évènement*/
             Toast.makeText(Ajout_Evenement.this,"Enregistré",Toast.LENGTH_SHORT).show();
 
             Intent returnIntent = getIntent();
 
-            Evenement e = new Evenement(0, nomS, 0, c,0);
-            returnIntent.putExtra("event",e);
-            setResult(Activity.RESULT_OK, returnIntent);
             finish();
         }
     };
