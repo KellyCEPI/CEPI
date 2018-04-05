@@ -1,6 +1,8 @@
 package Objets;
 
 import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.RequiresApi;
 
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ import java.util.Collections;
  * Created by Kelly on 27/03/2018.
  */
 
-public class Utilisateur {
+public class Utilisateur implements Parcelable{
 
     private int idu;
     private String email;
@@ -429,4 +431,43 @@ public class Utilisateur {
             System.out.println("ERREUR DOSSIER INTROUVABLE");
         }
     }
+
+    @Override
+    public int describeContents() {
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel user, int flags) {
+        user.writeInt(idu);
+        user.writeString(email);
+        user.writeString(mdp);
+        user.writeTypedList(taches);
+        user.writeTypedList(listes);
+        user.writeTypedList(evenements);
+        user.writeTypedList(dossiers);
+    }
+
+    public final static Parcelable.Creator<Utilisateur> CREATOR = new Parcelable.Creator<Utilisateur>() {
+        @Override
+        public Utilisateur createFromParcel(Parcel source) {
+            return new Utilisateur(source);
+        }
+
+        @Override
+        public Utilisateur[] newArray(int size) {
+            return new Utilisateur[0];
+        }
+    };
+
+    private Utilisateur(Parcel in) {
+        idu = in.readInt();
+        email = in.readString();
+        mdp = in.readString();
+        in.readTypedList(taches, Tache.CREATOR);
+        in.readTypedList(listes, Liste.CREATOR);
+        in.readTypedList(evenements, Evenement.CREATOR);
+        in.readTypedList(dossiers, Dossier.CREATOR);
+    }
+
 }

@@ -41,7 +41,7 @@ public class Ajout_Liste extends Activity {
     List<Integer> liste_choix_idd;
     int idd_ajout;
     Intent i_liste = getIntent();
-    Utilisateur U1 = (Utilisateur) i_liste.getSerializableExtra("utilisateur");
+    //Utilisateur U1 = (Utilisateur) i_liste.getSerializableExtra("utilisateur");
     int idl;
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -49,6 +49,7 @@ public class Ajout_Liste extends Activity {
         setContentView(R.layout.ajout_liste);
 
         valider = findViewById(R.id.ButtonAjouterListe);
+        valider.setOnClickListener(ValiderListeListener);
 
         nom_liste = findViewById(R.id.EditTextNomListe);
         //mliste.add("Lait");
@@ -69,7 +70,7 @@ public class Ajout_Liste extends Activity {
         liste_dossier = (Spinner) findViewById(R.id.SpinnerChoixDossier);
         List<String> choix_dossier = new ArrayList<String>();
         liste_choix_idd = new ArrayList<Integer>();
-        ArrayList<Dossier> dossier_utilisateur = U1.get_dossiers();
+        /*ArrayList<Dossier> dossier_utilisateur = U1.get_dossiers();
         for(int i = 0; i< dossier_utilisateur.size(); i++){
             Dossier D = dossier_utilisateur.get(i);
             choix_dossier.add(D.get_nom_dos());
@@ -105,14 +106,14 @@ public class Ajout_Liste extends Activity {
             k++;
         }
         liste_dossier.setSelection(k);
-        ArrayList <Ligne> liste_ligne = L1.get_liste();
+        ArrayList<Ligne> liste_ligne = (ArrayList<Ligne>) L1.get_liste();
         for(int ligne = 0; ligne< liste_ligne.size();ligne ++) {
             mliste.add(liste_ligne.get(ligne).get_ligne());
             if (liste_ligne.get(ligne).get_cocher() == 1) {
                 liste.setItemChecked(ligne,true);
             }
         }
-        idl = L1.get_idl();
+        idl = L1.get_idl();*/
     }
 
     public AdapterView.OnItemClickListener ItemListeListener = new AdapterView.OnItemClickListener() {
@@ -142,7 +143,7 @@ public class Ajout_Liste extends Activity {
                 al.add(L);
             }
 
-            u.modifier_liste(idl, nom_liste.getText().toString(), liste_choix_idd.get(i), al);
+            //u.modifier_liste(idl, nom_liste.getText().toString(), liste_choix_idd.get(i), al);
         }
     };
 
@@ -160,6 +161,7 @@ public class Ajout_Liste extends Activity {
         }
     };
 
+
     View.OnClickListener ValiderListeListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -170,34 +172,34 @@ public class Ajout_Liste extends Activity {
         }
     };
 
-public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
-    super.onCreateContextMenu(menu, v, menuInfo);
-    getMenuInflater().inflate(R.menu.contextmenu, menu);
-    menu.setHeaderTitle("Choose an option");
-}
-
-public boolean onContextItemSelected(MenuItem item){
-    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-    // On récupère la position de l'item concerné
-    int item_liste_pos = info.position;
-    switch(item.getItemId()){
-        case R.id.Supprimer:
-            mliste.remove(item_liste_pos);
-            liste_coche.remove(item_liste_pos);
-            adapter.notifyDataSetChanged();
-            Toast.makeText(this,"Item supprimé", Toast.LENGTH_SHORT).show();
-            return true;
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.contextmenu, menu);
+        menu.setHeaderTitle("Choose an option");
     }
-    return super.onContextItemSelected(item);
-}
 
-public View.OnLongClickListener OuvrirMenu = new View.OnLongClickListener() {
-    @Override
-    public boolean onLongClick(View view) {
-        openContextMenu(view);
-        return false;
+    public boolean onContextItemSelected(MenuItem item){
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        // On récupère la position de l'item concerné
+        int item_liste_pos = info.position;
+        switch(item.getItemId()){
+            case R.id.Supprimer:
+                mliste.remove(item_liste_pos);
+                liste_coche.remove(item_liste_pos);
+                adapter.notifyDataSetChanged();
+                Toast.makeText(this,"Item supprimé", Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return super.onContextItemSelected(item);
     }
-};
+
+    public View.OnLongClickListener OuvrirMenu = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View view) {
+            openContextMenu(view);
+            return false;
+        }
+    };
 
     public AdapterView.OnItemSelectedListener ChoixDossierListener = new AdapterView.OnItemSelectedListener() {
         @Override

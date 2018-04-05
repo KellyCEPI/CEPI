@@ -18,7 +18,7 @@ public class Liste implements Parcelable{
     private int idd;
     // pas présente dans la base de données
 
-    private List<Ligne> liste;
+    private ArrayList<Ligne> liste = new ArrayList<>();
     //incrementer le idl
 
     public Liste(int idu, String nom_liste, int idd, ArrayList liste) {
@@ -53,7 +53,7 @@ public class Liste implements Parcelable{
         return idd;
     }
 
-    public List<Ligne> get_liste() {
+    public ArrayList<Ligne> get_liste() {
         return liste;
     }
 
@@ -89,7 +89,10 @@ public class Liste implements Parcelable{
         list.writeInt(idu);
         list.writeInt(idd);
         list.writeString(nom_liste);
-        list.writeList(liste);
+        list.writeTypedList(liste);
+        System.out.println("        Write:");
+        String s = liste.get(0).get_ligne();
+        System.out.println(nom_liste+"  "+s);
     }
 
     public final static Parcelable.Creator<Liste> CREATOR = new Parcelable.Creator<Liste>() {
@@ -110,7 +113,6 @@ public class Liste implements Parcelable{
         idd = in.readInt();
         nom_liste = in.readString();
 
-        liste = new ArrayList<Ligne>();
-        in.readList(liste, getClass().getClassLoader());
+        in.readTypedList(this.liste, Ligne.CREATOR);
     }
 }
