@@ -44,24 +44,19 @@ public class Page_Principale extends AppCompatActivity{
     private DrawerLayout menu_lateral;
     private ActionBarDrawerToggle mToggle;
     SubMenu subMenu_dossier;
-    String nom_dossier_a_modifier;
-    int position_dossier_a_modifier;
 
     static final int EVENT_REQUEST_CODE = 1;
     static final int TASK_REQUEST_CODE = 2;
     static final int LIST_REQUEST_CODE = 3;
 
     public ListView liste_generale;
-    ArrayAdapter<Evenement> adapter = null;
-    List<Evenement> mliste_generale = new ArrayList<Evenement>();
+    ArrayAdapter<String> adapter = null;
+    ArrayList<Evenement> mliste_generale = u.get_evenements();
+    ArrayList<String> liste_nom_evenements = new ArrayList<>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Si la connexion au serveur est déjà établie: on ne fait rien
-        //Sinon :
-        //Intent intent = new Intent(Page_Principale.this, Page_Principale.class);
-        //startActivity(intent);
 
         super.onCreate(savedInstanceState);
 
@@ -84,10 +79,17 @@ public class Page_Principale extends AppCompatActivity{
         ((View) subMenu_dossier).setOnLongClickListener(OuvrirMenu);*/
 
 
+
+        for(int ev = 0; ev < mliste_generale.size();ev ++){
+            liste_nom_evenements.add(mliste_generale.get(ev).get_nom_ev());
+        }
+
         liste_generale = (ListView) findViewById(R.id.ListeGenerale);
-        adapter  = new ArrayAdapter<Evenement>(Page_Principale.this,android.R.layout.simple_list_item_multiple_choice, mliste_generale);
+        adapter  = new ArrayAdapter<String>(Page_Principale.this,android.R.layout.simple_list_item_multiple_choice, liste_nom_evenements);
         liste_generale.setAdapter(adapter);
 
+        registerForContextMenu(liste_generale);
+        liste_generale.setOnLongClickListener(MenuSuppressionListener);
     }
 
     private void setupDrawer() {
@@ -124,63 +126,8 @@ public class Page_Principale extends AppCompatActivity{
         }
     }
 
-    public AdapterView.OnLongClickListener OuvrirMenu = new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View view) {
-            openContextMenu(view);
-            return false;
-        }
-    };
-
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
-        super.onCreateContextMenu(menu, v, menuInfo);
-        getMenuInflater().inflate(R.menu.modifier_dossier, menu);
-        menu.setHeaderTitle("Choose an option");
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public boolean onContextItemSelected(MenuItem item){
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        // On récupère la position de l'item concerné
-        position_dossier_a_modifier = info.position;
-        nom_dossier_a_modifier = subMenu_dossier.getItem(position_dossier_a_modifier).toString();
-        switch(item.getItemId()){
-            case R.id.Modifier:
-                new AlertDialog.Builder(Page_Principale.this)
-                        .setView(R.layout.nouveau_dossier).setPositiveButton("Modifier", ModifierDossierListener)
-                        .setNegativeButton("Annuler", AnnulerListener)
-                        .show();
-                return true;
-
-            case R.id.Supprimer_Dossier:
-                new AlertDialog.Builder(Page_Principale.this)
-                        .setView(R.layout.suppression_dossier).setPositiveButton("Supprimer", SupprimerDossierListener)
-                        .setNegativeButton("Annuler", AnnulerListener)
-                        .show();
-                return true;
-        }
-        return super.onContextItemSelected(item);
-    }
 
 
-    public DialogInterface.OnClickListener SupprimerDossierListener = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialogInterface, int i) {
-            subMenu_dossier.removeItem(position_dossier_a_modifier);
-            int idd = u.rechercher_dos(nom_dossier_a_modifier);
-            u.supprimer_dossier(idd);
-        }
-    };
-
-    public DialogInterface.OnClickListener ModifierDossierListener = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialogInterface, int i) {
-            EditText nom_dossier = (EditText) ((AlertDialog) dialogInterface).findViewById(R.id.NomDossier);
-            subMenu_dossier.getItem(position_dossier_a_modifier).setTitle(nom_dossier.getText().toString());
-            int idd = u.rechercher_dos(nom_dossier_a_modifier);
-            u.modifier_dossier(idd,nom_dossier.getText().toString());
-        }
-    };
 
     public DialogInterface.OnClickListener AjoutDossierListener = new DialogInterface.OnClickListener() {
         @Override
@@ -246,6 +193,35 @@ public class Page_Principale extends AppCompatActivity{
                 startActivity(i_dossier);
             }
 
+            return false;
+        }
+    };
+
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.contextmenu, menu);
+        menu.setHeaderTitle("Choose an option");
+    }
+
+    public boolean onContextItemSelected(MenuItem item){
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        // On récupère la position de l'item concerné
+        int item_liste_pos = info.position;
+        switch(item.getItemId()){
+            case R.id.Supprimer:
+                int ide = mliste_generale.get(item_liste_pos).get_ide();
+                liste_nom_evenements.remove(item_liste_pos);
+                adapter.notifyDataSetChanged();
+                Toast.makeText(this,"Evénement supprimé", Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    public View.OnLongClickListener MenuSuppressionListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View view) {
+            openContextMenu(view);
             return false;
         }
     };

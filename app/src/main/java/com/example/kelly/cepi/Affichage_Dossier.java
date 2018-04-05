@@ -1,13 +1,19 @@
 package com.example.kelly.cepi;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +69,14 @@ public class Affichage_Dossier extends AppCompatActivity {
         liste_taches_view = findViewById(R.id.ListViewTaches);
         liste_listes_view = findViewById(R.id.ListViewListes);
 
+        registerForContextMenu(liste_evenements_view);
+        registerForContextMenu(liste_taches_view);
+        registerForContextMenu(liste_listes_view);
+
+        liste_evenements_view.setOnLongClickListener(MenuSuppressionListener);
+        liste_taches_view.setOnLongClickListener(MenuSuppressionListener);
+        liste_listes_view.setOnLongClickListener(MenuSuppressionListener);
+
         adapter_evenements = new ArrayAdapter<String>(Affichage_Dossier.this, android.R.layout.simple_list_item_multiple_choice, liste_evenements);
         liste_evenements_view.setAdapter(adapter_evenements);
         adapter_taches = new ArrayAdapter<String>(Affichage_Dossier.this, android.R.layout.simple_list_item_multiple_choice, liste_taches);
@@ -78,6 +92,7 @@ public class Affichage_Dossier extends AppCompatActivity {
 
 
     }
+
 
     public void afficher_le_bon_dossier(Dossier D1) {
         int i = 0;
@@ -128,4 +143,71 @@ public class Affichage_Dossier extends AppCompatActivity {
             startActivity(itent_liste);
         }
     };
+
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.contextmenu, menu);
+        menu.setHeaderTitle("Choose an option");
+            }
+
+    public boolean onContextItemSelected(MenuItem item){
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        // On récupère la position de l'item concerné
+        int item_pos = info.position;
+        switch(item.getActionView().getId()){
+            case R.id.ListViewEvenements:
+                int ide = liste_evenements_id.get(item_pos);
+                liste_evenements.remove(item_pos);
+                U1.supprimer_ev(ide);
+                adapter_evenements.notifyDataSetChanged();
+                Toast.makeText(this,"Evénement supprimé", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.ListViewTaches:
+                int idt = liste_taches_id.get(item_pos);
+                liste_taches.remove(item_pos);
+                U1.supprimer_tache(idt);
+                adapter_taches.notifyDataSetChanged();
+                Toast.makeText(this,"Tâche supprimée", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.ListViewListes:
+                int idl = liste_listes_id.get(item_pos);
+                liste_listes.remove(item_pos);
+                U1.supprimer_liste(idl);
+                adapter_listes.notifyDataSetChanged();
+                Toast.makeText(this,"Liste supprimée", Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    public View.OnLongClickListener MenuSuppressionListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View view) {
+            openContextMenu(view);
+            return false;
+        }
+    };
+
+
+
+    // LE CODE EN DESSOUS NE FONCTIONNE PAS POUR LE MOMENT IL SERVIRA PLUS TARD
+
+    /*public DialogInterface.OnClickListener SupprimerDossierListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            subMenu_dossier.removeItem(position_dossier_a_modifier);
+            int idd = u.rechercher_dos(nom_dossier_a_modifier);
+            u.supprimer_dossier(idd);
+        }
+    };
+
+    public DialogInterface.OnClickListener ModifierDossierListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            EditText nom_dossier = (EditText) ((AlertDialog) dialogInterface).findViewById(R.id.NomDossier);
+            subMenu_dossier.getItem(position_dossier_a_modifier).setTitle(nom_dossier.getText().toString());
+            int idd = u.rechercher_dos(nom_dossier_a_modifier);
+            u.modifier_dossier(idd,nom_dossier.getText().toString());
+        }
+    };*/
 }

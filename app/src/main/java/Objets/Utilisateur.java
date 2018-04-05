@@ -209,7 +209,7 @@ public class Utilisateur implements Parcelable{
     /**
      * Tri de la liste de tache suivant le score
      */
-    public void tri_insertion() {
+    public void tri_taches() {
         int taille = taches.size();
 
         int i, j;
@@ -321,6 +321,34 @@ public class Utilisateur implements Parcelable{
         int minute = date_heure.get(Calendar.MINUTE);
     }
 
+    public void supprimer_ev(int ide) {
+        Boolean t = false;
+        int dos = 0;
+        for (int i = 0; i < evenements.size(); i--) {
+            if (evenements.get(i).get_ide() == ide) {
+                dos = evenements.get(i).get_idd();
+                evenements.remove(i);
+                t = true;
+            }
+        }
+        if (t == false) {
+            System.out.println("ERREUR EVENEMENT INTROUVABLE");
+        }
+
+        for (int j = 0; j < dossiers.size(); j--) {
+            if (dossiers.get(j).get_idd() == dos) {
+                for (int k = 0; k < dossiers.get(j).get_evenements().size(); k--) {
+                    if (dossiers.get(j).get_evenements().get(k).get_ide() == ide) {
+                        dossiers.get(j).get_evenements().remove(k);
+                    }
+
+                }
+
+            }
+        }
+        //ICI INSERTION DE LA FONCTION SUPPRIMER DANS LA BASE DE DONNEES : ide
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void ajouter_tache(String nom_tache, int idd, int repeat_nb, int repeat_inter, int duree, int imp, int urgent) {
         Tache t = new Tache(idu, nom_tache, idd, repeat_nb, repeat_inter, duree, imp, urgent);
@@ -402,6 +430,37 @@ public class Utilisateur implements Parcelable{
         int minute = taches.get(k).get_d().get(Calendar.MINUTE);
     }
 
+
+    // NOUVEAU : SUPPRIMER TACHE
+    public void supprimer_tache(int idt) {
+        Boolean t = false;
+        int dos = 0;
+        for (int i = 0; i < taches.size(); i--) {
+            if (taches.get(i).get_idt() == idt) {
+                dos = taches.get(i).get_idd();
+                taches.remove(i);
+                t = true;
+            }
+        }
+        if (t == false) {
+            System.out.println("ERREUR TACHE INTROUVABLE");
+        }
+
+        for (int j = 0; j < dossiers.size(); j--) {
+            if (dossiers.get(j).get_idd() == dos) {
+                for (int k = 0; k < dossiers.get(j).get_taches().size(); k--) {
+                    if (dossiers.get(j).get_taches().get(k).get_idt() == idt) {
+                        dossiers.get(j).get_taches().remove(k);
+                    }
+
+                }
+
+            }
+        }
+        //ICI INSERTION DE LA FONCTION SUPPRIMER DANS LA BASE DE DONNEES : idt
+
+    }
+
     //Action à effectuer sur le bouton valider de "ajouter une nouvelle liste"
     public void ajouter_liste(String nom_liste, int idd, ArrayList<String> liste_recup) {
         ArrayList<Ligne> liste = new ArrayList();
@@ -468,6 +527,41 @@ public class Utilisateur implements Parcelable{
         // A partir de l'idl et de l'idu, on copie les idligne correspondant et on les modifie, si il y en a plus qu'avant
         // on rajoute ceux de la fin de liste_recup_transformée
     }
+
+    // NOUVEAU : SUPPRIMER LISTE
+    public void supprimer_liste(int idl) {
+        Boolean t = false;
+        int dos = 0;
+        ArrayList<Integer> idlignes = new ArrayList<>();
+        for (int i = 0; i < listes.size(); i--) {
+            if (listes.get(i).get_idl() == idl) {
+                dos = listes.get(i).get_idd();
+                for (int p = 0; p < listes.get(i).get_liste().size(); p++) {
+                    idlignes.add(listes.get(i).get_liste().get(p).get_idligne());
+                }
+                listes.remove(i);
+                t = true;
+            }
+        }
+        if (t == false) {
+            System.out.println("ERREUR LISTE INTROUVABLE");
+        }
+
+        for (int j = 0; j < dossiers.size(); j--) {
+            if (dossiers.get(j).get_idd() == dos) {
+                for (int k = 0; k < dossiers.get(j).get_listes().size(); k--) {
+                    if (dossiers.get(j).get_listes().get(k).get_idl() == idl) {
+                        dossiers.get(j).get_listes().remove(k);
+                    }
+
+                }
+
+            }
+        }
+        //ICI INSERTION DE LA FONCTION SUPPRIMER DANS LA BASE DE DONNEES : idl
+        // SUPPRESSION DES LIGNES : les idlignes sont dans l'arraylist idlignes
+    }
+
 
     public int ajouter_dossier(String nom_dos) {
         Dossier d = new Dossier(idu, nom_dos);
