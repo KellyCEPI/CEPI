@@ -3,14 +3,17 @@ package com.example.kelly.cepi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -45,6 +48,8 @@ public class Affichage_Dossier extends AppCompatActivity {
     ArrayAdapter<String> adapter_taches = null;
     ArrayAdapter<String> adapter_listes = null;
 
+    Button bouton_supprimer;
+
     Intent i1 = getIntent();
     int idd;
     Utilisateur U1;
@@ -58,6 +63,9 @@ public class Affichage_Dossier extends AppCompatActivity {
 
 
         idd = i1.getIntExtra("idd", 0);
+
+        bouton_supprimer = (Button) findViewById(R.id.ButtonSupprimerDossier);
+        bouton_supprimer.setOnClickListener(SupprimerDossierListener);
 
         int i = 0;
         while (i < U1.get_dossiers().size() & U1.get_dossiers().get(i).get_idd() != idd) {
@@ -190,24 +198,28 @@ public class Affichage_Dossier extends AppCompatActivity {
 
 
 
-    // LE CODE EN DESSOUS NE FONCTIONNE PAS POUR LE MOMENT IL SERVIRA PLUS TARD
-
-    /*public DialogInterface.OnClickListener SupprimerDossierListener = new DialogInterface.OnClickListener() {
+    public View.OnClickListener SupprimerDossierListener = new View.OnClickListener() {
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
-        public void onClick(DialogInterface dialogInterface, int i) {
-            subMenu_dossier.removeItem(position_dossier_a_modifier);
-            int idd = u.rechercher_dos(nom_dossier_a_modifier);
-            u.supprimer_dossier(idd);
+        public void onClick(View view) {
+            new AlertDialog.Builder(Affichage_Dossier.this)
+                    .setView(R.layout.suppression_dossier).setPositiveButton("Supprimer", SupprimerDossierListenerDialog)
+                    .setNegativeButton("Annuler", AnnulerListener)
+                    .show();
         }
     };
 
-    public DialogInterface.OnClickListener ModifierDossierListener = new DialogInterface.OnClickListener() {
+    public DialogInterface.OnClickListener SupprimerDossierListenerDialog = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
-            EditText nom_dossier = (EditText) ((AlertDialog) dialogInterface).findViewById(R.id.NomDossier);
-            subMenu_dossier.getItem(position_dossier_a_modifier).setTitle(nom_dossier.getText().toString());
-            int idd = u.rechercher_dos(nom_dossier_a_modifier);
-            u.modifier_dossier(idd,nom_dossier.getText().toString());
+            U1.supprimer_dossier(idd);
         }
-    };*/
+    };
+
+    public DialogInterface.OnClickListener AnnulerListener = new DialogInterface.OnClickListener(){
+
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+        }
+    };
 }
