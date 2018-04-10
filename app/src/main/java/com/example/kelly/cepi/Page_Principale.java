@@ -20,11 +20,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import Objets.Dossier;
 import Objets.Evenement;
 import java.util.Calendar;
 
@@ -55,6 +57,10 @@ public class Page_Principale extends AppCompatActivity{
     ArrayList<Evenement> mliste_generale;
     ArrayList<String> liste_nom_evenements = new ArrayList<>();
 
+    TextView nom_prochaine_tache;
+    TextView duree_prochaine_tache;
+    TextView dossier_prochaine_tache;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +85,23 @@ public class Page_Principale extends AppCompatActivity{
         subMenu_dossier = menu.addSubMenu("Dossiers");
         navigationView.setNavigationItemSelectedListener(NavigationListener);
 
-        /*registerForContextMenu((View) subMenu_dossier);
-        ((View) subMenu_dossier).setOnLongClickListener(OuvrirMenu);*/
+        nom_prochaine_tache = findViewById(R.id.TextViewNomProchaineTache);
+        duree_prochaine_tache = findViewById(R.id.TextViewDureeProchaineTache);
+        dossier_prochaine_tache = findViewById(R.id.TextViewDossierProchaineTache);
+
+        Tache prochaine_tache = u.get_taches().get(0);
+        nom_prochaine_tache.setText(prochaine_tache.get_nom_tache());
+        int duree = prochaine_tache.get_duree();
+        int heures = duree/60;
+        int minutes = duree-heures*60;
+        duree_prochaine_tache.setText(String.valueOf(heures)+":"+String.valueOf(minutes));
+        int idd = prochaine_tache.get_idd();
+        int i = 0;
+        while(i<u.get_dossiers().size() & u.get_dossiers().get(i).get_idd() != idd){
+            i++;
+        }
+        Dossier D1 = u.get_dossiers().get(i);
+        dossier_prochaine_tache.setText(D1.get_nom_dos());
 
 
 
