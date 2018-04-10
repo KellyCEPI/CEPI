@@ -147,6 +147,30 @@ public class Page_Principale extends AppCompatActivity{
         } catch (Exception e) {
 
         }
+        try {
+            if(u.getTaches().size() != 0) {
+
+
+                Tache prochaine_tache = u.get_taches().get(0);
+                nom_prochaine_tache.setText(prochaine_tache.get_nom_tache());
+                int duree = prochaine_tache.get_duree();
+                int heures = duree / 60;
+                int minutes = duree - heures * 60;
+                duree_prochaine_tache.setText(String.valueOf(heures) + ":" + String.valueOf(minutes));
+                int idd = prochaine_tache.get_idd();
+                int i = 0;
+                while (i < u.get_dossiers().size() & u.get_dossiers().get(i).get_idd() != idd) {
+                    i++;
+                }
+                Dossier D1 = u.get_dossiers().get(i);
+                dossier_prochaine_tache.setText(D1.get_nom_dos());
+            }
+            else{
+                nom_prochaine_tache.setText("Aucune tâche en cours");
+            }
+        } catch (Exception e) {
+
+        }
     }
 
     private void setupDrawer() {
