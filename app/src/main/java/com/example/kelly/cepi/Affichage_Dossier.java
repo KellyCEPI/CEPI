@@ -52,13 +52,14 @@ public class Affichage_Dossier extends AppCompatActivity {
     Button bouton_supprimer;
     TextView nom_du_dossier;
 
-    Intent i1 = getIntent();
     int idd;
     Utilisateur U1;
 
 
     protected void onCreate(Bundle savedInstanceState) {
 
+        Intent i1 = getIntent();
+        U1 = i1.getParcelableExtra("user");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.affichage_dossier);
@@ -70,7 +71,7 @@ public class Affichage_Dossier extends AppCompatActivity {
         bouton_supprimer.setOnClickListener(SupprimerDossierListener);
 
         int i = 0;
-        while (i < U1.get_dossiers().size() & U1.get_dossiers().get(i).get_idd() != idd) {
+        while (i < U1.get_dossiers().size() && U1.get_dossiers().get(i).get_idd() != idd) {
             i += 1;
         }
         Dossier D1 = U1.get_dossiers().get(i);

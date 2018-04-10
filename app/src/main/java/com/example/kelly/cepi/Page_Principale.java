@@ -216,6 +216,7 @@ public class Page_Principale extends AppCompatActivity{
                     && id != R.id.item_deconnexion && id != R.id.item_Nouveau_Dossier){
                 Intent i_dossier = new Intent(Page_Principale.this, Affichage_Dossier.class);
                 i_dossier.putExtra("idd",id);
+                i_dossier.putExtra("user",u);
                 startActivity(i_dossier);
             }
 
