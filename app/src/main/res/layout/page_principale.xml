@@ -89,7 +89,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="17dp"
-                android:text="NOM"
+                android:text=""
                 android:textColor="#2C75FF"
                 android:textSize="20dp"
                 android:layout_alignParentLeft="true"
@@ -104,7 +104,7 @@
                 android:layout_alignTop="@+id/TextViewNomProchaineTache"
                 android:layout_marginEnd="27dp"
                 android:layout_marginRight="27dp"
-                android:text="Durée"
+                android:text=""
                 android:textColor="#2C75FF"
                 android:textSize="15dp" />
 
@@ -116,7 +116,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginBottom="19dp"
                 android:layout_marginStart="43dp"
-                android:text="Dossier"
+                android:text=""
                 android:textColor="#2C75FF"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="43dp" />
