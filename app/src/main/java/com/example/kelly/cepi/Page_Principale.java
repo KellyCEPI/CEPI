@@ -11,9 +11,11 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -61,6 +63,8 @@ public class Page_Principale extends AppCompatActivity{
     TextView nom_prochaine_tache;
     TextView duree_prochaine_tache;
     TextView dossier_prochaine_tache;
+
+    RelativeLayout Prochaine_Tache_Layout;
 
 
 
@@ -110,6 +114,8 @@ public class Page_Principale extends AppCompatActivity{
             nom_prochaine_tache.setText("Aucune tâche en cours");
         }
 
+        //Prochaine_Tache_Layout = findViewById(R.id.RelativeLayoutProchaineTache);
+        //Prochaine_Tache_Layout.setOnTouchListener(SwipeListener);
 
         for(int ev = 0; ev < mliste_generale.size();ev ++){
             liste_nom_evenements.add(mliste_generale.get(ev).get_nom_ev());
@@ -158,7 +164,26 @@ public class Page_Principale extends AppCompatActivity{
     }
 
 
+    /*public View.OnTouchListener SwipeListener = new View.OnTouchListener() {
+        int downX, upX;
+        @Override
 
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+                downX = (int) motionEvent.getX();
+                Log.i("event.getX()","downX" + downX);
+                return true;
+            }
+            else if (motionEvent.getAction() == MotionEvent.ACTION_UP){
+                upX=(int) motionEvent.getX();
+                Log.i("event.getX()","upX"+ upX);
+                if(upX - downX > 100){
+
+                }
+            }
+            return false;
+        }
+    };*/
 
     public DialogInterface.OnClickListener AjoutDossierListener = new DialogInterface.OnClickListener() {
         @Override
