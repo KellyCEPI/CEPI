@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +63,7 @@ public class Page_Principale extends AppCompatActivity{
     TextView dossier_prochaine_tache;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -87,7 +89,7 @@ public class Page_Principale extends AppCompatActivity{
         duree_prochaine_tache = findViewById(R.id.TextViewDureeProchaineTache);
         dossier_prochaine_tache = findViewById(R.id.TextViewDossierProchaineTache);
 
-        Tache prochaine_tache = u.get_taches().get(0);
+        /*Tache prochaine_tache = u.get_taches().get(0);
         nom_prochaine_tache.setText(prochaine_tache.get_nom_tache());
         int duree = prochaine_tache.get_duree();
         int heures = duree/60;
@@ -99,7 +101,7 @@ public class Page_Principale extends AppCompatActivity{
             i++;
         }
         Dossier D1 = u.get_dossiers().get(i);
-        dossier_prochaine_tache.setText(D1.get_nom_dos());
+        dossier_prochaine_tache.setText(D1.get_nom_dos());*/
 
 
 
