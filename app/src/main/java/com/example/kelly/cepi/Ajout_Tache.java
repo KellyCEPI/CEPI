@@ -221,7 +221,7 @@ public class Ajout_Tache extends Activity{
 
         @Override
         public void onNothingSelected(AdapterView<?> adapterView) {
-        }
+    }
     };
 
     public View.OnClickListener BoutonValiderListener = new View.OnClickListener() {
@@ -255,7 +255,6 @@ public class Ajout_Tache extends Activity{
 
         @Override
         public void afterTextChanged(Editable editable) {
-
 
         }
     };

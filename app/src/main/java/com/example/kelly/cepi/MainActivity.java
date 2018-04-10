@@ -56,12 +56,12 @@ public class MainActivity extends AppCompatActivity {
             // If c'est tout bon, établir la connexion au serveur et passage à la page d'après :
             Intent i1 = new Intent(MainActivity.this, Page_Principale.class);
             Utilisateur u = new Utilisateur("@","@");
-            u.ajouter_ev("@",0, Calendar.getInstance(),0);
+            /*u.ajouter_ev("@",0, Calendar.getInstance(),0);
             u.ajouter_dossier("ce genre de dos");
-            i1.putExtra("user",u);
             System.out.println("        send Intent:");
             System.out.println(u.get_evenements().get(0).get_nom_ev());
-            System.out.println(u.get_dossiers().get(0).get_nom_dos());
+            System.out.println(u.get_dossiers().get(0).get_nom_dos());*/
+            i1.putExtra("user",u);
             startActivity(i1);
 
         }
