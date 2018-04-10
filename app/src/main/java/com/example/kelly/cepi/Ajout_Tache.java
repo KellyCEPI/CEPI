@@ -75,8 +75,8 @@ public class Ajout_Tache extends Activity{
         nb_heures.setMaxValue(23);
         nb_minutes.setMaxValue(59);
 
-
         nb_repetition = (EditText) findViewById(R.id.EditTextRepetition);
+        nb_repetition.setText("0");
 
         bar_important = (SeekBar) findViewById(R.id.SeekBarImportant);
         bar_urgent = (SeekBar) findViewById(R.id.SeekBarUrgent);
