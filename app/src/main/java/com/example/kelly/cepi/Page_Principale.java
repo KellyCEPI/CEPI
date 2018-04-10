@@ -170,11 +170,11 @@ public class Page_Principale extends AppCompatActivity{
             }
         } else if (requestCode == TASK_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Tache t = data.getParcelableExtra("tache");
+                /*Tache t = data.getParcelableExtra("tache");
                 String taskName = t.get_nom_tache();
                 int duree = t.get_duree();
                 System.out.println("        Résultat: ");
-                System.out.println(taskName+" "+duree);
+                System.out.println(taskName+" "+duree);*/
             }
         } else if (requestCode == LIST_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {

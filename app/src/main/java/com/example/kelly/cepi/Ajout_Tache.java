@@ -55,8 +55,8 @@ public class Ajout_Tache extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        Intent i = getIntent();
-        U1 = i.getParcelableExtra("user");
+        Intent intent = getIntent();
+        U1 = intent.getParcelableExtra("user");
         setContentView(R.layout.ajout_tache);
 
         bouton_valider = (Button) findViewById(R.id.ButtonValiderTache);
@@ -101,11 +101,11 @@ public class Ajout_Tache extends Activity{
         List<String> choix_dossier = new ArrayList<String>();
         liste_choix_idd = new ArrayList<Integer>();
         ArrayList<Dossier> dossier_utilisateur = U1.get_dossiers();
-        /*for(int i = 0; i< dossier_utilisateur.size(); i++){
+        for(int i = 0; i< dossier_utilisateur.size(); i++){
             Dossier D = dossier_utilisateur.get(i);
             choix_dossier.add(D.get_nom_dos());
             liste_choix_idd.add(D.get_idd());
-        }*/
+        }
         ArrayAdapter<String> dossier_adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, choix_dossier);
         liste_dossier.setAdapter(dossier_adapter);
         liste_dossier.setOnItemSelectedListener(ChoixDossierListener);
@@ -234,9 +234,9 @@ public class Ajout_Tache extends Activity{
             U1.ajouter_tache(nom_de_la_tache.getText().toString(),liste_choix_idd.get(i), Integer.parseInt(nb_repetition.getText().toString()), repetition, heures*60+minutes, importance, urgence);
 
             Tache task = new Tache(0, nomS, 0, 0, 0, heures*60+minutes, 0, 0);
-            Intent returnIntent = getIntent();
-            returnIntent.putExtra("tache",task);
-            setResult(Activity.RESULT_OK,returnIntent);
+            Intent intent = getIntent();
+            intent.putExtra("user",U1);
+            setResult(Activity.RESULT_OK,intent);
             finish();
         }
     };
