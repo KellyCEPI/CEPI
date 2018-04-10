@@ -626,8 +626,6 @@ public class Utilisateur implements Parcelable{
         user.writeTypedList(taches);
         user.writeTypedList(listes);
         user.writeTypedList(dossiers);
-        System.out.println("        Write into:");
-        System.out.println(evenements.get(0).get_nom_ev());
     }
 
     public final static Parcelable.Creator<Utilisateur> CREATOR = new Parcelable.Creator<Utilisateur>() {

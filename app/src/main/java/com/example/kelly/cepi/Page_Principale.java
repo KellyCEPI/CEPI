@@ -64,8 +64,6 @@ public class Page_Principale extends AppCompatActivity{
         Intent intent = getIntent();
         u = intent.getParcelableExtra("user");
         mliste_generale = u.get_evenements();
-        System.out.println("        received Intent:");
-        System.out.println(u.get_evenements().get(0).get_nom_ev());
 
         setContentView(R.layout.page_principale);
 
