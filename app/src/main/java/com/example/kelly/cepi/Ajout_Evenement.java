@@ -126,8 +126,8 @@ public class Ajout_Evenement extends Activity {
         Evenement E1 = D1.get_evenements().get(i);
         nom_evenement.setText(E1.get_nom_ev());
         int annee = E1.get_date_heure().get(Calendar.YEAR);
-        int mois = E1.get_date_heure().get(Calendar.MONTH) ;
-        int jour = E1.get_date_heure().get(Calendar.DAY_OF_MONTH);//nom dossier
+        int mois = E1.get_date_heure().get(Calendar.MONTH);
+        int jour = E1.get_date_heure().get(Calendar.DAY_OF_MONTH); //nom dossier
         date.setText(String.valueOf(jour) + '/' + String.valueOf(mois+1) + '/' + String.valueOf(annee));
         int heure = E1.get_date_heure().get(Calendar.HOUR_OF_DAY);
         int minute = E1.get_date_heure().get(Calendar.MINUTE);
@@ -263,6 +263,8 @@ public class Ajout_Evenement extends Activity {
 
 
             Toast.makeText(Ajout_Evenement.this,"Enregistré",Toast.LENGTH_SHORT).show();
+            intent.putExtra("user",U1);
+            setResult(Activity.RESULT_OK,intent);
             finish();
         }
     };
