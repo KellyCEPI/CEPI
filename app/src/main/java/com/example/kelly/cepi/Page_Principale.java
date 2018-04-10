@@ -68,10 +68,12 @@ public class Page_Principale extends AppCompatActivity{
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
 
         Intent intent = getIntent();
         u = intent.getParcelableExtra("user");
@@ -114,8 +116,8 @@ public class Page_Principale extends AppCompatActivity{
             nom_prochaine_tache.setText("Aucune tâche en cours");
         }
 
-        //Prochaine_Tache_Layout = findViewById(R.id.RelativeLayoutProchaineTache);
-        //Prochaine_Tache_Layout.setOnTouchListener(SwipeListener);
+        Prochaine_Tache_Layout = findViewById(R.id.RelativeLayoutProchaineTache);
+        Prochaine_Tache_Layout.setOnTouchListener(SwipeListener);
 
         for(int ev = 0; ev < mliste_generale.size();ev ++){
             liste_nom_evenements.add(mliste_generale.get(ev).get_nom_ev());
@@ -212,7 +214,7 @@ public class Page_Principale extends AppCompatActivity{
     }
 
 
-    /*public View.OnTouchListener SwipeListener = new View.OnTouchListener() {
+    public View.OnTouchListener SwipeListener = new View.OnTouchListener() {
         int downX, upX;
         @Override
 
@@ -225,13 +227,36 @@ public class Page_Principale extends AppCompatActivity{
             else if (motionEvent.getAction() == MotionEvent.ACTION_UP){
                 upX=(int) motionEvent.getX();
                 Log.i("event.getX()","upX"+ upX);
-                if(upX - downX > 100){
-
+                if(downX - upX > - 100){
+                    if(u.getTaches().size() !=1 && u.getTaches().size()!=0){
+                        Tache prochaine_tache = u.get_taches().get(1);
+                        nom_prochaine_tache.setText(prochaine_tache.get_nom_tache());
+                        int duree = prochaine_tache.get_duree();
+                        int heures = duree / 60;
+                        int minutes = duree - heures * 60;
+                        duree_prochaine_tache.setText(String.valueOf(heures) + ":" + String.valueOf(minutes));
+                        int idd = prochaine_tache.get_idd();
+                        int i = 0;
+                        while (i < u.get_dossiers().size() & u.get_dossiers().get(i).get_idd() != idd) {
+                            i++;
+                        }
+                        Dossier D1 = u.get_dossiers().get(i);
+                        dossier_prochaine_tache.setText(D1.get_nom_dos());
+                        u.supprimer_tache(u.get_taches().get(0).get_idt());
+                    }
+                    else if(u.getTaches().size() == 1){
+                        nom_prochaine_tache.setText("Aucune tâche en cours");
+                        duree_prochaine_tache.setText("");
+                        dossier_prochaine_tache.setText("");
+                        u.supprimer_tache(u.get_taches().get(0).get_idt());
+                    }
                 }
+                return true;
+
             }
             return false;
         }
-    };*/
+    };
 
     public DialogInterface.OnClickListener AjoutDossierListener = new DialogInterface.OnClickListener() {
         @Override
