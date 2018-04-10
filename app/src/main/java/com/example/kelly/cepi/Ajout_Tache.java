@@ -49,7 +49,6 @@ public class Ajout_Tache extends Activity{
     List<Integer> liste_choix_idd;
     int idd_ajout;
     int idt;
-    Intent i_tache = getIntent();
     int idd;
     Utilisateur U1;
 

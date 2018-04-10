@@ -263,6 +263,8 @@ public class Ajout_Evenement extends Activity {
 
 
             Toast.makeText(Ajout_Evenement.this,"Enregistré",Toast.LENGTH_SHORT).show();
+            intent.putExtra("user",U1);
+            setResult(Activity.RESULT_OK,intent);
             finish();
         }
     };

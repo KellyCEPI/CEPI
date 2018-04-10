@@ -94,20 +94,44 @@ public class Page_Principale extends AppCompatActivity{
         liste_generale.setOnLongClickListener(MenuSuppressionListener);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            mliste_generale = u.get_evenements();
+            for(int ev = 0; ev < mliste_generale.size();ev ++){
+                liste_nom_evenements.add(mliste_generale.get(ev).get_nom_ev());
+            }
+
+            liste_generale = (ListView) findViewById(R.id.ListeGenerale);
+            adapter  = new ArrayAdapter<String>(Page_Principale.this,android.R.layout.simple_list_item_multiple_choice, liste_nom_evenements);
+            liste_generale.setAdapter(adapter);
+
+            registerForContextMenu(liste_generale);
+            liste_generale.setOnLongClickListener(MenuSuppressionListener);
+        } catch (Exception e) {
+
+        }
+    }
+
     private void setupDrawer() {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            u = data.getParcelableExtra("user");
+        }
         if (requestCode == EVENT_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Evenement e = data.getParcelableExtra("event");
+                /*Utilisateur user = data.getParcelableExtra("user");
+                Evenement e = user.getEvenements().get(0);
                 String eventName = e.get_nom_ev();
                 int year = e.get_date_heure().get(Calendar.YEAR);
                 int month = e.get_date_heure().get(Calendar.MONTH)+1;
                 int day = e.get_date_heure().get(Calendar.DAY_OF_MONTH);
                 System.out.println("        Résultat: ");
                 System.out.println("Nom de l'envènement: "+eventName);
-                System.out.println("Date choisie: "+day+"/"+month+"/"+year);
+                System.out.println("Date choisie: "+day+"/"+month+"/"+year);*/
             }
         } else if (requestCode == TASK_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
@@ -175,7 +199,7 @@ public class Page_Principale extends AppCompatActivity{
                 i2.putExtra("user",u);
                 System.out.println("        Intent envoyé:");
                 System.out.println(u.getEmail());
-                startActivity(i2);
+                startActivityForResult(i2,EVENT_REQUEST_CODE);
             }
             if(id == R.id.item_Ajout_Liste){
                 Intent i4 = new Intent(Page_Principale.this, Ajout_Liste.class);
