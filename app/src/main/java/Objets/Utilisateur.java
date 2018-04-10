@@ -19,20 +19,16 @@ public class Utilisateur implements Parcelable{
     private String email;
     private String mdp;
     // pas présent dans la base
-    private ArrayList<Tache> taches;
-    private ArrayList<Liste> listes;
-    private ArrayList<Evenement> evenements;
-    private ArrayList<Dossier> dossiers;
+    private ArrayList<Tache> taches = new ArrayList<>();
+    private ArrayList<Liste> listes = new ArrayList<>();
+    private ArrayList<Evenement> evenements = new ArrayList<>();
+    private ArrayList<Dossier> dossiers = new ArrayList<>();
 
     public Utilisateur(String email, String mdp) {
         this.idu = Id.get_idu_max() + 1;
         Id.set_idu_max(Id.get_idu_max() + 1);
         this.email = email;
         this.mdp = mdp;
-        this.taches = new ArrayList<>();
-        this.listes = new ArrayList<>();
-        this.evenements = new ArrayList<>();
-        this.dossiers = new ArrayList<>();
     }
 
     //GETTER
@@ -626,10 +622,12 @@ public class Utilisateur implements Parcelable{
         user.writeInt(idu);
         user.writeString(email);
         user.writeString(mdp);
+        user.writeTypedList(evenements);
         user.writeTypedList(taches);
         user.writeTypedList(listes);
-        user.writeTypedList(evenements);
         user.writeTypedList(dossiers);
+        System.out.println("        Write into:");
+        System.out.println(evenements.get(0).get_nom_ev());
     }
 
     public final static Parcelable.Creator<Utilisateur> CREATOR = new Parcelable.Creator<Utilisateur>() {
@@ -645,9 +643,14 @@ public class Utilisateur implements Parcelable{
     };
 
     private Utilisateur(Parcel in) {
-        setIdu(in.readInt());
-        setEmail(in.readString());
-        setMdp(in.readString());
+        idu = in.readInt();
+        email = in.readString();
+        mdp = in.readString();
+        try {
+            in.readTypedList(evenements, Evenement.CREATOR);
+        } catch (Exception e) {
+            evenements = new ArrayList<>();
+        }
         try {
             in.readTypedList(taches, Tache.CREATOR);
         } catch (Exception e) {
@@ -657,11 +660,6 @@ public class Utilisateur implements Parcelable{
             in.readTypedList(listes, Liste.CREATOR);
         } catch (Exception e) {
             listes = new ArrayList<>();
-        }
-        try {
-            in.readTypedList(evenements, Evenement.CREATOR);
-        } catch (Exception e) {
-            evenements = new ArrayList<>();
         }
         try {
             in.readTypedList(dossiers, Dossier.CREATOR);

@@ -15,9 +15,9 @@ public class Dossier implements Parcelable{
     private int idd;
     private int idu;
     private String nom_dos;
-    private ArrayList<Tache> taches;
-    private ArrayList<Liste> listes;
-    private ArrayList<Evenement> evenements;
+    private ArrayList<Tache> taches = new ArrayList<>();
+    private ArrayList<Liste> listes = new ArrayList<>();
+    private ArrayList<Evenement> evenements = new ArrayList<>();
 
     public Dossier(int idu, String nom_dos) {
         this.idd = Id.get_idd_max() + 1;
@@ -183,6 +183,8 @@ public class Dossier implements Parcelable{
         folder.writeTypedList(taches);
         folder.writeTypedList(listes);
         folder.writeTypedList(evenements);
+        System.out.println("        Send intent Dossier:");
+        System.out.println(nom_dos);
     }
 
     public final static Parcelable.Creator<Dossier> CREATOR = new Parcelable.Creator<Dossier>() {
@@ -200,8 +202,20 @@ public class Dossier implements Parcelable{
     private Dossier(Parcel in) {
         idu = in.readInt();
         nom_dos = in.readString();
-        in.readTypedList(taches, Tache.CREATOR);
-        in.readTypedList(listes, Liste.CREATOR);
-        in.readTypedList(evenements, Evenement.CREATOR);
+        try {
+            in.readTypedList(taches, Tache.CREATOR);
+        } catch (Exception e) {
+            taches = new ArrayList<>();
+        }
+        try {
+            in.readTypedList(listes, Liste.CREATOR);
+        } catch(Exception e) {
+            listes = new ArrayList<>();
+        }
+        try {
+            in.readTypedList(evenements, Evenement.CREATOR);
+        } catch(Exception e) {
+            evenements = new ArrayList<>();
+        }
     }
 }

@@ -45,10 +45,11 @@ public class Ajout_Evenement extends Activity {
     Spinner liste_rappels = null;
     int rappel = 0;
     Spinner liste_dossier;
-    List<Integer> liste_choix_idd;
+    ArrayList<Integer> liste_choix_idd;
     int idd_ajout;
     Intent intent;
     Utilisateur U1;
+    Utilisateur U;
     Date d;
     int ide;
     int idd;
@@ -262,9 +263,6 @@ public class Ajout_Evenement extends Activity {
 
 
             Toast.makeText(Ajout_Evenement.this,"Enregistré",Toast.LENGTH_SHORT).show();
-
-            Intent returnIntent = getIntent();
-
             finish();
         }
     };

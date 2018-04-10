@@ -112,7 +112,10 @@ public class Liste implements Parcelable{
         idu = in.readInt();
         idd = in.readInt();
         nom_liste = in.readString();
-
-        in.readTypedList(this.liste, Ligne.CREATOR);
+        try {
+            in.readTypedList(this.liste, Ligne.CREATOR);
+        } catch(Exception e) {
+            liste = new ArrayList<>();
+        }
     }
 }
