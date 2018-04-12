@@ -65,7 +65,8 @@ public class Page_Principale extends AppCompatActivity{
     TextView dossier_prochaine_tache;
 
     RelativeLayout Prochaine_Tache_Layout;
-
+    Tache prochaine_tache;
+    int prochaine_tache_numero;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -98,7 +99,8 @@ public class Page_Principale extends AppCompatActivity{
         if(u.getTaches().size() != 0) {
 
 
-            Tache prochaine_tache = u.get_taches().get(0);
+            prochaine_tache = u.get_taches().get(0);
+            prochaine_tache_numero = 0;
             nom_prochaine_tache.setText(prochaine_tache.get_nom_tache());
             int duree = prochaine_tache.get_duree();
             int heures = duree / 60;
@@ -187,9 +189,11 @@ public class Page_Principale extends AppCompatActivity{
             else if (motionEvent.getAction() == MotionEvent.ACTION_UP){
                 upX=(int) motionEvent.getX();
                 Log.i("event.getX()","upX"+ upX);
+
                 if(downX - upX > - 100){
-                    if(u.getTaches().size() !=1 && u.getTaches().size()!=0){
-                        Tache prochaine_tache = u.get_taches().get(1);
+                    prochaine_tache_numero += 1;
+                    if(u.getTaches().size()< prochaine_tache_numero){
+                        prochaine_tache = u.get_taches().get(prochaine_tache_numero);
                         nom_prochaine_tache.setText(prochaine_tache.get_nom_tache());
                         int duree = prochaine_tache.get_duree();
                         int heures = duree / 60;
@@ -202,13 +206,31 @@ public class Page_Principale extends AppCompatActivity{
                         }
                         Dossier D1 = u.get_dossiers().get(i);
                         dossier_prochaine_tache.setText(D1.get_nom_dos());
-                        u.supprimer_tache(u.get_taches().get(0).get_idt());
+                        //u.supprimer_tache(u.get_taches().get(0).get_idt());
                     }
-                    else if(u.getTaches().size() == 1){
+                    else if(u.getTaches().size() == prochaine_tache_numero){
                         nom_prochaine_tache.setText("Aucune tâche en cours");
                         duree_prochaine_tache.setText("");
                         dossier_prochaine_tache.setText("");
-                        u.supprimer_tache(u.get_taches().get(0).get_idt());
+                        //u.supprimer_tache(u.get_taches().get(0).get_idt());
+                    }
+                }
+                else if(upX-downX > 100){
+                    prochaine_tache_numero-=1;
+                    if(prochaine_tache_numero> 0){
+                        prochaine_tache = u.get_taches().get(prochaine_tache_numero);
+                        nom_prochaine_tache.setText(prochaine_tache.get_nom_tache());
+                        int duree = prochaine_tache.get_duree();
+                        int heures = duree / 60;
+                        int minutes = duree - heures * 60;
+                        duree_prochaine_tache.setText(String.valueOf(heures) + ":" + String.valueOf(minutes));
+                        int idd = prochaine_tache.get_idd();
+                        int i = 0;
+                        while (i < u.get_dossiers().size() & u.get_dossiers().get(i).get_idd() != idd) {
+                            i++;
+                        }
+                        Dossier D1 = u.get_dossiers().get(i);
+                        dossier_prochaine_tache.setText(D1.get_nom_dos());
                     }
                 }
                 return true;
