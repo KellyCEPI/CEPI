@@ -158,12 +158,28 @@ public class Page_Principale extends AppCompatActivity{
             }
         } else if (requestCode == TASK_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                /*Tache t = data.getParcelableExtra("tache");
-                String taskName = t.get_nom_tache();
-                int duree = t.get_duree();
-                System.out.println("        Résultat: ");
-                System.out.println(taskName+" "+duree);*/
-            }
+                if(u.getTaches().size() != 0) {
+
+
+                    prochaine_tache = u.get_taches().get(0);
+                    prochaine_tache_numero = 0;
+                    nom_prochaine_tache.setText(prochaine_tache.get_nom_tache());
+                    int duree = prochaine_tache.get_duree();
+                    int heures = duree / 60;
+                    int minutes = duree - heures * 60;
+                    duree_prochaine_tache.setText(String.valueOf(heures) + ":" + String.valueOf(minutes));
+                    int idd = prochaine_tache.get_idd();
+                    int i = 0;
+                    while (i < u.get_dossiers().size() & u.get_dossiers().get(i).get_idd() != idd) {
+                        i++;
+                    }
+                    Dossier D1 = u.get_dossiers().get(i);
+                    dossier_prochaine_tache.setText(D1.get_nom_dos());
+                }
+                else{
+                    nom_prochaine_tache.setText("Aucune tâche en cours");
+                }
+                }
         } else if (requestCode == LIST_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Liste l = data.getParcelableExtra("list");
