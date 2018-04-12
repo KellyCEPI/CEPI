@@ -159,8 +159,6 @@ public class Page_Principale extends AppCompatActivity{
         } else if (requestCode == TASK_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 if(u.getTaches().size() != 0) {
-
-
                     prochaine_tache = u.get_taches().get(0);
                     prochaine_tache_numero = 0;
                     nom_prochaine_tache.setText(prochaine_tache.get_nom_tache());
@@ -182,11 +180,7 @@ public class Page_Principale extends AppCompatActivity{
                 }
         } else if (requestCode == LIST_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Liste l = data.getParcelableExtra("list");
-                String lName = l.get_nom_liste();
-                String ligneName = l.get_liste().get(0).get_ligne();
-                System.out.println("        Résultat: ");
-                System.out.println(lName+"  "+ligneName);
+
             }
         }
     }
@@ -298,8 +292,6 @@ public class Page_Principale extends AppCompatActivity{
             if (id == R.id.item_Ajout_Evenement){
                 Intent i2 = new Intent (Page_Principale.this, Ajout_Evenement.class);
                 i2.putExtra("user",u);
-                System.out.println("        Intent envoyé:");
-                System.out.println(u.getEmail());
                 startActivityForResult(i2,EVENT_REQUEST_CODE);
             }
             if(id == R.id.item_Ajout_Liste){

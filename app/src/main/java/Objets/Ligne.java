@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by Kelly on 27/03/2018.
  */
 
-public class Ligne implements Parcelable {
+public class Ligne implements Parcelable{
 
     private int idl;
     private int idligne;

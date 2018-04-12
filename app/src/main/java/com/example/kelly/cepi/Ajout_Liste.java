@@ -170,9 +170,10 @@ public class Ajout_Liste extends Activity {
         @Override
         public void onClick(View view) {
             int i = liste_dossier.getSelectedItemPosition();
-            Intent ivalider = new Intent(Ajout_Liste.this, Page_Principale.class);
-            startActivity(ivalider);
             U1.ajouter_liste(nom_liste.getText().toString(),liste_choix_idd.get(i), mliste);
+            intent.putExtra("user",U1);
+            setResult(Activity.RESULT_OK,intent);
+            finish();
         }
     };
 
