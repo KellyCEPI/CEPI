@@ -320,7 +320,7 @@ public class Utilisateur implements Parcelable{
     public void supprimer_ev(int ide) {
         Boolean t = false;
         int dos = 0;
-        for (int i = 0; i < evenements.size(); i--) {
+        for (int i = 0; i < evenements.size(); i++) {
             if (evenements.get(i).get_ide() == ide) {
                 dos = evenements.get(i).get_idd();
                 evenements.remove(i);
@@ -331,9 +331,9 @@ public class Utilisateur implements Parcelable{
             System.out.println("ERREUR EVENEMENT INTROUVABLE");
         }
 
-        for (int j = 0; j < dossiers.size(); j--) {
+        for (int j = 0; j < dossiers.size(); j++) {
             if (dossiers.get(j).get_idd() == dos) {
-                for (int k = 0; k < dossiers.get(j).get_evenements().size(); k--) {
+                for (int k = 0; k < dossiers.get(j).get_evenements().size(); k++) {
                     if (dossiers.get(j).get_evenements().get(k).get_ide() == ide) {
                         dossiers.get(j).get_evenements().remove(k);
                     }
@@ -529,7 +529,7 @@ public class Utilisateur implements Parcelable{
         Boolean t = false;
         int dos = 0;
         ArrayList<Integer> idlignes = new ArrayList<>();
-        for (int i = 0; i < listes.size(); i--) {
+        for (int i = 0; i < listes.size(); i++) {
             if (listes.get(i).get_idl() == idl) {
                 dos = listes.get(i).get_idd();
                 for (int p = 0; p < listes.get(i).get_liste().size(); p++) {
@@ -543,9 +543,9 @@ public class Utilisateur implements Parcelable{
             System.out.println("ERREUR LISTE INTROUVABLE");
         }
 
-        for (int j = 0; j < dossiers.size(); j--) {
+        for (int j = 0; j < dossiers.size(); j++) {
             if (dossiers.get(j).get_idd() == dos) {
-                for (int k = 0; k < dossiers.get(j).get_listes().size(); k--) {
+                for (int k = 0; k < dossiers.get(j).get_listes().size(); k++) {
                     if (dossiers.get(j).get_listes().get(k).get_idl() == idl) {
                         dossiers.get(j).get_listes().remove(k);
                     }
@@ -594,17 +594,17 @@ public class Utilisateur implements Parcelable{
             System.out.println("ERREUR DOSSIER INTROUVABLE");
         }
 
-        for (int j = 0; j < evenements.size(); j--) {
+        for (int j = 0; j < evenements.size(); j++) {
             if (evenements.get(j).get_idd() == idd) {
                 evenements.remove(j);
             }
         }
-        for (int j = 0; j < taches.size(); j--) {
+        for (int j = 0; j < taches.size(); j++) {
             if (taches.get(j).get_idd() == idd) {
                 taches.remove(j);
             }
         }
-        for (int j = 0; j < listes.size(); j--) {
+        for (int j = 0; j < listes.size(); j++) {
             if (listes.get(j).get_idd() == idd) {
                 listes.remove(j);
             }
