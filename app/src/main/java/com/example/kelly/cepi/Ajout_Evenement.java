@@ -158,15 +158,11 @@ public class Ajout_Evenement extends Activity {
             //à changer
             String dateS = String.valueOf(date.getText());
             String[] parties = dateS.split("/");
-            //System.out.println("  @@@@@&é@&é"+dateS);
             if (dateS != "Aucune date définie") {
                 jour = Integer.parseInt(parties[0]);
-                //penser à enelver 1 pour correspondre au calendrier
                 mois = Integer.parseInt(parties[1])-1;
                 annee = Integer.parseInt(parties[2]);
             } else {
-                //ici afficher message erreur car date non choisie
-                // OU empêcher le click sur valider
             }
 
             System.out.println("        int parse: ");

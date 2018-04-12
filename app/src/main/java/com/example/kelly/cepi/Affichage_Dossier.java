@@ -70,11 +70,15 @@ public class Affichage_Dossier extends AppCompatActivity {
         bouton_supprimer = (Button) findViewById(R.id.ButtonSupprimerDossier);
         bouton_supprimer.setOnClickListener(SupprimerDossierListener);
 
+        nom_du_dossier = (TextView) findViewById(R.id.TextViewNomDossier);
+
         int i = 0;
         while (i < U1.get_dossiers().size() && U1.get_dossiers().get(i).get_idd() != idd) {
             i += 1;
         }
-        Dossier D1 = U1.get_dossiers().get(i);
+        Dossier D1 = U1.get_dossiers().get(i-1);
+        System.out.println("        Ajout Doss:");
+        System.out.println(i);
 
         nom_du_dossier.setText(D1.get_nom_dos());
         registerForContextMenu(nom_du_dossier);
@@ -241,6 +245,7 @@ public class Affichage_Dossier extends AppCompatActivity {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
             U1.supprimer_dossier(idd);
+            finish();
         }
     };
 

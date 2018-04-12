@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(u.get_dossiers().get(0).get_nom_dos());*/
             i1.putExtra("user",u);
             startActivity(i1);
-
+            finish();
         }
     };
 
