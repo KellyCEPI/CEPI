@@ -75,6 +75,11 @@ public class Ajout_Evenement extends Activity {
         date = findViewById(R.id.TextViewDate);
         horaire = findViewById(R.id.TextViewHeure);
 
+        Calendar nowDate = Calendar.getInstance();
+        date.setText(String.valueOf(nowDate.get(Calendar.DAY_OF_MONTH))+"/"+String.valueOf(nowDate.get(Calendar.MONTH)+1)
+        +"/"+String.valueOf(nowDate.get(Calendar.YEAR)));
+        horaire.setText(nowDate.get(Calendar.HOUR)+":"+nowDate.get(Calendar.MINUTE));
+
         valider.setOnClickListener(ValiderEvenementListener);
 
         nom_evenement = findViewById(R.id.EditTextNomEvenement);
