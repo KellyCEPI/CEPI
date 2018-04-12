@@ -65,11 +65,14 @@ public class Ajout_Liste extends Activity {
         liste.setAdapter(adapter);
         liste.setOnItemClickListener(ItemListeListener);
 
+
+
         nouvel_element = (EditText) findViewById(R.id.EditTextNouvelElement);
         nouvel_element.setOnKeyListener(Appuye_entree);
 
         registerForContextMenu(liste);
         liste.setOnLongClickListener(OuvrirMenu);
+
 
         liste_dossier = (Spinner) findViewById(R.id.SpinnerChoixDossier);
         List<String> choix_dossier = new ArrayList<String>();
@@ -123,11 +126,15 @@ public class Ajout_Liste extends Activity {
     public AdapterView.OnItemClickListener ItemListeListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            if (liste.isItemChecked(i)) {
+            if (liste_coche.get(i) == 1) {
+                Toast.makeText(Ajout_Liste.this, "Est déjà coché", Toast.LENGTH_SHORT).show();
                 liste.setItemChecked(i, false);
+                adapter.notifyDataSetChanged();
                 liste_coche.set(i,0);
             } else {
+                Toast.makeText(Ajout_Liste.this, "N'est pas coché", Toast.LENGTH_SHORT).show();
                 liste.setItemChecked(i, true);
+                adapter.notifyDataSetChanged();
                 liste_coche.set(i,1);
             }
         }
@@ -159,6 +166,7 @@ public class Ajout_Liste extends Activity {
                 mliste.add(nouvel_element.getText().toString());
                 liste_coche.add(0);
                 nouvel_element.setText("");
+
                 return true;
             }
             return false;

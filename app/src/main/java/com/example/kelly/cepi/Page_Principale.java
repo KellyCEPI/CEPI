@@ -20,6 +20,7 @@ import android.view.SubMenu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -68,6 +69,8 @@ public class Page_Principale extends AppCompatActivity{
     Tache prochaine_tache;
     int prochaine_tache_numero;
 
+    CheckBox tache_terminee;
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -95,10 +98,13 @@ public class Page_Principale extends AppCompatActivity{
         nom_prochaine_tache = findViewById(R.id.TextViewNomProchaineTache);
         duree_prochaine_tache = findViewById(R.id.TextViewDureeProchaineTache);
         dossier_prochaine_tache = findViewById(R.id.TextViewDossierProchaineTache);
+        tache_terminee = (CheckBox)findViewById(R.id.CheckBoxTacheTerminee);
+        tache_terminee.setOnClickListener(TacheTermineeListener);
+
 
         if(u.getTaches().size() != 0) {
 
-
+            tache_terminee.setVisibility(View.VISIBLE);
             prochaine_tache = u.get_taches().get(0);
             prochaine_tache_numero = 0;
             nom_prochaine_tache.setText(prochaine_tache.get_nom_tache());
@@ -116,6 +122,7 @@ public class Page_Principale extends AppCompatActivity{
         }
         else{
             nom_prochaine_tache.setText("Aucune tâche en cours");
+            tache_terminee.setVisibility(View.INVISIBLE);
         }
 
         Prochaine_Tache_Layout = findViewById(R.id.RelativeLayoutProchaineTache);
@@ -159,6 +166,7 @@ public class Page_Principale extends AppCompatActivity{
         } else if (requestCode == TASK_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 if(u.getTaches().size() != 0) {
+                    tache_terminee.setVisibility(View.VISIBLE);
                     prochaine_tache = u.get_taches().get(0);
                     prochaine_tache_numero = 0;
                     nom_prochaine_tache.setText(prochaine_tache.get_nom_tache());
@@ -176,6 +184,7 @@ public class Page_Principale extends AppCompatActivity{
                 }
                 else{
                     nom_prochaine_tache.setText("Aucune tâche en cours");
+                    tache_terminee.setVisibility(View.INVISIBLE);
                 }
                 }
         } else if (requestCode == LIST_REQUEST_CODE) {
@@ -185,6 +194,38 @@ public class Page_Principale extends AppCompatActivity{
         }
     }
 
+    public View.OnClickListener TacheTermineeListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            int t_num = prochaine_tache_numero;
+            int idt = u.getTaches().get(prochaine_tache_numero).get_idt();
+            u.supprimer_tache(idt);
+            tache_terminee.setChecked(false);
+            if(u.getTaches().size() != 0) {
+
+                tache_terminee.setVisibility(View.VISIBLE);
+                prochaine_tache = u.get_taches().get(0);
+                prochaine_tache_numero = 0;
+                nom_prochaine_tache.setText(prochaine_tache.get_nom_tache());
+                int duree = prochaine_tache.get_duree();
+                int heures = duree / 60;
+                int minutes = duree - heures * 60;
+                duree_prochaine_tache.setText(String.valueOf(heures) + ":" + String.valueOf(minutes));
+                int idd = prochaine_tache.get_idd();
+                int i = 0;
+                while (i < u.get_dossiers().size() & u.get_dossiers().get(i).get_idd() != idd) {
+                    i++;
+                }
+                Dossier D1 = u.get_dossiers().get(i);
+                dossier_prochaine_tache.setText(D1.get_nom_dos());
+            }
+            else{
+                nom_prochaine_tache.setText("Aucune tâche en cours");
+                tache_terminee.setVisibility(View.INVISIBLE);
+            }
+
+        }
+    };
 
     public View.OnTouchListener SwipeListener = new View.OnTouchListener() {
         int downX, upX;
@@ -203,6 +244,7 @@ public class Page_Principale extends AppCompatActivity{
                 if(downX - upX > - 100){
                     prochaine_tache_numero += 1;
                     if(u.getTaches().size()> prochaine_tache_numero){
+                        tache_terminee.setVisibility(View.VISIBLE);
                         prochaine_tache = u.get_taches().get(prochaine_tache_numero);
                         nom_prochaine_tache.setText(prochaine_tache.get_nom_tache());
                         int duree = prochaine_tache.get_duree();
@@ -222,15 +264,18 @@ public class Page_Principale extends AppCompatActivity{
                         nom_prochaine_tache.setText("Aucune tâche en cours");
                         duree_prochaine_tache.setText("");
                         dossier_prochaine_tache.setText("");
+                        tache_terminee.setVisibility(View.INVISIBLE);
                         //u.supprimer_tache(u.get_taches().get(0).get_idt());
                     }
                     else if(prochaine_tache_numero > u.getTaches().size()){
                         prochaine_tache_numero -= 1;
+                        tache_terminee.setVisibility(View.INVISIBLE);
                     }
                 }
                 else if(upX-downX > 100){
                     prochaine_tache_numero-=1;
                     if(prochaine_tache_numero>= 0){
+                        tache_terminee.setVisibility(View.VISIBLE);
                         prochaine_tache = u.get_taches().get(prochaine_tache_numero);
                         nom_prochaine_tache.setText(prochaine_tache.get_nom_tache());
                         int duree = prochaine_tache.get_duree();
@@ -262,6 +307,7 @@ public class Page_Principale extends AppCompatActivity{
             EditText nom_dossier = (EditText) ((AlertDialog) dialogInterface).findViewById(R.id.NomDossier);
             int idd = u.ajouter_dossier(nom_dossier.getText().toString());
             subMenu_dossier.add(0,idd,0,nom_dossier.getText().toString());
+
         }
     };
 
