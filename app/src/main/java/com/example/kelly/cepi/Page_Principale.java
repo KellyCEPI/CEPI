@@ -54,6 +54,7 @@ public class Page_Principale extends AppCompatActivity{
     static final int EVENT_REQUEST_CODE = 1;
     static final int TASK_REQUEST_CODE = 2;
     static final int LIST_REQUEST_CODE = 3;
+    static final int FOLDER_REQUEST_CODE = 4;
 
     public ListView liste_generale;
     ArrayAdapter<String> adapter = null;
@@ -189,6 +190,10 @@ public class Page_Principale extends AppCompatActivity{
                 }
         } else if (requestCode == LIST_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
+
+            }
+        } else if (requestCode == FOLDER_REQUEST_CODE) {
+            if (requestCode == RESULT_OK) {
 
             }
         }
@@ -359,10 +364,10 @@ public class Page_Principale extends AppCompatActivity{
             }
             else if (id != R.id.item_Ajout_Evenement && id != R.id.item_Ajout_Liste && id != R.id.item_Ajout_Tache
                     && id != R.id.item_deconnexion && id != R.id.item_Nouveau_Dossier){
-                Intent i_dossier = new Intent(Page_Principale.this, Affichage_Dossier.class);
-                i_dossier.putExtra("idd",id);
-                i_dossier.putExtra("user",u);
-                startActivity(i_dossier);
+                Intent i5 = new Intent(Page_Principale.this, Affichage_Dossier.class);
+                i5.putExtra("idd",id-1);
+                i5.putExtra("user",u);
+                startActivityForResult(i5, FOLDER_REQUEST_CODE);
             }
 
             return false;

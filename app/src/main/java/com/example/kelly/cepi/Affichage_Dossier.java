@@ -1,5 +1,6 @@
 package com.example.kelly.cepi;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -55,26 +56,32 @@ public class Affichage_Dossier extends AppCompatActivity {
     int idd;
     Utilisateur U1;
 
+    Intent intent;
+
 
     protected void onCreate(Bundle savedInstanceState) {
 
-        Intent i1 = getIntent();
-        U1 = i1.getParcelableExtra("user");
+        intent = getIntent();
+        U1 = intent.getParcelableExtra("user");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.affichage_dossier);
 
 
-        idd = i1.getIntExtra("idd", 0);
+        idd = intent.getIntExtra("idd", 0);
 
         bouton_supprimer = (Button) findViewById(R.id.ButtonSupprimerDossier);
         bouton_supprimer.setOnClickListener(SupprimerDossierListener);
+
+        nom_du_dossier = (TextView) findViewById(R.id.TextViewNomDossier);
 
         int i = 0;
         while (i < U1.get_dossiers().size() && U1.get_dossiers().get(i).get_idd() != idd) {
             i += 1;
         }
         Dossier D1 = U1.get_dossiers().get(i);
+        System.out.println("        Ajout Doss:");
+        System.out.println(i);
 
         nom_du_dossier.setText(D1.get_nom_dos());
         registerForContextMenu(nom_du_dossier);
@@ -240,7 +247,12 @@ public class Affichage_Dossier extends AppCompatActivity {
     public DialogInterface.OnClickListener SupprimerDossierListenerDialog = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
+            System.out.println("        Supprimer doss");
+            System.out.println(idd);
             U1.supprimer_dossier(idd);
+            intent.putExtra("user",U1);
+            setResult(Activity.RESULT_OK, intent);
+            finish();
         }
     };
 

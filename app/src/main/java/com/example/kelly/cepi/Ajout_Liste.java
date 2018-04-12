@@ -177,11 +177,16 @@ public class Ajout_Liste extends Activity {
     View.OnClickListener ValiderListeListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            int i = liste_dossier.getSelectedItemPosition();
-            U1.ajouter_liste(nom_liste.getText().toString(),liste_choix_idd.get(i), mliste);
-            intent.putExtra("user",U1);
-            setResult(Activity.RESULT_OK,intent);
-            finish();
+            try {
+                int i = liste_dossier.getSelectedItemPosition();
+                U1.ajouter_liste(nom_liste.getText().toString(),liste_choix_idd.get(i), mliste);
+                intent.putExtra("user",U1);
+                setResult(Activity.RESULT_OK,intent);
+                finish();
+            } catch (Exception e) {
+                Toast.makeText(Ajout_Liste.this,"Remplir tous les champs",Toast.LENGTH_SHORT).show();
+            }
+
         }
     };
 
