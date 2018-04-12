@@ -251,6 +251,8 @@ public class Affichage_Dossier extends AppCompatActivity {
             System.out.println(idd);
             U1.supprimer_dossier(idd);
             intent.putExtra("user",U1);
+            intent.putExtra("idd",idd);
+            intent.putExtra("suppression",1);
             setResult(Activity.RESULT_OK, intent);
             finish();
         }
