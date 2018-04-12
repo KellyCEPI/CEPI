@@ -202,7 +202,7 @@ public class Page_Principale extends AppCompatActivity{
 
                 if(downX - upX > - 100){
                     prochaine_tache_numero += 1;
-                    if(u.getTaches().size()< prochaine_tache_numero){
+                    if(u.getTaches().size()> prochaine_tache_numero){
                         prochaine_tache = u.get_taches().get(prochaine_tache_numero);
                         nom_prochaine_tache.setText(prochaine_tache.get_nom_tache());
                         int duree = prochaine_tache.get_duree();
@@ -224,10 +224,13 @@ public class Page_Principale extends AppCompatActivity{
                         dossier_prochaine_tache.setText("");
                         //u.supprimer_tache(u.get_taches().get(0).get_idt());
                     }
+                    else if(prochaine_tache_numero > u.getTaches().size()){
+                        prochaine_tache_numero -= 1;
+                    }
                 }
                 else if(upX-downX > 100){
                     prochaine_tache_numero-=1;
-                    if(prochaine_tache_numero> 0){
+                    if(prochaine_tache_numero>= 0){
                         prochaine_tache = u.get_taches().get(prochaine_tache_numero);
                         nom_prochaine_tache.setText(prochaine_tache.get_nom_tache());
                         int duree = prochaine_tache.get_duree();
@@ -241,6 +244,9 @@ public class Page_Principale extends AppCompatActivity{
                         }
                         Dossier D1 = u.get_dossiers().get(i);
                         dossier_prochaine_tache.setText(D1.get_nom_dos());
+                    }
+                    else if(prochaine_tache_numero == -1){
+                        prochaine_tache_numero+=1;
                     }
                 }
                 return true;
