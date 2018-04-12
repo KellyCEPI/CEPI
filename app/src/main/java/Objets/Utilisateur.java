@@ -430,8 +430,8 @@ public class Utilisateur implements Parcelable{
     // NOUVEAU : SUPPRIMER TACHE
     public void supprimer_tache(int idt) {
         Boolean t = false;
-        int dos = 0;
-        for (int i = 0; i < taches.size(); i--) {
+        int dos =0;
+        for (int i = 0; i < taches.size(); i++) {
             if (taches.get(i).get_idt() == idt) {
                 dos = taches.get(i).get_idd();
                 taches.remove(i);
@@ -442,9 +442,9 @@ public class Utilisateur implements Parcelable{
             System.out.println("ERREUR TACHE INTROUVABLE");
         }
 
-        for (int j = 0; j < dossiers.size(); j--) {
+        for (int j = 0; j < dossiers.size(); j++) {
             if (dossiers.get(j).get_idd() == dos) {
-                for (int k = 0; k < dossiers.get(j).get_taches().size(); k--) {
+                for (int k = 0; k < dossiers.get(j).get_taches().size(); k++) {
                     if (dossiers.get(j).get_taches().get(k).get_idt() == idt) {
                         dossiers.get(j).get_taches().remove(k);
                     }
