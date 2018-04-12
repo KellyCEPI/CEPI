@@ -584,9 +584,13 @@ public class Utilisateur implements Parcelable{
 
     public void supprimer_dossier(int idd) {
         Boolean t = false;
+        System.out.println(dossiers.size());
+        System.out.println(dossiers.get(0).get_nom_dos()+dossiers.get(0).get_idd());
         for (int i = 0; i < dossiers.size(); i++) {
             if (dossiers.get(i).get_idd() == idd) {
                 dossiers.remove(i);
+                System.out.println("        Suppression:");
+                System.out.println(i);
                 t = true;
             }
         }
