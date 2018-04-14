@@ -261,7 +261,8 @@ public class Ajout_Evenement extends Activity {
 
             //Enregistrer l'évènement
             U1.ajouter_ev(nom_evenement.getText().toString(),liste_choix_idd.get(i), date_heure, rappel);
-
+            System.out.println("ajout evenement:");
+            System.out.println(U1.get_dossiers().get(0).get_evenements().size());
 
             Toast.makeText(Ajout_Evenement.this,"Enregistré",Toast.LENGTH_SHORT).show();
             intent.putExtra("user",U1);

@@ -113,12 +113,13 @@ public class Affichage_Dossier extends AppCompatActivity {
         liste_taches_view.setOnItemClickListener(Tache_listview_Listener);
         liste_listes_view.setOnItemClickListener(Liste_listview_Listener);
 
-
     }
 
 
     public void afficher_le_bon_dossier(Dossier D1) {
         int i = 0;
+        System.out.println("        HAD:");
+        System.out.println(D1.get_evenements().size());
         for (i = 0; i < D1.get_evenements().size(); i++) {
             liste_evenements.add(D1.get_evenements().get(i).get_nom_ev());
             liste_evenements_id.add((Integer) D1.get_evenements().get(i).get_ide());
@@ -129,6 +130,9 @@ public class Affichage_Dossier extends AppCompatActivity {
         for (i = 0; i < D1.get_listes().size(); i++) {
             liste_listes.add(D1.get_listes().get(i).get_nom_liste());
         }
+        /*adapter_evenements.notifyDataSetChanged();
+        adapter_taches.notifyDataSetChanged();
+        adapter_listes.notifyDataSetChanged();*/
     }
 
     public AdapterView.OnItemClickListener Evenement_listview_Listener = new AdapterView.OnItemClickListener() {

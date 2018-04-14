@@ -255,6 +255,7 @@ public class Utilisateur implements Parcelable{
         for (int i = 0; i < dossiers.size(); i++) {
             if (dossiers.get(i).get_idd() == idd) {
                 dossiers.get(i).ajouter(ev);
+                System.out.println("BIEN AJOUTE:"+evenements.size());
             } else {
                 System.out.println("ERREUR DOSSIER INTROUVABLE");
             }

@@ -65,7 +65,7 @@ public class Dossier implements Parcelable{
                 k = true;
             }
         }
-        if (k = false) {
+        if (k == false) {
             taches.add(t);
         }
     }
@@ -78,7 +78,7 @@ public class Dossier implements Parcelable{
                 k = true;
             }
         }
-        if (k = false) {
+        if (k == false) {
             evenements.add(e);
         }
     }
@@ -91,7 +91,7 @@ public class Dossier implements Parcelable{
                 k = true;
             }
         }
-        if (k = false) {
+        if (k == false) {
             listes.add(l);
         }
     }
@@ -135,7 +135,7 @@ public class Dossier implements Parcelable{
                 k = true;
             }
         }
-        if (k = false) {
+        if (k == false) {
             System.out.println("ERREUR TACHE PAS DANS LA LISTE");
         }
     }
@@ -151,7 +151,7 @@ public class Dossier implements Parcelable{
                 k = true;
             }
         }
-        if (k = false) {
+        if (k == false) {
             System.out.println("ERREUR EVENEMENT PAS DANS LA LISTE");
         }
     }
@@ -166,7 +166,7 @@ public class Dossier implements Parcelable{
                 k = true;
             }
         }
-        if (k = false) {
+        if (k == false) {
             System.out.println("ERREUR LISTE PAS DANS LA LISTE");
         }
     }
@@ -185,6 +185,7 @@ public class Dossier implements Parcelable{
         folder.writeTypedList(evenements);
         System.out.println("        Send intent Dossier:");
         System.out.println(nom_dos);
+        System.out.println("eventListsize: "+evenements.size());
     }
 
     public final static Parcelable.Creator<Dossier> CREATOR = new Parcelable.Creator<Dossier>() {
