@@ -118,21 +118,18 @@ public class Affichage_Dossier extends AppCompatActivity {
 
     public void afficher_le_bon_dossier(Dossier D1) {
         int i = 0;
-        System.out.println("        HAD:");
-        System.out.println(D1.get_evenements().size());
         for (i = 0; i < D1.get_evenements().size(); i++) {
             liste_evenements.add(D1.get_evenements().get(i).get_nom_ev());
             liste_evenements_id.add((Integer) D1.get_evenements().get(i).get_ide());
         }
         for (i = 0; i < D1.get_taches().size(); i++) {
             liste_taches.add(D1.get_taches().get(i).get_nom_tache());
+            liste_taches_id.add((Integer) D1.get_taches().get(i).get_idt());
         }
         for (i = 0; i < D1.get_listes().size(); i++) {
             liste_listes.add(D1.get_listes().get(i).get_nom_liste());
+            liste_listes_id.add(D1.get_listes().get(i).get_idl());
         }
-        /*adapter_evenements.notifyDataSetChanged();
-        adapter_taches.notifyDataSetChanged();
-        adapter_listes.notifyDataSetChanged();*/
     }
 
     public AdapterView.OnItemClickListener Evenement_listview_Listener = new AdapterView.OnItemClickListener() {
@@ -143,6 +140,7 @@ public class Affichage_Dossier extends AppCompatActivity {
             itent_evenement.putExtra("identifiant de l'evenement", ide);
             itent_evenement.putExtra("identifiant du dossier", idd);
             itent_evenement.putExtra("consultation", 1);
+            itent_evenement.putExtra("user",U1);
             startActivity(itent_evenement);
         }
     };
@@ -150,11 +148,12 @@ public class Affichage_Dossier extends AppCompatActivity {
     public AdapterView.OnItemClickListener Tache_listview_Listener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            int idt = (int) liste_taches_id.get(i);
+            int idt = (int) liste_taches_id.get(0);
             Intent itent_tache = new Intent(Affichage_Dossier.this,Ajout_Tache.class);
             itent_tache.putExtra("identifiant de la tache", idt);
             itent_tache.putExtra("identifiant du dossier", idd);
             itent_tache.putExtra("consultation", 1);
+            itent_tache.putExtra("user",U1);
             startActivity(itent_tache);
         }
     };
@@ -167,6 +166,7 @@ public class Affichage_Dossier extends AppCompatActivity {
             itent_liste.putExtra("identifiant de la liste", idl);
             itent_liste.putExtra("identifiant du dossier", idd);
             itent_liste.putExtra("consultation", 1);
+            itent_liste.putExtra("user",U1);
             startActivity(itent_liste);
         }
     };

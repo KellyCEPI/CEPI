@@ -49,8 +49,6 @@ public class Ajout_Evenement extends Activity {
     int idd_ajout;
     Intent intent;
     Utilisateur U1;
-    Utilisateur U;
-    Date d;
     int ide;
     int idd;
 
@@ -110,6 +108,7 @@ public class Ajout_Evenement extends Activity {
         liste_dossier.setOnItemSelectedListener(ChoixDossierListener);
 
         if(intent.getIntExtra("consultation",0) == 1){
+            ide = intent.getIntExtra("identifiant de l'evenement",-1);
             affichage_consultation();
         }
         else{
@@ -125,7 +124,7 @@ public class Ajout_Evenement extends Activity {
         }
         Dossier D1 = U1.get_dossiers().get(i);
         i = 0;
-        while(i<D1.get_evenements().size() & D1.get_evenements().get(i).get_ide() != ide){
+        while(i<D1.get_evenements().size() && D1.get_evenements().get(i).get_ide() != ide){
             i++;
         }
         Evenement E1 = D1.get_evenements().get(i);

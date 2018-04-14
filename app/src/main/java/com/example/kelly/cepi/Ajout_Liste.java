@@ -88,6 +88,7 @@ public class Ajout_Liste extends Activity {
         liste_dossier.setOnItemSelectedListener(ChoixDossierListener);
 
         if(this.intent.getIntExtra("consultation",0) == 1){
+            idl = intent.getIntExtra("identifiant de la liste",-1);
             affichage_consultation();
         }
         else{
@@ -98,12 +99,12 @@ public class Ajout_Liste extends Activity {
     public void affichage_consultation(){
         valider.setOnClickListener(ModifierListeListener);
         int i = 0;
-        while(i<U1.get_dossiers().size() & U1.get_dossiers().get(i).get_idd() != idd){
+        while(i<U1.get_dossiers().size() && U1.get_dossiers().get(i).get_idd() != idd){
             i++;
         }
         Dossier D1 = U1.get_dossiers().get(i);
         i = 0;
-        while(i<D1.get_listes().size() & D1.get_listes().get(i).get_idl() != idl){
+        while(i<D1.get_listes().size() && D1.get_listes().get(i).get_idl() != idl){
             i++;
         }
         Liste L1 = D1.get_listes().get(i);

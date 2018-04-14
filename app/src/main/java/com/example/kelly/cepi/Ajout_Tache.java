@@ -110,13 +110,13 @@ public class Ajout_Tache extends Activity{
         liste_dossier.setAdapter(dossier_adapter);
         liste_dossier.setOnItemSelectedListener(ChoixDossierListener);
 
-
-        /*if(i_tache.getIntExtra("consultation",0) == 1){
+        if(intent.getIntExtra("consultation",0) == 1){
+            idt = intent.getIntExtra("identifiant de la tache",-1);
             affichage_consultation();
         }
         else{
             bouton_valider.setOnClickListener(BoutonValiderListener);
-        }*/
+        }
     }
 
 
@@ -128,13 +128,13 @@ public class Ajout_Tache extends Activity{
         }
         Dossier D1 = U1.get_dossiers().get(i);
         i = 0;
-        while(i<D1.get_taches().size() & D1.get_taches().get(i).get_idt() != idt){
+        while(i<D1.get_taches().size() && D1.get_taches().get(i).get_idt() != idt){
             i++;
         }
         Tache T1 = D1.get_taches().get(i);
         nom_de_la_tache.setText(T1.get_nom_tache());
         int k = 0;
-        while(k< liste_choix_idd.size() & liste_choix_idd.get(k) != idd){
+        while(k< liste_choix_idd.size() && liste_choix_idd.get(k) != idd){
             k++;
         }
         liste_dossier.setSelection(k);
@@ -142,7 +142,7 @@ public class Ajout_Tache extends Activity{
         int H = duree/60;
         nb_heures.setValue(H);
         nb_minutes.setValue(duree-H*60);
-        nb_repetition.setText(T1.get_repeat_nb());
+        nb_repetition.setText(String.valueOf(T1.get_repeat_nb()));
         repetition = Integer.parseInt(nb_repetition.getText().toString());
         liste_repetition.setSelection(T1.get_repeat_inter());
         bar_important.setProgress(T1.get_imp());
