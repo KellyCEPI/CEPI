@@ -145,9 +145,7 @@ public class Ajout_Liste extends Activity {
     public View.OnClickListener ModifierListeListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Toast.makeText(Ajout_Liste.this,"Modification",Toast.LENGTH_SHORT).show();
-            Intent i1 = new Intent(Ajout_Liste.this, Page_Principale.class);
-            startActivity(i1);
+
             int i = liste_dossier.getSelectedItemPosition();
             ArrayList<Ligne> al = new ArrayList<Ligne>();
             for (int k=0; k<mliste.size();k++){
@@ -155,7 +153,12 @@ public class Ajout_Liste extends Activity {
                 al.add(L);
             }
 
-            //u.modifier_liste(idl, nom_liste.getText().toString(), liste_choix_idd.get(i), al);
+            U1.modifier_liste(idl, nom_liste.getText().toString(), liste_choix_idd.get(i), al);
+
+            Toast.makeText(Ajout_Liste.this,"Modification",Toast.LENGTH_SHORT).show();
+            intent.putExtra("user",U1);
+            setResult(Activity.RESULT_OK,intent);
+            finish();
         }
     };
 

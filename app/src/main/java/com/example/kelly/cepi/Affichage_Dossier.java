@@ -58,6 +58,10 @@ public class Affichage_Dossier extends AppCompatActivity {
 
     Intent intent;
 
+    static final int CHANGE_EVENT_REQUEST_CODE = 1;
+    static final int CHANGE_TASK_REQUEST_CODE = 2;
+    static final int CHANGE_LIST_REQUEST_CODE = 3;
+
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -141,7 +145,7 @@ public class Affichage_Dossier extends AppCompatActivity {
             itent_evenement.putExtra("identifiant du dossier", idd);
             itent_evenement.putExtra("consultation", 1);
             itent_evenement.putExtra("user",U1);
-            startActivity(itent_evenement);
+            startActivityForResult(itent_evenement, CHANGE_EVENT_REQUEST_CODE);
         }
     };
 
@@ -154,7 +158,7 @@ public class Affichage_Dossier extends AppCompatActivity {
             itent_tache.putExtra("identifiant du dossier", idd);
             itent_tache.putExtra("consultation", 1);
             itent_tache.putExtra("user",U1);
-            startActivity(itent_tache);
+            startActivityForResult(itent_tache, CHANGE_TASK_REQUEST_CODE);
         }
     };
 
@@ -167,7 +171,7 @@ public class Affichage_Dossier extends AppCompatActivity {
             itent_liste.putExtra("identifiant du dossier", idd);
             itent_liste.putExtra("consultation", 1);
             itent_liste.putExtra("user",U1);
-            startActivity(itent_liste);
+            startActivityForResult(itent_liste, CHANGE_LIST_REQUEST_CODE);
         }
     };
 
@@ -277,4 +281,41 @@ public class Affichage_Dossier extends AppCompatActivity {
             nom_du_dossier.setText(nouveau_nom.getText().toString());
         }
     };
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            U1 = data.getParcelableExtra("user");
+            int i = 0;
+            while (i < U1.get_dossiers().size() && U1.get_dossiers().get(i).get_idd() != idd) {
+                i += 1;
+            }
+            Dossier D1 = U1.get_dossiers().get(i);
+
+            if (requestCode == CHANGE_EVENT_REQUEST_CODE) {
+                liste_evenements = new ArrayList<String>();
+                liste_evenements_id = new ArrayList<Integer>();
+                for (i = 0; i < D1.get_evenements().size(); i++) {
+                    liste_evenements.add(D1.get_evenements().get(i).get_nom_ev());
+                    liste_evenements_id.add((Integer) D1.get_evenements().get(i).get_ide());
+                }
+                adapter_evenements.notifyDataSetChanged();
+
+            } else if (requestCode == CHANGE_TASK_REQUEST_CODE) {
+                liste_taches = new ArrayList<String>();
+                liste_taches_id = new ArrayList<Integer>();
+                for (i = 0; i < D1.get_taches().size(); i++) {
+                    liste_taches.add(D1.get_taches().get(i).get_nom_tache());
+                    liste_taches_id.add((Integer) D1.get_taches().get(i).get_idt());
+                }
+
+            } else if (requestCode == CHANGE_LIST_REQUEST_CODE) {
+                liste_listes = new ArrayList<String>();
+                liste_listes_id = new ArrayList<Integer>();
+                for (i = 0; i < D1.get_listes().size(); i++) {
+                    liste_listes.add(D1.get_listes().get(i).get_nom_liste());
+                    liste_listes_id.add(D1.get_listes().get(i).get_idl());
+                }
+            }
+        }
+    }
 }

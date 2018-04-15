@@ -51,11 +51,12 @@ public class Ajout_Tache extends Activity{
     int idt;
     int idd;
     Utilisateur U1;
+    Intent intent;
 
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        Intent intent = getIntent();
+        intent = getIntent();
         U1 = intent.getParcelableExtra("user");
         setContentView(R.layout.ajout_tache);
 
@@ -155,13 +156,16 @@ public class Ajout_Tache extends Activity{
     public View.OnClickListener ModifierTacheListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Toast.makeText(Ajout_Tache.this,"Modification",Toast.LENGTH_SHORT).show();
-            Intent i1 = new Intent(Ajout_Tache.this, Page_Principale.class);
-            startActivity(i1);
+
             int i = liste_dossier.getSelectedItemPosition();
             heures = nb_heures.getValue();
             minutes = nb_minutes.getValue();
             U1.modifier_tache(idt, nom_de_la_tache.getText().toString(),liste_choix_idd.get(i),  Integer.parseInt(nb_repetition.getText().toString()), repetition, heures*60+minutes, importance, urgence);
+
+            Toast.makeText(Ajout_Tache.this,"Modification",Toast.LENGTH_SHORT).show();
+            intent.putExtra("user",U1);
+            setResult(Activity.RESULT_OK,intent);
+            finish();
         }
     };
 

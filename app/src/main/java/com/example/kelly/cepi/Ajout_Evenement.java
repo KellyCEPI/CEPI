@@ -135,7 +135,7 @@ public class Ajout_Evenement extends Activity {
         date.setText(String.valueOf(jour) + '/' + String.valueOf(mois+1) + '/' + String.valueOf(annee));
         int heure = E1.get_date_heure().get(Calendar.HOUR_OF_DAY);
         int minute = E1.get_date_heure().get(Calendar.MINUTE);
-        horaire.setText(String.valueOf(heure) + " : " + String.valueOf(minute));
+        horaire.setText(String.valueOf(heure) + ':' + String.valueOf(minute));
         int k = 0;
         while(k< liste_choix_idd.size() & liste_choix_idd.get(k) != idd){
             k++;
@@ -149,26 +149,20 @@ public class Ajout_Evenement extends Activity {
     public View.OnClickListener ModifierEvenementListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Toast.makeText(Ajout_Evenement.this,"Modification",Toast.LENGTH_SHORT).show();
-            Intent i1 = new Intent(Ajout_Evenement.this, Page_Principale.class);
-            startActivity(i1);
             int i = liste_dossier.getSelectedItemPosition();
 
             //à changer
             String dateS = String.valueOf(date.getText());
             String[] parties = dateS.split("/");
-            if (dateS != "Aucune date définie") {
-                jour = Integer.parseInt(parties[0]);
-                mois = Integer.parseInt(parties[1])-1;
-                annee = Integer.parseInt(parties[2]);
-            } else {
-            }
+            jour = Integer.parseInt(parties[0]);
+            mois = Integer.parseInt(parties[1])-1;
+            annee = Integer.parseInt(parties[2]);
 
-            System.out.println("        int parse: ");
-            System.out.println(jour+"/"+mois+"/"+annee);
 
             String horaire_s = String.valueOf(horaire.getText());
             String[] parts = horaire_s.split(":");
+            System.out.println("        Récupération nouvel horaire:");
+            System.out.println(horaire_s+" "+parts[0]+parts[1]);
             heure = Integer.parseInt(parts[0]);
             minute = Integer.parseInt(parts[1]);
 
@@ -183,6 +177,12 @@ public class Ajout_Evenement extends Activity {
 
             // CALENDAR SANS LE PICKER ALEXIS
             U1.modifier_ev(ide, nom_evenement.getText().toString(),liste_choix_idd.get(i), date_heure, rappel);
+
+            Toast.makeText(Ajout_Evenement.this,"Modification",Toast.LENGTH_SHORT).show();
+
+            intent.putExtra("user",U1);
+            setResult(Activity.RESULT_OK,intent);
+            finish();
         }
     };
 
