@@ -154,7 +154,6 @@ public class Ajout_Liste extends Activity {
             }
 
             U1.modifier_liste(idl, nom_liste.getText().toString(), liste_choix_idd.get(i), al);
-
             Toast.makeText(Ajout_Liste.this,"Modification",Toast.LENGTH_SHORT).show();
             intent.putExtra("user",U1);
             setResult(Activity.RESULT_OK,intent);

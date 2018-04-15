@@ -161,7 +161,6 @@ public class Ajout_Tache extends Activity{
             heures = nb_heures.getValue();
             minutes = nb_minutes.getValue();
             U1.modifier_tache(idt, nom_de_la_tache.getText().toString(),liste_choix_idd.get(i),  Integer.parseInt(nb_repetition.getText().toString()), repetition, heures*60+minutes, importance, urgence);
-
             Toast.makeText(Ajout_Tache.this,"Modification",Toast.LENGTH_SHORT).show();
             intent.putExtra("user",U1);
             setResult(Activity.RESULT_OK,intent);

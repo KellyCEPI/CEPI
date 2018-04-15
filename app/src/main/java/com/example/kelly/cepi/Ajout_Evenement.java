@@ -177,9 +177,7 @@ public class Ajout_Evenement extends Activity {
 
             // CALENDAR SANS LE PICKER ALEXIS
             U1.modifier_ev(ide, nom_evenement.getText().toString(),liste_choix_idd.get(i), date_heure, rappel);
-
             Toast.makeText(Ajout_Evenement.this,"Modification",Toast.LENGTH_SHORT).show();
-
             intent.putExtra("user",U1);
             setResult(Activity.RESULT_OK,intent);
             finish();

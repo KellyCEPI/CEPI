@@ -112,7 +112,6 @@ public class Affichage_Dossier extends AppCompatActivity {
         liste_listes_view.setAdapter(adapter_listes);
 
         afficher_le_bon_dossier(D1);
-
         liste_evenements_view.setOnItemClickListener(Evenement_listview_Listener);
         liste_taches_view.setOnItemClickListener(Tache_listview_Listener);
         liste_listes_view.setOnItemClickListener(Liste_listview_Listener);
