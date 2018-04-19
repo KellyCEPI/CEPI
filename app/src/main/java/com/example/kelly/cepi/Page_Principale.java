@@ -374,8 +374,8 @@ public class Page_Principale extends AppCompatActivity{
             else if (id != R.id.item_Ajout_Evenement && id != R.id.item_Ajout_Liste && id != R.id.item_Ajout_Tache
                     && id != R.id.item_deconnexion && id != R.id.item_Nouveau_Dossier){
                 Intent i5 = new Intent(Page_Principale.this, Affichage_Dossier.class);
-                Toast.makeText(Page_Principale.this,String.valueOf(subMenu_dossier.getItem(id).getItemId()), Toast.LENGTH_SHORT).show();
-                i5.putExtra("idd",id-1);
+                //Toast.makeText(Page_Principale.this,String.valueOf(subMenu_dossier.getItem(id).getItemId()), Toast.LENGTH_SHORT).show();
+                i5.putExtra("idd",id);
                 i5.putExtra("user",u);
                 i5.putExtra("item dossier",id);
                 startActivityForResult(i5, FOLDER_REQUEST_CODE);
