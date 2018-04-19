@@ -133,12 +133,10 @@ public class Ajout_Liste extends Activity {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             if (liste_coche.get(i) == 1) {
-                Toast.makeText(Ajout_Liste.this, "Est déjà coché", Toast.LENGTH_SHORT).show();
                 liste.setItemChecked(i, false);
                 adapter.notifyDataSetChanged();
                 liste_coche.set(i,0);
             } else {
-                Toast.makeText(Ajout_Liste.this, "N'est pas coché", Toast.LENGTH_SHORT).show();
                 liste.setItemChecked(i, true);
                 adapter.notifyDataSetChanged();
                 liste_coche.set(i,1);

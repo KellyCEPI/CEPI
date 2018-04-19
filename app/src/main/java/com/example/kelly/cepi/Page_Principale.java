@@ -139,6 +139,8 @@ public class Page_Principale extends AppCompatActivity{
 
         registerForContextMenu(liste_generale);
         liste_generale.setOnLongClickListener(MenuSuppressionListener);
+
+
     }
 
     @Override
@@ -157,6 +159,11 @@ public class Page_Principale extends AppCompatActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             u = data.getParcelableExtra("user");
+            if(data.getIntExtra("suppression",0)==1){
+                int id_item = data.getIntExtra("item dossier",0);
+                Toast.makeText(Page_Principale.this,String.valueOf(id_item),Toast.LENGTH_SHORT).show();
+                subMenu_dossier.removeItem(id_item);
+            }
         }
         if (requestCode == EVENT_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
@@ -353,6 +360,7 @@ public class Page_Principale extends AppCompatActivity{
                 startActivityForResult(i2,EVENT_REQUEST_CODE);
             }
             if(id == R.id.item_Ajout_Liste){
+
                 Intent i4 = new Intent(Page_Principale.this, Ajout_Liste.class);
                 i4.putExtra("user",u);
                 startActivityForResult(i4,LIST_REQUEST_CODE);
@@ -366,10 +374,10 @@ public class Page_Principale extends AppCompatActivity{
             else if (id != R.id.item_Ajout_Evenement && id != R.id.item_Ajout_Liste && id != R.id.item_Ajout_Tache
                     && id != R.id.item_deconnexion && id != R.id.item_Nouveau_Dossier){
                 Intent i5 = new Intent(Page_Principale.this, Affichage_Dossier.class);
-                int i = 0;
-                subMenu_dossier.getItem(i).getItemId();
-                i5.putExtra("idd",id);
+                Toast.makeText(Page_Principale.this,String.valueOf(subMenu_dossier.getItem(id).getItemId()), Toast.LENGTH_SHORT).show();
+                i5.putExtra("idd",id-1);
                 i5.putExtra("user",u);
+                i5.putExtra("item dossier",id);
                 startActivityForResult(i5, FOLDER_REQUEST_CODE);
             }
 

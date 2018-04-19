@@ -53,6 +53,7 @@ public class Affichage_Dossier extends AppCompatActivity {
 
     int idd;
     Utilisateur U1;
+    int id_item_subdossier;
 
     Intent intent;
 
@@ -71,6 +72,7 @@ public class Affichage_Dossier extends AppCompatActivity {
 
 
         idd = intent.getIntExtra("idd", 0);
+        id_item_subdossier=intent.getIntExtra("item dossier",0);
 
         bouton_supprimer = (Button) findViewById(R.id.ButtonSupprimerDossier);
         bouton_supprimer.setOnClickListener(SupprimerDossierListener);
@@ -260,6 +262,7 @@ public class Affichage_Dossier extends AppCompatActivity {
             intent.putExtra("user",U1);
             intent.putExtra("idd",idd);
             intent.putExtra("suppression",1);
+            intent.putExtra("item_dossier", id_item_subdossier);
             setResult(Activity.RESULT_OK, intent);
             finish();
         }
