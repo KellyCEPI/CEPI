@@ -368,7 +368,7 @@ public class Page_Principale extends AppCompatActivity{
                 Intent i5 = new Intent(Page_Principale.this, Affichage_Dossier.class);
                 int i = 0;
                 subMenu_dossier.getItem(i).getItemId();
-                i5.putExtra("idd",id-1);
+                i5.putExtra("idd",id);
                 i5.putExtra("user",u);
                 startActivityForResult(i5, FOLDER_REQUEST_CODE);
             }

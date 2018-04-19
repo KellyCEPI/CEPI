@@ -82,10 +82,12 @@ public class Affichage_Dossier extends AppCompatActivity {
         int i = 0;
         while (i < U1.get_dossiers().size() && U1.get_dossiers().get(i).get_idd() != idd) {
             i += 1;
+            System.out.println("        Ajout Doss:");
+            System.out.println(i);
+            System.out.println("        Indentifiant du Doss:");
+            System.out.println(idd+" : "+U1.get_dossiers().get(i).get_idd());
         }
         Dossier D1 = U1.get_dossiers().get(i);
-        System.out.println("        Ajout Doss:");
-        System.out.println(i);
 
         nom_du_dossier.setText(D1.get_nom_dos());
         registerForContextMenu(nom_du_dossier);

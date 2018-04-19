@@ -178,6 +178,7 @@ public class Dossier implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel folder, int flags) {
+        folder.writeInt(idd);
         folder.writeInt(idu);
         folder.writeString(nom_dos);
         folder.writeTypedList(taches);
@@ -201,6 +202,7 @@ public class Dossier implements Parcelable{
     };
 
     private Dossier(Parcel in) {
+        idd = in.readInt();
         idu = in.readInt();
         nom_dos = in.readString();
         try {
