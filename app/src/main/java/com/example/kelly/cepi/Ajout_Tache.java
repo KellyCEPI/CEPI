@@ -113,6 +113,7 @@ public class Ajout_Tache extends Activity{
 
         if(intent.getIntExtra("consultation",0) == 1){
             idt = intent.getIntExtra("identifiant de la tache",-1);
+            idd = intent.getIntExtra("identifiant du dossier",-1);
             affichage_consultation();
         }
         else{
@@ -124,7 +125,7 @@ public class Ajout_Tache extends Activity{
     public void affichage_consultation(){
         bouton_valider.setOnClickListener(ModifierTacheListener);
         int i = 0;
-        while(i<U1.get_dossiers().size() & U1.get_dossiers().get(i).get_idd() != idd){
+        while(i<U1.get_dossiers().size() && U1.get_dossiers().get(i).get_idd() != idd){
             i++;
         }
         Dossier D1 = U1.get_dossiers().get(i);

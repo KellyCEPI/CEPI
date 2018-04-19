@@ -109,6 +109,7 @@ public class Ajout_Evenement extends Activity {
 
         if(intent.getIntExtra("consultation",0) == 1){
             ide = intent.getIntExtra("identifiant de l'evenement",-1);
+            idd = intent.getIntExtra("identifiant du dossier",-1);
             affichage_consultation();
         }
         else{
@@ -119,7 +120,7 @@ public class Ajout_Evenement extends Activity {
     public void affichage_consultation(){
         valider.setOnClickListener(ModifierEvenementListener);
         int i = 0;
-        while(i<U1.get_dossiers().size() & U1.get_dossiers().get(i).get_idd() != idd){
+        while(i<U1.get_dossiers().size() && U1.get_dossiers().get(i).get_idd() != idd){
             i++;
         }
         Dossier D1 = U1.get_dossiers().get(i);

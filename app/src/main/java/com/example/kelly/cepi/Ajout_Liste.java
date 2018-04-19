@@ -89,6 +89,7 @@ public class Ajout_Liste extends Activity {
 
         if(this.intent.getIntExtra("consultation",0) == 1){
             idl = intent.getIntExtra("identifiant de la liste",-1);
+            idd = intent.getIntExtra("identifiant du dossier",-1);
             affichage_consultation();
         }
         else{
