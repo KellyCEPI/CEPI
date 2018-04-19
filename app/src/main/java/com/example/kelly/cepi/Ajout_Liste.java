@@ -110,7 +110,7 @@ public class Ajout_Liste extends Activity {
         Liste L1 = D1.get_listes().get(i);
         nom_liste.setText(L1.get_nom_liste());
         int k = 0;
-        while(k< liste_choix_idd.size() & liste_choix_idd.get(k) != idd){
+        while(k< liste_choix_idd.size() && liste_choix_idd.get(k) != idd){
             k++;
         }
         liste_dossier.setSelection(k);
