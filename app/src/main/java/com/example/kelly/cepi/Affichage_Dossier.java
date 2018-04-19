@@ -30,8 +30,6 @@ import Objets.Utilisateur;
  * Created by Kelly on 27/03/2018.
  */
 
-
-
 public class Affichage_Dossier extends AppCompatActivity {
 
     ListView liste_evenements_view = null;
