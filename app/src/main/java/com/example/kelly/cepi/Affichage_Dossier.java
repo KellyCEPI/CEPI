@@ -153,7 +153,7 @@ public class Affichage_Dossier extends AppCompatActivity {
     public AdapterView.OnItemClickListener Tache_listview_Listener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            int idt = (int) liste_taches_id.get(0);
+            int idt = (int) liste_taches_id.get(i);
             Intent itent_tache = new Intent(Affichage_Dossier.this,Ajout_Tache.class);
             itent_tache.putExtra("identifiant de la tache", idt);
             itent_tache.putExtra("identifiant du dossier", idd);
@@ -193,7 +193,7 @@ public class Affichage_Dossier extends AppCompatActivity {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         // On récupère la position de l'item concerné
         int item_pos = info.position;
-        switch(item.getActionView().getId()){
+        switch(item.getItemId()){
             case R.id.ListViewEvenements:
                 int ide = liste_evenements_id.get(item_pos);
                 liste_evenements.remove(item_pos);
@@ -202,6 +202,7 @@ public class Affichage_Dossier extends AppCompatActivity {
                 Toast.makeText(this,"Evénement supprimé", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.ListViewTaches:
+                Toast.makeText(Affichage_Dossier.this,"passage",Toast.LENGTH_SHORT).show();
                 int idt = liste_taches_id.get(item_pos);
                 liste_taches.remove(item_pos);
                 U1.supprimer_tache(idt);
@@ -293,9 +294,10 @@ public class Affichage_Dossier extends AppCompatActivity {
             }
             Dossier D1 = U1.get_dossiers().get(i);
 
+
             if (requestCode == CHANGE_EVENT_REQUEST_CODE) {
-                liste_evenements = new ArrayList<String>();
-                liste_evenements_id = new ArrayList<Integer>();
+                liste_evenements.clear();
+                liste_evenements_id.clear();
                 for (i = 0; i < D1.get_evenements().size(); i++) {
                     liste_evenements.add(D1.get_evenements().get(i).get_nom_ev());
                     liste_evenements_id.add((Integer) D1.get_evenements().get(i).get_ide());
@@ -303,21 +305,29 @@ public class Affichage_Dossier extends AppCompatActivity {
                 adapter_evenements.notifyDataSetChanged();
 
             } else if (requestCode == CHANGE_TASK_REQUEST_CODE) {
-                liste_taches = new ArrayList<String>();
-                liste_taches_id = new ArrayList<Integer>();
+                liste_taches.clear();
+                liste_taches_id.clear();
                 for (i = 0; i < D1.get_taches().size(); i++) {
                     liste_taches.add(D1.get_taches().get(i).get_nom_tache());
                     liste_taches_id.add((Integer) D1.get_taches().get(i).get_idt());
                 }
+                adapter_taches.notifyDataSetChanged();
+
 
             } else if (requestCode == CHANGE_LIST_REQUEST_CODE) {
-                liste_listes = new ArrayList<String>();
-                liste_listes_id = new ArrayList<Integer>();
+                liste_listes.clear();
+                liste_listes_id.clear();
                 for (i = 0; i < D1.get_listes().size(); i++) {
                     liste_listes.add(D1.get_listes().get(i).get_nom_liste());
                     liste_listes_id.add(D1.get_listes().get(i).get_idl());
                 }
+                adapter_listes.notifyDataSetChanged();
             }
         }
+    }
+    public void onBackPressed(){
+        intent.putExtra("user",U1);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
     }
 }

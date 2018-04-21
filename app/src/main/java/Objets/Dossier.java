@@ -58,48 +58,23 @@ public class Dossier implements Parcelable{
 
     // AJOUTER DES ELEMENTS AU DOSSIER
     public void ajouter(Tache t) {
-        Boolean k = false;
-        for (int i = 0; i < taches.size(); i++) {
-            if (taches.get(i).get_idt() == t.get_idt()) {
-                System.out.println("ERREUR TACHE DEJA DANS LA LISTE");
-                k = true;
-            }
-        }
-        if (k == false) {
-            taches.add(t);
-        }
+        taches.add(t);
     }
 
     public void ajouter(Evenement e) {
-        Boolean k = false;
-        for (int i = 0; i < evenements.size(); i++) {
-            if (evenements.get(i).get_ide() == e.get_ide()) {
-                System.out.println("ERREUR EVENEMENT DEJA DANS LA LISTE");
-                k = true;
-            }
-        }
-        if (k == false) {
-            evenements.add(e);
-        }
+        evenements.add(e);
+
     }
 
     public void ajouter(Liste l) {
-        Boolean k = false;
-        for (int i = 0; i < listes.size(); i++) {
-            if (listes.get(i).get_idl() == l.get_idl()) {
-                System.out.println("ERREUR LISTE DEJA DANS LA LISTE");
-                k = true;
-            }
-        }
-        if (k == false) {
-            listes.add(l);
-        }
+        listes.add(l);
     }
+
 
     public void supprimer(Tache t) {
         for (int i = 0; i < taches.size(); i++) {
             if (taches.get(i).get_idt() == t.get_idt()) {
-                taches.set(i, t);
+                taches.remove(i);
             }
         }
     }
@@ -107,7 +82,7 @@ public class Dossier implements Parcelable{
     public void supprimer(Evenement e) {
         for (int i = 0; i < evenements.size(); i++) {
             if (evenements.get(i).get_ide() == e.get_ide()) {
-                evenements.set(i, e);
+                evenements.remove(i);
             }
         }
     }
@@ -115,7 +90,7 @@ public class Dossier implements Parcelable{
     public void supprimer(Liste l) {
         for (int i = 0; i < listes.size(); i++) {
             if (listes.get(i).get_idl() == l.get_idl()) {
-                listes.set(i, l);
+                listes.remove(i);
             }
         }
     }

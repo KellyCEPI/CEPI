@@ -3,6 +3,7 @@ package com.example.kelly.cepi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.pdf.PdfDocument;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -137,8 +138,10 @@ public class Page_Principale extends AppCompatActivity{
         adapter  = new ArrayAdapter<String>(Page_Principale.this,android.R.layout.simple_list_item_multiple_choice, liste_nom_evenements);
         liste_generale.setAdapter(adapter);
 
+
         registerForContextMenu(liste_generale);
         liste_generale.setOnLongClickListener(MenuSuppressionListener);
+        
 
 
     }
@@ -156,24 +159,25 @@ public class Page_Principale extends AppCompatActivity{
     private void setupDrawer() {
     }
 
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             u = data.getParcelableExtra("user");
-            if(data.getIntExtra("suppression",0)==1){
-                int id_item = data.getIntExtra("item dossier",0);
-                Toast.makeText(Page_Principale.this,String.valueOf(id_item),Toast.LENGTH_SHORT).show();
+            if (data.getIntExtra("suppression", 0) == 1) {
+                int id_item = data.getIntExtra("item dossier", 0);
+                Toast.makeText(Page_Principale.this, String.valueOf(id_item), Toast.LENGTH_SHORT).show();
                 subMenu_dossier.removeItem(id_item);
             }
         }
         if (requestCode == EVENT_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Evenement ev = u.get_evenements().get(u.get_evenements().size()-1);
+                Evenement ev = u.get_evenements().get(u.get_evenements().size() - 1);
                 liste_nom_evenements.add(ev.get_nom_ev());
                 adapter.notifyDataSetChanged();
             }
         } else if (requestCode == TASK_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                if(u.getTaches().size() != 0) {
+                if (u.getTaches().size() != 0) {
                     tache_terminee.setVisibility(View.VISIBLE);
                     prochaine_tache = u.get_taches().get(0);
                     prochaine_tache_numero = 0;
@@ -189,23 +193,48 @@ public class Page_Principale extends AppCompatActivity{
                     }
                     Dossier D1 = u.get_dossiers().get(i);
                     dossier_prochaine_tache.setText(D1.get_nom_dos());
-                }
-                else{
+                } else {
                     nom_prochaine_tache.setText("Aucune tâche en cours");
                     tache_terminee.setVisibility(View.INVISIBLE);
                 }
-                }
+            }
         } else if (requestCode == LIST_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-
             }
         } else if (requestCode == FOLDER_REQUEST_CODE) {
-            if (requestCode == RESULT_OK && data.getIntExtra("suppression",0)==1) {
-                int idd = data.getIntExtra("idd",-1);
-                subMenu_dossier.removeItem(1);
+            mliste_generale = u.get_evenements();
+            liste_nom_evenements.clear();
+            for (int ev = 0; ev < mliste_generale.size(); ev++) {
+                liste_nom_evenements.add(mliste_generale.get(ev).get_nom_ev());
+                }
+                adapter.notifyDataSetChanged();
+            if(u.getTaches().size() != 0) {
+
+                tache_terminee.setVisibility(View.VISIBLE);
+                prochaine_tache = u.get_taches().get(0);
+                prochaine_tache_numero = 0;
+                nom_prochaine_tache.setText(prochaine_tache.get_nom_tache());
+                int duree = prochaine_tache.get_duree();
+                int heures = duree / 60;
+                int minutes = duree - heures * 60;
+                duree_prochaine_tache.setText(String.valueOf(heures) + ":" + String.valueOf(minutes));
+                int idd = prochaine_tache.get_idd();
+                int i = 0;
+                while (i < u.get_dossiers().size() & u.get_dossiers().get(i).get_idd() != idd) {
+                    i++;
+                }
+                Dossier D1 = u.get_dossiers().get(i);
+                dossier_prochaine_tache.setText(D1.get_nom_dos());
             }
-        }
-    }
+            else{
+                nom_prochaine_tache.setText("Aucune tâche en cours");
+                tache_terminee.setVisibility(View.INVISIBLE);
+            }
+                }
+            }
+
+
+
 
     public View.OnClickListener TacheTermineeListener = new View.OnClickListener() {
         @Override
@@ -239,6 +268,30 @@ public class Page_Principale extends AppCompatActivity{
 
         }
     };
+
+    public View.OnTouchListener SwiperEvent = new View.OnTouchListener() {
+        int downX, upX;
+
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                downX = (int) motionEvent.getX();
+                Log.i("event.getX()", "downX" + downX);
+                return true;
+            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                upX = (int) motionEvent.getX();
+                Log.i("event.getX()", "upX" + upX);
+
+                if (downX - upX > -100) {
+
+
+                }
+                return true;
+            }
+            return false;
+        }
+    };
+
 
     public View.OnTouchListener SwipeListener = new View.OnTouchListener() {
         int downX, upX;
@@ -374,7 +427,6 @@ public class Page_Principale extends AppCompatActivity{
             else if (id != R.id.item_Ajout_Evenement && id != R.id.item_Ajout_Liste && id != R.id.item_Ajout_Tache
                     && id != R.id.item_deconnexion && id != R.id.item_Nouveau_Dossier){
                 Intent i5 = new Intent(Page_Principale.this, Affichage_Dossier.class);
-                //Toast.makeText(Page_Principale.this,String.valueOf(subMenu_dossier.getItem(id).getItemId()), Toast.LENGTH_SHORT).show();
                 i5.putExtra("idd",id);
                 i5.putExtra("user",u);
                 i5.putExtra("item dossier",id);

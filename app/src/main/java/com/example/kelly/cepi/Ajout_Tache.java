@@ -161,8 +161,10 @@ public class Ajout_Tache extends Activity{
             int i = liste_dossier.getSelectedItemPosition();
             heures = nb_heures.getValue();
             minutes = nb_minutes.getValue();
+            //Toast.makeText(Ajout_Tache.this,"avant modif" + String.valueOf(U1.get_dossiers().get(1).get_taches().get(0).get_idd()),Toast.LENGTH_SHORT).show();
             U1.modifier_tache(idt, nom_de_la_tache.getText().toString(),liste_choix_idd.get(i),  Integer.parseInt(nb_repetition.getText().toString()), repetition, heures*60+minutes, importance, urgence);
-            Toast.makeText(Ajout_Tache.this,"Modification",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(Ajout_Tache.this,"Après modif" + String.valueOf(U1.get_dossiers().get(1).get_taches().get(0).get_idd()),Toast.LENGTH_SHORT).show();
+            Toast.makeText(Ajout_Tache.this,"Modification enregistrée",Toast.LENGTH_SHORT).show();
             intent.putExtra("user",U1);
             setResult(Activity.RESULT_OK,intent);
             finish();
