@@ -1,13 +1,16 @@
 package com.example.kelly.cepi;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -67,6 +70,7 @@ public class Ajout_Tache extends Activity{
 
         nom_de_la_tache = (EditText) findViewById(R.id.EditTextTache);
         nom_de_la_tache.addTextChangedListener(TextWatcherTache);
+        nom_de_la_tache.setOnKeyListener(FinNomTache);
 
         nb_heures = (NumberPicker) findViewById(R.id.NumberPickerHeure);
         nb_minutes = (NumberPicker) findViewById(R.id.NumberPickerMinute);
@@ -233,17 +237,22 @@ public class Ajout_Tache extends Activity{
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onClick(View view) {
-            int i = liste_dossier.getSelectedItemPosition();
-            heures = nb_heures.getValue();
-            minutes = nb_minutes.getValue();
-            //Enregistrer la tache
-            U1.ajouter_tache(nom_de_la_tache.getText().toString(),liste_choix_idd.get(i), Integer.parseInt(nb_repetition.getText().toString()), repetition, heures*60+minutes, importance, urgence);
+            if(liste_choix_idd.size() == 0){
+                Toast.makeText(Ajout_Tache.this,"Vous devez d'abord créer un dossier",Toast.LENGTH_SHORT).show();
+            }
+            else {
+                int i = liste_dossier.getSelectedItemPosition();
+                heures = nb_heures.getValue();
+                minutes = nb_minutes.getValue();
+                //Enregistrer la tache
+                U1.ajouter_tache(nom_de_la_tache.getText().toString(), liste_choix_idd.get(i), Integer.parseInt(nb_repetition.getText().toString()), repetition, heures * 60 + minutes, importance, urgence);
 
-            Tache task = new Tache(0, nomS, 0, 0, 0, heures*60+minutes, 0, 0);
-            Intent intent = getIntent();
-            intent.putExtra("user",U1);
-            setResult(Activity.RESULT_OK,intent);
-            finish();
+                Tache task = new Tache(0, nomS, 0, 0, 0, heures * 60 + minutes, 0, 0);
+                Intent intent = getIntent();
+                intent.putExtra("user", U1);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+            }
         }
     };
 
@@ -264,4 +273,17 @@ public class Ajout_Tache extends Activity{
         }
     };
 
+    public View.OnKeyListener FinNomTache = new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View view, int i, KeyEvent keyEvent) {
+            if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER) {
+                if(view !=null){
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+                }
+                return true;
+            }
+            return false;
+        }
+    };
 }

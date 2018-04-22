@@ -2,9 +2,12 @@ package com.example.kelly.cepi;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -81,6 +84,7 @@ public class Ajout_Evenement extends Activity {
         valider.setOnClickListener(ValiderEvenementListener);
 
         nom_evenement = findViewById(R.id.EditTextNomEvenement);
+        nom_evenement.setOnKeyListener(FinNomEvenement);
 
         liste_rappels = (Spinner) findViewById(R.id.ChoixRappel);
         List<String> choix_rappel = new ArrayList<String>();
@@ -232,42 +236,59 @@ public class Ajout_Evenement extends Activity {
     public View.OnClickListener ValiderEvenementListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            int i = liste_dossier.getSelectedItemPosition();
-            //recuperer le calendar date_heure sans les DatePicker ALEXIS
-            //à changer
-            String dateS = String.valueOf(date.getText());
-            String[] parties = dateS.split("/");
-            //System.out.println("  @@@@@&é@&é"+dateS);
-            if (dateS != "Aucune date définie") {
-                jour = Integer.parseInt(parties[0]);
-                //penser à enelver 1 pour correspondre au calendrier
-                mois = Integer.parseInt(parties[1])-1;
-                annee = Integer.parseInt(parties[2]);
+            if (liste_choix_idd.size() == 0) {
+                Toast.makeText(Ajout_Evenement.this, "Vous devez d'abord créer un dossier", Toast.LENGTH_SHORT).show();
             } else {
-                //ici afficher message erreur car date non choisie
-                // OU empêcher le click sur valider
+                int i = liste_dossier.getSelectedItemPosition();
+                //recuperer le calendar date_heure sans les DatePicker ALEXIS
+                //à changer
+                String dateS = String.valueOf(date.getText());
+                String[] parties = dateS.split("/");
+                //System.out.println("  @@@@@&é@&é"+dateS);
+                if (dateS != "Aucune date définie") {
+                    jour = Integer.parseInt(parties[0]);
+                    //penser à enelver 1 pour correspondre au calendrier
+                    mois = Integer.parseInt(parties[1]) - 1;
+                    annee = Integer.parseInt(parties[2]);
+                } else {
+                    //ici afficher message erreur car date non choisie
+                    // OU empêcher le click sur valider
+                }
+
+                System.out.println("        int parse: ");
+                System.out.println(jour + "/" + mois + "/" + annee);
+
+                String horaire_s = String.valueOf(horaire.getText());
+                String[] parts = horaire_s.split(":");
+                heure = Integer.parseInt(parts[0]);
+                minute = Integer.parseInt(parts[1]);
+
+                Calendar date_heure = Calendar.getInstance();
+                date_heure.set(annee, mois, jour, heure, minute);
+
+                //Enregistrer l'évènement
+                U1.ajouter_ev(nom_evenement.getText().toString(), liste_choix_idd.get(i), date_heure, rappel);
+                System.out.println("ajout evenement:");
+                System.out.println(U1.get_dossiers().get(0).get_evenements().size());
+
+                Toast.makeText(Ajout_Evenement.this, "Enregistré", Toast.LENGTH_SHORT).show();
+                intent.putExtra("user", U1);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
             }
-
-            System.out.println("        int parse: ");
-            System.out.println(jour+"/"+mois+"/"+annee);
-
-            String horaire_s = String.valueOf(horaire.getText());
-            String[] parts = horaire_s.split(":");
-            heure = Integer.parseInt(parts[0]);
-            minute = Integer.parseInt(parts[1]);
-
-            Calendar date_heure = Calendar.getInstance();
-            date_heure.set(annee,mois,jour, heure, minute);
-
-            //Enregistrer l'évènement
-            U1.ajouter_ev(nom_evenement.getText().toString(),liste_choix_idd.get(i), date_heure, rappel);
-            System.out.println("ajout evenement:");
-            System.out.println(U1.get_dossiers().get(0).get_evenements().size());
-
-            Toast.makeText(Ajout_Evenement.this,"Enregistré",Toast.LENGTH_SHORT).show();
-            intent.putExtra("user",U1);
-            setResult(Activity.RESULT_OK,intent);
-            finish();
+        }
+    };
+    public View.OnKeyListener FinNomEvenement = new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View view, int i, KeyEvent keyEvent) {
+            if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER) {
+                if(view !=null){
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+                }
+                return true;
+            }
+            return false;
         }
     };
 

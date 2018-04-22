@@ -3,6 +3,8 @@ package com.example.kelly.cepi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.pdf.PdfDocument;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,12 +25,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import Objets.Dossier;
@@ -57,9 +68,8 @@ public class Page_Principale extends AppCompatActivity{
     static final int LIST_REQUEST_CODE = 3;
     static final int FOLDER_REQUEST_CODE = 4;
 
-    public ListView liste_generale;
+    public SwipeMenuListView liste_generale;
     ArrayAdapter<String> adapter = null;
-    //ArrayList<Evenement> mliste_generale = u.get_evenements();
     ArrayList<Evenement> mliste_generale;
     ArrayList<String> liste_nom_evenements = new ArrayList<>();
 
@@ -72,6 +82,8 @@ public class Page_Principale extends AppCompatActivity{
     int prochaine_tache_numero;
 
     CheckBox tache_terminee;
+    DateFormat df;
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -130,18 +142,57 @@ public class Page_Principale extends AppCompatActivity{
         Prochaine_Tache_Layout = findViewById(R.id.RelativeLayoutProchaineTache);
         Prochaine_Tache_Layout.setOnTouchListener(SwipeListener);
 
+        df = new SimpleDateFormat("dd/MM/yyyy   H:m");
+
         for(int ev = 0; ev < mliste_generale.size();ev ++){
-            liste_nom_evenements.add(mliste_generale.get(ev).get_nom_ev());
+            Evenement Ev = mliste_generale.get(ev);
+            liste_nom_evenements.add(Ev.get_nom_ev() + "\n" + "\n" + df.format(Ev.get_date_heure().getTime()));
         }
 
-        liste_generale = (ListView) findViewById(R.id.ListeGenerale);
-        adapter  = new ArrayAdapter<String>(Page_Principale.this,android.R.layout.simple_list_item_multiple_choice, liste_nom_evenements);
+        liste_generale = (SwipeMenuListView) findViewById(R.id.ListeGenerale);
+        adapter  = new ArrayAdapter<String>(Page_Principale.this,android.R.layout.simple_list_item_1, liste_nom_evenements);
         liste_generale.setAdapter(adapter);
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+            @Override
+            public void create(SwipeMenu menu) {
+                // create "done" item
+                SwipeMenuItem doneItem = new SwipeMenuItem(
+                        getApplicationContext());
+                // set item background
+                doneItem.setBackground(new ColorDrawable(Color.rgb(0x00,
+                        0x66, 0xff)));
+                // set item width
+                doneItem.setWidth(170);
+                // set a icon
+                doneItem.setIcon(R.drawable.ic_done);
+                // add to menu
+                menu.addMenuItem(doneItem);
+            }
+        };
+
+        liste_generale.setMenuCreator(creator);
+        liste_generale.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 0:
+                        Evenement ev = mliste_generale.get(position);
+                        mliste_generale.remove(position);
+                        liste_nom_evenements.remove(position);
+                        u.supprimer_ev(ev.get_ide());
+                        adapter.notifyDataSetChanged();
+                        break;
+                }
+                // false : close the menu; true : not close the menu
+                return false;
+            }
+        });
 
 
         registerForContextMenu(liste_generale);
         liste_generale.setOnLongClickListener(MenuSuppressionListener);
-        
+
 
 
     }
@@ -172,7 +223,8 @@ public class Page_Principale extends AppCompatActivity{
         if (requestCode == EVENT_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Evenement ev = u.get_evenements().get(u.get_evenements().size() - 1);
-                liste_nom_evenements.add(ev.get_nom_ev());
+                mliste_generale.add(ev);
+                liste_nom_evenements.add(ev.get_nom_ev()+ "\n" + "\n" + df.format(ev.get_date_heure().getTime()));
                 adapter.notifyDataSetChanged();
             }
         } else if (requestCode == TASK_REQUEST_CODE) {
@@ -205,7 +257,8 @@ public class Page_Principale extends AppCompatActivity{
             mliste_generale = u.get_evenements();
             liste_nom_evenements.clear();
             for (int ev = 0; ev < mliste_generale.size(); ev++) {
-                liste_nom_evenements.add(mliste_generale.get(ev).get_nom_ev());
+                Evenement Ev = mliste_generale.get(ev);
+                liste_nom_evenements.add(Ev.get_nom_ev() + df.format(Ev.get_date_heure().getTime()));
                 }
                 adapter.notifyDataSetChanged();
             if(u.getTaches().size() != 0) {
@@ -269,28 +322,6 @@ public class Page_Principale extends AppCompatActivity{
         }
     };
 
-    public View.OnTouchListener SwiperEvent = new View.OnTouchListener() {
-        int downX, upX;
-
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                downX = (int) motionEvent.getX();
-                Log.i("event.getX()", "downX" + downX);
-                return true;
-            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                upX = (int) motionEvent.getX();
-                Log.i("event.getX()", "upX" + upX);
-
-                if (downX - upX > -100) {
-
-
-                }
-                return true;
-            }
-            return false;
-        }
-    };
 
 
     public View.OnTouchListener SwipeListener = new View.OnTouchListener() {
