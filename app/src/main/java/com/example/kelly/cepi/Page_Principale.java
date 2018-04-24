@@ -3,6 +3,9 @@ package com.example.kelly.cepi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.pdf.PdfDocument;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,12 +25,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import Objets.Dossier;
@@ -56,9 +68,8 @@ public class Page_Principale extends AppCompatActivity{
     static final int LIST_REQUEST_CODE = 3;
     static final int FOLDER_REQUEST_CODE = 4;
 
-    public ListView liste_generale;
+    public SwipeMenuListView liste_generale;
     ArrayAdapter<String> adapter = null;
-    //ArrayList<Evenement> mliste_generale = u.get_evenements();
     ArrayList<Evenement> mliste_generale;
     ArrayList<String> liste_nom_evenements = new ArrayList<>();
 
@@ -71,6 +82,8 @@ public class Page_Principale extends AppCompatActivity{
     int prochaine_tache_numero;
 
     CheckBox tache_terminee;
+    DateFormat df;
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -129,16 +142,57 @@ public class Page_Principale extends AppCompatActivity{
         Prochaine_Tache_Layout = findViewById(R.id.RelativeLayoutProchaineTache);
         Prochaine_Tache_Layout.setOnTouchListener(SwipeListener);
 
+        df = new SimpleDateFormat("dd/MM/yyyy   H:m");
+
         for(int ev = 0; ev < mliste_generale.size();ev ++){
-            liste_nom_evenements.add(mliste_generale.get(ev).get_nom_ev());
+            Evenement Ev = mliste_generale.get(ev);
+            liste_nom_evenements.add(Ev.get_nom_ev() + "\n" + "\n" + df.format(Ev.get_date_heure().getTime()));
         }
 
-        liste_generale = (ListView) findViewById(R.id.ListeGenerale);
-        adapter  = new ArrayAdapter<String>(Page_Principale.this,android.R.layout.simple_list_item_multiple_choice, liste_nom_evenements);
+        liste_generale = (SwipeMenuListView) findViewById(R.id.ListeGenerale);
+        adapter  = new ArrayAdapter<String>(Page_Principale.this,android.R.layout.simple_list_item_1, liste_nom_evenements);
         liste_generale.setAdapter(adapter);
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+            @Override
+            public void create(SwipeMenu menu) {
+                // create "done" item
+                SwipeMenuItem doneItem = new SwipeMenuItem(
+                        getApplicationContext());
+                // set item background
+                doneItem.setBackground(new ColorDrawable(Color.rgb(0x00,
+                        0x66, 0xff)));
+                // set item width
+                doneItem.setWidth(170);
+                // set a icon
+                doneItem.setIcon(R.drawable.ic_done);
+                // add to menu
+                menu.addMenuItem(doneItem);
+            }
+        };
+
+        liste_generale.setMenuCreator(creator);
+        liste_generale.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 0:
+                        Evenement ev = mliste_generale.get(position);
+                        mliste_generale.remove(position);
+                        liste_nom_evenements.remove(position);
+                        u.supprimer_ev(ev.get_ide());
+                        adapter.notifyDataSetChanged();
+                        break;
+                }
+                // false : close the menu; true : not close the menu
+                return false;
+            }
+        });
+
 
         registerForContextMenu(liste_generale);
         liste_generale.setOnLongClickListener(MenuSuppressionListener);
+
 
 
     }
@@ -156,24 +210,26 @@ public class Page_Principale extends AppCompatActivity{
     private void setupDrawer() {
     }
 
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             u = data.getParcelableExtra("user");
-            if(data.getIntExtra("suppression",0)==1){
-                int id_item = data.getIntExtra("item dossier",0);
-                Toast.makeText(Page_Principale.this,String.valueOf(id_item),Toast.LENGTH_SHORT).show();
+            if (data.getIntExtra("suppression", 0) == 1) {
+                int id_item = data.getIntExtra("item dossier", 0);
+                Toast.makeText(Page_Principale.this, String.valueOf(id_item), Toast.LENGTH_SHORT).show();
                 subMenu_dossier.removeItem(id_item);
             }
         }
         if (requestCode == EVENT_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Evenement ev = u.get_evenements().get(u.get_evenements().size()-1);
-                liste_nom_evenements.add(ev.get_nom_ev());
+                Evenement ev = u.get_evenements().get(u.get_evenements().size() - 1);
+                mliste_generale.add(ev);
+                liste_nom_evenements.add(ev.get_nom_ev()+ "\n" + "\n" + df.format(ev.get_date_heure().getTime()));
                 adapter.notifyDataSetChanged();
             }
         } else if (requestCode == TASK_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                if(u.getTaches().size() != 0) {
+                if (u.getTaches().size() != 0) {
                     tache_terminee.setVisibility(View.VISIBLE);
                     prochaine_tache = u.get_taches().get(0);
                     prochaine_tache_numero = 0;
@@ -189,23 +245,49 @@ public class Page_Principale extends AppCompatActivity{
                     }
                     Dossier D1 = u.get_dossiers().get(i);
                     dossier_prochaine_tache.setText(D1.get_nom_dos());
-                }
-                else{
+                } else {
                     nom_prochaine_tache.setText("Aucune tâche en cours");
                     tache_terminee.setVisibility(View.INVISIBLE);
                 }
-                }
+            }
         } else if (requestCode == LIST_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-
             }
         } else if (requestCode == FOLDER_REQUEST_CODE) {
-            if (requestCode == RESULT_OK && data.getIntExtra("suppression",0)==1) {
-                int idd = data.getIntExtra("idd",-1);
-                subMenu_dossier.removeItem(1);
+            mliste_generale = u.get_evenements();
+            liste_nom_evenements.clear();
+            for (int ev = 0; ev < mliste_generale.size(); ev++) {
+                Evenement Ev = mliste_generale.get(ev);
+                liste_nom_evenements.add(Ev.get_nom_ev() + df.format(Ev.get_date_heure().getTime()));
+                }
+                adapter.notifyDataSetChanged();
+            if(u.getTaches().size() != 0) {
+
+                tache_terminee.setVisibility(View.VISIBLE);
+                prochaine_tache = u.get_taches().get(0);
+                prochaine_tache_numero = 0;
+                nom_prochaine_tache.setText(prochaine_tache.get_nom_tache());
+                int duree = prochaine_tache.get_duree();
+                int heures = duree / 60;
+                int minutes = duree - heures * 60;
+                duree_prochaine_tache.setText(String.valueOf(heures) + ":" + String.valueOf(minutes));
+                int idd = prochaine_tache.get_idd();
+                int i = 0;
+                while (i < u.get_dossiers().size() & u.get_dossiers().get(i).get_idd() != idd) {
+                    i++;
+                }
+                Dossier D1 = u.get_dossiers().get(i);
+                dossier_prochaine_tache.setText(D1.get_nom_dos());
             }
-        }
-    }
+            else{
+                nom_prochaine_tache.setText("Aucune tâche en cours");
+                tache_terminee.setVisibility(View.INVISIBLE);
+            }
+                }
+            }
+
+
+
 
     public View.OnClickListener TacheTermineeListener = new View.OnClickListener() {
         @Override
@@ -239,6 +321,8 @@ public class Page_Principale extends AppCompatActivity{
 
         }
     };
+
+
 
     public View.OnTouchListener SwipeListener = new View.OnTouchListener() {
         int downX, upX;
@@ -374,7 +458,6 @@ public class Page_Principale extends AppCompatActivity{
             else if (id != R.id.item_Ajout_Evenement && id != R.id.item_Ajout_Liste && id != R.id.item_Ajout_Tache
                     && id != R.id.item_deconnexion && id != R.id.item_Nouveau_Dossier){
                 Intent i5 = new Intent(Page_Principale.this, Affichage_Dossier.class);
-                //Toast.makeText(Page_Principale.this,String.valueOf(subMenu_dossier.getItem(id).getItemId()), Toast.LENGTH_SHORT).show();
                 i5.putExtra("idd",id);
                 i5.putExtra("user",u);
                 i5.putExtra("item dossier",id);

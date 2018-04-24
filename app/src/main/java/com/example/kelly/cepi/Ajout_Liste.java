@@ -1,12 +1,15 @@
 package com.example.kelly.cepi;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -64,6 +67,8 @@ public class Ajout_Liste extends Activity {
         adapter = new ArrayAdapter<String>(Ajout_Liste.this,android.R.layout.simple_list_item_multiple_choice,mliste);
         liste.setAdapter(adapter);
         liste.setOnItemClickListener(ItemListeListener);
+
+        nom_liste.setOnKeyListener(FinNomListe);
 
 
 
@@ -159,7 +164,7 @@ public class Ajout_Liste extends Activity {
             }
 
             U1.modifier_liste(idl, nom_liste.getText().toString(), liste_choix_idd.get(i), al);
-            Toast.makeText(Ajout_Liste.this,"Modification",Toast.LENGTH_SHORT).show();
+            Toast.makeText(Ajout_Liste.this,"Modification enregistrée",Toast.LENGTH_SHORT).show();
             intent.putExtra("user",U1);
             setResult(Activity.RESULT_OK,intent);
             finish();
@@ -181,20 +186,38 @@ public class Ajout_Liste extends Activity {
         }
     };
 
+    public View.OnKeyListener FinNomListe = new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View view, int i, KeyEvent keyEvent) {
+            if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER) {
+                if(view !=null){
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+                }
+                return true;
+            }
+            return false;
+        }
+    };
+
 
     View.OnClickListener ValiderListeListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (mliste.size()==0) {
-                Toast.makeText(Ajout_Liste.this,"Remplir tous les champs", Toast.LENGTH_SHORT).show();
+            if (liste_choix_idd.size() == 0) {
+                Toast.makeText(Ajout_Liste.this, "Vous devez d'abord créer un dossier", Toast.LENGTH_SHORT).show();
             } else {
-                int i = liste_dossier.getSelectedItemPosition();
-                U1.ajouter_liste(nom_liste.getText().toString(),liste_choix_idd.get(i), mliste);
-                intent.putExtra("user",U1);
-                setResult(Activity.RESULT_OK,intent);
-                finish();
-            }
+                if (mliste.size() == 0) {
+                    Toast.makeText(Ajout_Liste.this, "Remplir tous les champs", Toast.LENGTH_SHORT).show();
+                } else {
+                    int i = liste_dossier.getSelectedItemPosition();
+                    U1.ajouter_liste(nom_liste.getText().toString(), liste_choix_idd.get(i), mliste);
+                    intent.putExtra("user", U1);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                }
 
+            }
         }
     };
 

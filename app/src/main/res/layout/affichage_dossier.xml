@@ -28,12 +28,13 @@
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="16dp" />
 
-            <ListView
+            <com.baoyz.swipemenulistview.SwipeMenuListView
                 android:id="@+id/ListViewEvenements"
                 android:layout_width="368dp"
                 android:layout_height="144dp"
                 tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="38dp" />
+                tools:layout_editor_absoluteY="38dp"></com.baoyz.swipemenulistview.SwipeMenuListView>
+
 
             <TextView
                 android:id="@+id/textView12"
@@ -43,12 +44,12 @@
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="194dp" />
 
-            <ListView
+            <com.baoyz.swipemenulistview.SwipeMenuListView
                 android:id="@+id/ListViewTaches"
                 android:layout_width="368dp"
                 android:layout_height="129dp"
                 tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="220dp" />
+                tools:layout_editor_absoluteY="220dp"></com.baoyz.swipemenulistview.SwipeMenuListView>
 
             <TextView
                 android:id="@+id/textView13"
@@ -58,12 +59,13 @@
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="194dp" />
 
-            <ListView
+            <com.baoyz.swipemenulistview.SwipeMenuListView
                 android:id="@+id/ListViewListes"
                 android:layout_width="368dp"
                 android:layout_height="129dp"
                 tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="220dp" />
+                tools:layout_editor_absoluteY="220dp"></com.baoyz.swipemenulistview.SwipeMenuListView>
+
 
 
         </LinearLayout>

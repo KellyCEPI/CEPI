@@ -378,7 +378,6 @@ public class Utilisateur implements Parcelable{
         for (i = 0; i < taille; i++) {
             if (taches.get(i).get_idt() == idt) {
                 taches.get(i).set_nom_tache(nom_tache);
-                taches.get(i).set_idd(idd);
                 taches.get(i).set_repeat_nb(repeat_nb);
                 taches.get(i).set_repeat_inter(repeat_inter);
                 taches.get(i).set_duree(duree);
@@ -492,7 +491,6 @@ public class Utilisateur implements Parcelable{
         for (i = 0; i < taille; i++) {
             if (listes.get(i).get_idl() == idl) {
                 listes.get(i).set_nom_liste(nom_liste);
-                listes.get(i).set_idd(idd);
                 listes.get(i).set_liste(liste_recup_transformee);
                 if (listes.get(i).get_idd() != idd) {
                     //on supprime l'evenement dans le dossier d'avant
