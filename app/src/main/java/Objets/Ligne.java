@@ -49,6 +49,38 @@ public class Ligne implements Parcelable{
         return ligne;
     }
 
+    public int getIdl() {
+        return idl;
+    }
+
+    public void setIdl(int idl) {
+        this.idl = idl;
+    }
+
+    public int getIdligne() {
+        return idligne;
+    }
+
+    public void setIdligne(int idligne) {
+        this.idligne = idligne;
+    }
+
+    public int getCocher() {
+        return cocher;
+    }
+
+    public void setCocher(int cocher) {
+        this.cocher = cocher;
+    }
+
+    public String getLigne() {
+        return ligne;
+    }
+
+    public void setLigne(String ligne) {
+        this.ligne = ligne;
+    }
+
     @Override
     public int describeContents() {
         return hashCode();
