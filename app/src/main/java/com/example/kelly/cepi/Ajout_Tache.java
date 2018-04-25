@@ -46,8 +46,8 @@ public class Ajout_Tache extends Activity{
     EditText nb_repetition;
     SeekBar bar_important;
     SeekBar bar_urgent;
-    int importance;
-    int urgence;
+    int importance = 3;
+    int urgence = 3;
     Spinner liste_dossier;
     List<Integer> liste_choix_idd;
     int idd_ajout;
