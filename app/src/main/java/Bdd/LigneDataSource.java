@@ -67,10 +67,10 @@ public class LigneDataSource {
     }
 
     private Ligne cursorToLigne(Cursor cursor){
-        Ligne ligne= new Ligne();
-        ligne.setIdligne(cursor.Int(0));
-        ligne.set_cocher(cursor.Int(0));
-        ligne.set_ligne(cursor.getString(1));
+        Ligne ligne= new Ligne(cursor.getInt(0),cursor.getInt(0),cursor.getString(1));
+        //ligne.setIdligne(cursor.Int(0));
+        //ligne.set_cocher(cursor.Int(0));
+        //ligne.set_ligne(cursor.getString(1));
         return ligne;
     }
 }

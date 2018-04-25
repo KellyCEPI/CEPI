@@ -63,12 +63,13 @@ public class UtilisateurDataSource {
         return bdd.delete(UTILISATEUR_TABLE_NAME, UTILISATEUR_KEY + " = " + idu, null);
     }
 
-    public Utilisateur getUtilisateurWithEmail(String email){
+    public Utilisateur getUtilisateurWithEmail(String email) {
         //Récupère dans un Cursor les valeurs correspondant à un livre contenu dans la BDD (ici on sélectionne le livre grâce à son titre)
         Cursor c = bdd.query(UTILISATEUR_TABLE_NAME,
-                new String[] {UTILISATEUR_KEY, UTILISATEUR_EMAIL, UTILISATEUR_MDP},
-                UTILISATEUR_EMAIL + " LIKE \"" + email +"\"", null, null, null, null});
-		return cursorToUtilisateur(c);
+                new String[]{UTILISATEUR_KEY, UTILISATEUR_EMAIL, UTILISATEUR_MDP},
+                UTILISATEUR_EMAIL + " LIKE \"" + email + "\"", null, null, null, null);
+        return cursorToUtilisateur(c);
+    };
 
     private Utilisateur cursorToUtilisateur(Cursor c){
         //si aucun élément n'a été retourné dans la requête, on renvoie null
@@ -78,11 +79,11 @@ public class UtilisateurDataSource {
         //Sinon on se place sur le premier élément
         c.moveToFirst();
         //On créé un livre
-        Utilisateur u = new Utilisateur();
+        Utilisateur u = new Utilisateur(c.getString(UTILISATEUR_EMAIL_NUM),c.getString(UTILISATEUR_MDP_NUM));
         //on lui affecte toutes les infos grâce aux infos contenues dans le Cursor
-        u.setId(c.getInt(UTILISATEUR_KEY_NUM));
-        u.setIsbn(c.getString(UTILISATEUR_EMAIL_NUM));
-        u.setTitre(c.getString(UTILISATEUR_MDP_NUM));
+        u.setIdu(c.getInt(UTILISATEUR_KEY_NUM));
+        //u.set_email(c.getString(UTILISATEUR_EMAIL_NUM));
+        //u.setMdp(c.getString(UTILISATEUR_MDP_NUM));
         //On ferme le cursor
         c.close();
 
